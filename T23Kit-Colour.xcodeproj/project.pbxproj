@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4A21EAF019227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
+		4A21EAFE19227DC100BF9603 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAFD19227DC100BF9603 /* XCTest.framework */; };
+		4A21EAFF19227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
+		4A21EB0119227DC100BF9603 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EB0019227DC100BF9603 /* UIKit.framework */; };
+		4A21EB0419227DC100BF9603 /* libT23Kit-Colour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEC19227DC100BF9603 /* libT23Kit-Colour.a */; };
+		4A21EB0A19227DC100BF9603 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A21EB0819227DC100BF9603 /* InfoPlist.strings */; };
+		4A21EB0C19227DC100BF9603 /* T23Kit_ColourTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB0B19227DC100BF9603 /* T23Kit_ColourTests.m */; };
+		4A21EB1D19227ECD00BF9603 /* UIColor+T23ColorSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */; };
+		4A21EB4A1922802F00BF9603 /* colorspaces.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1819227EBA00BF9603 /* colorspaces.c */; };
+		4A21EB4B192282A300BF9603 /* UIColor+T23ColorSpaces.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4A21EB0219227DC100BF9603 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A21EAE419227DC100BF9603 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A21EAEB19227DC100BF9603;
+			remoteInfo = "T23Kit-Colour";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4A21EAEA19227DC100BF9603 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				4A21EB4B192282A300BF9603 /* UIColor+T23ColorSpaces.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4A21EAEC19227DC100BF9603 /* libT23Kit-Colour.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libT23Kit-Colour.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A21EAEF19227DC100BF9603 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4A21EAF319227DC100BF9603 /* T23Kit-Colour-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "T23Kit-Colour-Prefix.pch"; sourceTree = "<group>"; };
+		4A21EAFC19227DC100BF9603 /* T23Kit-ColourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "T23Kit-ColourTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A21EAFD19227DC100BF9603 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		4A21EB0019227DC100BF9603 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		4A21EB0719227DC100BF9603 /* T23Kit-ColourTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "T23Kit-ColourTests-Info.plist"; sourceTree = "<group>"; };
+		4A21EB0919227DC100BF9603 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4A21EB0B19227DC100BF9603 /* T23Kit_ColourTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = T23Kit_ColourTests.m; sourceTree = "<group>"; };
+		4A21EB1719227EBA00BF9603 /* colorspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorspaces_priv.h; sourceTree = "<group>"; };
+		4A21EB1819227EBA00BF9603 /* colorspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = colorspaces.c; sourceTree = "<group>"; };
+		4A21EB1919227EBA00BF9603 /* colorspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorspaces.h; sourceTree = "<group>"; };
+		4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+T23ColorSpaces.h"; sourceTree = "<group>"; };
+		4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+T23ColorSpaces.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4A21EAE919227DC100BF9603 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A21EAF019227DC100BF9603 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A21EAF919227DC100BF9603 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A21EAFE19227DC100BF9603 /* XCTest.framework in Frameworks */,
+				4A21EB0119227DC100BF9603 /* UIKit.framework in Frameworks */,
+				4A21EB0419227DC100BF9603 /* libT23Kit-Colour.a in Frameworks */,
+				4A21EAFF19227DC100BF9603 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4A21EAE319227DC100BF9603 = {
+			isa = PBXGroup;
+			children = (
+				4A21EAF119227DC100BF9603 /* T23Kit-Colour */,
+				4A21EB0519227DC100BF9603 /* T23Kit-ColourTests */,
+				4A21EAEE19227DC100BF9603 /* Frameworks */,
+				4A21EAED19227DC100BF9603 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4A21EAED19227DC100BF9603 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EAEC19227DC100BF9603 /* libT23Kit-Colour.a */,
+				4A21EAFC19227DC100BF9603 /* T23Kit-ColourTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4A21EAEE19227DC100BF9603 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EAEF19227DC100BF9603 /* Foundation.framework */,
+				4A21EAFD19227DC100BF9603 /* XCTest.framework */,
+				4A21EB0019227DC100BF9603 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4A21EAF119227DC100BF9603 /* T23Kit-Colour */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EB1519227E7F00BF9603 /* Categories  */,
+				4A21EB1619227E8D00BF9603 /* libcolorspaces */,
+				4A21EAF219227DC100BF9603 /* Supporting Files */,
+			);
+			path = "T23Kit-Colour";
+			sourceTree = "<group>";
+		};
+		4A21EAF219227DC100BF9603 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EAF319227DC100BF9603 /* T23Kit-Colour-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4A21EB0519227DC100BF9603 /* T23Kit-ColourTests */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EB0B19227DC100BF9603 /* T23Kit_ColourTests.m */,
+				4A21EB0619227DC100BF9603 /* Supporting Files */,
+			);
+			path = "T23Kit-ColourTests";
+			sourceTree = "<group>";
+		};
+		4A21EB0619227DC100BF9603 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EB0719227DC100BF9603 /* T23Kit-ColourTests-Info.plist */,
+				4A21EB0819227DC100BF9603 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4A21EB1519227E7F00BF9603 /* Categories  */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */,
+				4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */,
+			);
+			name = "Categories ";
+			sourceTree = "<group>";
+		};
+		4A21EB1619227E8D00BF9603 /* libcolorspaces */ = {
+			isa = PBXGroup;
+			children = (
+				4A21EB1719227EBA00BF9603 /* colorspaces_priv.h */,
+				4A21EB1819227EBA00BF9603 /* colorspaces.c */,
+				4A21EB1919227EBA00BF9603 /* colorspaces.h */,
+			);
+			name = libcolorspaces;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4A21EAEB19227DC100BF9603 /* T23Kit-Colour */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A21EB0F19227DC100BF9603 /* Build configuration list for PBXNativeTarget "T23Kit-Colour" */;
+			buildPhases = (
+				4A21EAE819227DC100BF9603 /* Sources */,
+				4A21EAE919227DC100BF9603 /* Frameworks */,
+				4A21EAEA19227DC100BF9603 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "T23Kit-Colour";
+			productName = "T23Kit-Colour";
+			productReference = 4A21EAEC19227DC100BF9603 /* libT23Kit-Colour.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		4A21EAFB19227DC100BF9603 /* T23Kit-ColourTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A21EB1219227DC100BF9603 /* Build configuration list for PBXNativeTarget "T23Kit-ColourTests" */;
+			buildPhases = (
+				4A21EAF819227DC100BF9603 /* Sources */,
+				4A21EAF919227DC100BF9603 /* Frameworks */,
+				4A21EAFA19227DC100BF9603 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A21EB0319227DC100BF9603 /* PBXTargetDependency */,
+			);
+			name = "T23Kit-ColourTests";
+			productName = "T23Kit-ColourTests";
+			productReference = 4A21EAFC19227DC100BF9603 /* T23Kit-ColourTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4A21EAE419227DC100BF9603 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = Thirteen23;
+			};
+			buildConfigurationList = 4A21EAE719227DC100BF9603 /* Build configuration list for PBXProject "T23Kit-Colour" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4A21EAE319227DC100BF9603;
+			productRefGroup = 4A21EAED19227DC100BF9603 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4A21EAEB19227DC100BF9603 /* T23Kit-Colour */,
+				4A21EAFB19227DC100BF9603 /* T23Kit-ColourTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4A21EAFA19227DC100BF9603 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A21EB0A19227DC100BF9603 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4A21EAE819227DC100BF9603 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A21EB4A1922802F00BF9603 /* colorspaces.c in Sources */,
+				4A21EB1D19227ECD00BF9603 /* UIColor+T23ColorSpaces.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A21EAF819227DC100BF9603 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A21EB0C19227DC100BF9603 /* T23Kit_ColourTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4A21EB0319227DC100BF9603 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A21EAEB19227DC100BF9603 /* T23Kit-Colour */;
+			targetProxy = 4A21EB0219227DC100BF9603 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4A21EB0819227DC100BF9603 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4A21EB0919227DC100BF9603 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4A21EB0D19227DC100BF9603 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		4A21EB0E19227DC100BF9603 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4A21EB1019227DC100BF9603 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/T23Kit_Colour.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "T23Kit-Colour/T23Kit-Colour-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4A21EB1119227DC100BF9603 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/T23Kit_Colour.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "T23Kit-Colour/T23Kit-Colour-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4A21EB1319227DC100BF9603 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "T23Kit-Colour/T23Kit-Colour-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "T23Kit-ColourTests/T23Kit-ColourTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		4A21EB1419227DC100BF9603 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "T23Kit-Colour/T23Kit-Colour-Prefix.pch";
+				INFOPLIST_FILE = "T23Kit-ColourTests/T23Kit-ColourTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4A21EAE719227DC100BF9603 /* Build configuration list for PBXProject "T23Kit-Colour" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A21EB0D19227DC100BF9603 /* Debug */,
+				4A21EB0E19227DC100BF9603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A21EB0F19227DC100BF9603 /* Build configuration list for PBXNativeTarget "T23Kit-Colour" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A21EB1019227DC100BF9603 /* Debug */,
+				4A21EB1119227DC100BF9603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4A21EB1219227DC100BF9603 /* Build configuration list for PBXNativeTarget "T23Kit-ColourTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A21EB1319227DC100BF9603 /* Debug */,
+				4A21EB1419227DC100BF9603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4A21EAE419227DC100BF9603 /* Project object */;
+}
