@@ -1214,11 +1214,17 @@ void _cmc1984_double_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
   S_L = (16.0f <= lab.a) ? (lab.a * 0.040975f) / (1.0f + (lab.a * 0.01765f))
                          : 0.511f;
 
-  S_C = ((C_1 * 0.0638f) / (1.0f + (C_1 * 0.0131f))) + 0.0638f;
+  S_C = ((C_1 * 0.0638f) / (1.0f + (C_1 * 0.0131f))) + 0.638f;
 
   H_1 = RAD_TO_DEG(atan2(lab.c, lab.b));
+  while (H_1 < 0.0f) {
+    H_1 += 360.0f;
+  }
+  while (H_1 > 360.0f) {
+    H_1 -= 360.0f;
+  }
 
-  T = (164.0f <= H_1 && 345.0f <= H_1)
+  T = (164.0f <= H_1 && 345.0f >= H_1)
           ? 0.56f + fabs(0.2f * cos(DEG_TO_RAD(H_1 + 168.0f)))
           : 0.36f + fabs(0.4f * cos(DEG_TO_RAD(H_1 + 35.0f)));
 
@@ -1246,11 +1252,17 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
   S_L = (16.0f <= lab.a) ? (lab.a * 0.040975f) / (1.0f + (lab.a * 0.01765f))
                          : 0.511f;
 
-  S_C = ((C_1 * 0.0638f) / (1.0f + (C_1 * 0.0131f))) + 0.0638f;
+  S_C = ((C_1 * 0.0638f) / (1.0f + (C_1 * 0.0131f))) + 0.638f;
 
   H_1 = RAD_TO_DEG(atan2f(lab.c, lab.b));
+  while (H_1 < 0.0f) {
+    H_1 += 360.0f;
+  }
+  while (H_1 > 360.0f) {
+    H_1 -= 360.0f;
+  }
 
-  T = (164.0f <= H_1 && 345.0f <= H_1)
+  T = (164.0f <= H_1 && 345.0f >= H_1)
           ? 0.56f + fabsf(0.2f * cosf(DEG_TO_RAD(H_1 + 168.0f)))
           : 0.36f + fabsf(0.4f * cosf(DEG_TO_RAD(H_1 + 35.0f)));
 
@@ -1260,8 +1272,7 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
               (H_d_ab2 / powf(S_H, 2.0f)));
 }
 
-void _cie94_double_(pixel_t lab, pixel_t plab, color_val_t media,
-                    color_val_t *dl) {
+void _cie94_double_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
   color_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
       K_H;
 
@@ -1274,11 +1285,11 @@ void _cie94_double_(pixel_t lab, pixel_t plab, color_val_t media,
   D_H_ab2 = (pow((lab.b - plab.b), 2.0f) + pow((lab.c - plab.c), 2.0f) -
              pow(C_d, 2.0f));
 
-  K_L = (LIBCOLORSPACES_GRAPHICS == media) ? 1 : 2;
+  K_L = (LIBCOLORSPACES_TEXTILES != media) ? 1.0f : 2.0f;
   K_C = K_H = 1.0f;
 
-  K_1 = (LIBCOLORSPACES_GRAPHICS == media) ? 0.045f : 0.048f;
-  K_2 = (LIBCOLORSPACES_GRAPHICS == media) ? 0.015f : 0.014f;
+  K_1 = (LIBCOLORSPACES_TEXTILES != media) ? 0.045f : 0.048f;
+  K_2 = (LIBCOLORSPACES_TEXTILES != media) ? 0.015f : 0.014f;
 
   S_L = 1.0f;
   S_C = 1.0f + (K_1 * C_1);
@@ -1288,8 +1299,7 @@ void _cie94_double_(pixel_t lab, pixel_t plab, color_val_t media,
              (D_H_ab2 / (pow(K_H, 2.0f) * pow(S_H, 2.0f))));
 }
 
-void _cie94_float_(pixel_t lab, pixel_t plab, color_val_t media,
-                   color_val_t *dl) {
+void _cie94_float_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
   color_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
       K_H;
 
@@ -1302,15 +1312,15 @@ void _cie94_float_(pixel_t lab, pixel_t plab, color_val_t media,
   D_H_ab2 = (powf((lab.b - plab.b), 2.0f) + powf((lab.c - plab.c), 2.0f) -
              powf(C_d, 2.0f));
 
-  K_L = (LIBCOLORSPACES_GRAPHICS == media) ? 1 : 2;
+  K_L = (LIBCOLORSPACES_TEXTILES != media) ? 1.0f : 2.0f;
   K_C = K_H = 1.0f;
 
-  K_1 = (LIBCOLORSPACES_GRAPHICS == media) ? 0.045f : 0.048f;
-  K_2 = (LIBCOLORSPACES_GRAPHICS == media) ? 0.015f : 0.014f;
+  K_1 = (LIBCOLORSPACES_TEXTILES != media) ? 0.045f : 0.048f;
+  K_2 = (LIBCOLORSPACES_TEXTILES != media) ? 0.015f : 0.014f;
 
   S_L = 1.0f;
-  S_C = 1.0f + (0.045f * C_1);
-  S_H = 1.0f + (0.015f * C_1);
+  S_C = 1.0f + (K_1 * C_1);
+  S_H = 1.0f + (K_2 * C_1);
 
   *dl = sqrtf(powf(L_d / (K_L * S_L), 2.0f) + powf(C_d / (K_C * S_C), 2.0f) +
               (D_H_ab2 / (powf(K_H, 2.0f) * powf(S_H, 2.0f))));

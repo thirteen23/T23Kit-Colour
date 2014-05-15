@@ -144,10 +144,10 @@ LIBCOLORSPACES_EXTERN void _cmc1984_float_(pixel_t lab, pixel_t plab,
                                            color_val_t l, color_val_t c,
                                            color_val_t *dl);
 
-LIBCOLORSPACES_EXTERN void _cie94_double_(pixel_t lab, pixel_t plab,
-                                          color_val_t media, color_val_t *dl);
-LIBCOLORSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab,
-                                         color_val_t media, color_val_t *dl);
+LIBCOLORSPACES_EXTERN void _cie94_double_(pixel_t lab, pixel_t plab, int media,
+                                          color_val_t *dl);
+LIBCOLORSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab, int media,
+                                         color_val_t *dl);
 
 LIBCOLORSPACES_EXTERN void _ciede2000_double_(pixel_t lab, pixel_t plab,
                                               color_val_t kl, color_val_t kc,

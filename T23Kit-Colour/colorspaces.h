@@ -33,8 +33,8 @@ typedef struct color_t {
   } p;
 } color_t;
 
-#define LIBCOLORSPACES_GRAPHICS (1.0f)
-#define LIBCOLORSPACES_TEXTILES (-1.0f)
+#define LIBCOLORSPACES_GRAPHICS (1)
+#define LIBCOLORSPACES_TEXTILES (-1)
 
 #define RGB p.rgb
 #define RGB_R p.rgb.a
