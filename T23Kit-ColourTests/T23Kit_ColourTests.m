@@ -10,6 +10,55 @@
 #import "UIColor+T23ColorSpaces.h"
 #include "colorspaces.h"
 
+static pixel_t RGB_TEST[] = {{1.0, 0.0, 0.0, 1.0},
+                             {0.0, 1.0, 0.0, 1.0},
+                             {0.0, 0.0, 1.0, 1.0},
+                             {1.0, 1.0, 0.0, 1.0},
+                             {0.0, 1.0, 1.0, 1.0},
+                             {1.0, 0.0, 1.0, 1.0}, };
+
+static pixel_t LAB_TEST[] = {{53.2408, 80.0925, 67.2032, 1.0},
+                             {87.7347, -86.1827, 83.1793, 1.0},
+                             {29.5676, 68.2986, -112.0294, 1.0},
+                             {97.6071, -15.7529, 93.3885, 1.0},
+                             {90.6655, -50.6654, -14.9620, 1.0},
+                             {60.1697, 93.5500, -60.4986, 1.0}};
+
+static pixel_t HLAB_TEST[] = {{1.0, 0.0, 0.0, 1.0},
+                              {0.0, 1.0, 0.0, 1.0},
+                              {0.0, 0.0, 1.0, 1.0},
+                              {1.0, 1.0, 0.0, 1.0},
+                              {0.0, 1.0, 1.0, 1.0},
+                              {1.0, 0.0, 1.0, 1.0}, };
+
+static pixel_t XYZ_TEST[] = {{41.2456, 21.2673, 1.9334, 1.0},
+                             {0.385065, 0.716879, 0.097105, 1.0},
+                             {0.143080, 0.060617, 0.714173, 1.0},
+                             {0.821140, 0.939383, 0.111037, 1.0},
+                             {0.528145, 0.777496, 0.811278, 1.0},
+                             {0.579155, 0.283121, 0.728105, 1.0}};
+
+static pixel_t CMYK_TEST[] = {{1.0, 0.0, 0.0, 1.0},
+                              {0.0, 1.0, 0.0, 1.0},
+                              {0.0, 0.0, 1.0, 1.0},
+                              {1.0, 1.0, 0.0, 1.0},
+                              {0.0, 1.0, 1.0, 1.0},
+                              {1.0, 0.0, 1.0, 1.0}, };
+
+static pixel_t HSL_TEST[] = {{1.0, 0.0, 0.0, 1.0},
+                             {0.0, 1.0, 0.0, 1.0},
+                             {0.0, 0.0, 1.0, 1.0},
+                             {1.0, 1.0, 0.0, 1.0},
+                             {0.0, 1.0, 1.0, 1.0},
+                             {1.0, 0.0, 1.0, 1.0}, };
+
+static pixel_t HSI_TEST[] = {{1.0, 0.0, 0.0, 1.0},
+                             {0.0, 1.0, 0.0, 1.0},
+                             {0.0, 0.0, 1.0, 1.0},
+                             {1.0, 1.0, 0.0, 1.0},
+                             {0.0, 1.0, 1.0, 1.0},
+                             {1.0, 0.0, 1.0, 1.0}, };
+
 static pixel_t LAB_TEST_SET[] = {
     /* 1 */
     {50.0000, 2.6772, -79.7751},
@@ -174,23 +223,44 @@ static color_val_t cmc_2_1_1984D[] = {
 }
 
 - (void)testUIColor {
-  UIColor *blueTestColor = [UIColor blueColor];
-  UIColor *redTestColor = [UIColor redColor];
 
-  NSLog(@"Distance between red and blue is: %f",
-        [blueTestColor
-            getDistanceMetricBetweenColor:redTestColor
-                              withOptions:T23UIColorDistanceFormulaCEI76]);
+  CGFloat x, y, z, k, a;
+  size_t test_length = sizeof(RGB_TEST) / sizeof(RGB_TEST[0]);
 
-  NSLog(@"Distance between red and red is: %f",
-        [blueTestColor
-            getDistanceMetricBetweenColor:blueTestColor
-                              withOptions:T23UIColorDistanceFormulaCEI76]);
+  for (size_t i = 0; i < test_length; i++) {
 
-  NSLog(@"Distance between blue and blue is: %f",
-        [redTestColor
-            getDistanceMetricBetweenColor:redTestColor
-                              withOptions:T23UIColorDistanceFormulaCEI76]);
+    UIColor *testColor = [UIColor colorWithRed:RGB_TEST[i].a
+                                         green:RGB_TEST[i].b
+                                          blue:RGB_TEST[i].c
+                                         alpha:RGB_TEST[i].d];
+
+    NSLog(@"UIColor: R: %f G: %f B: %f", RGB_TEST[i].a, RGB_TEST[i].b,
+          RGB_TEST[i].c);
+
+    [testColor getHunterLStar:&x aStar:&y bStar:&z alpha:&a];
+
+    NSLog(@"UIColor: Hunter L: %f A: %f B: %f", x, y, z);
+
+    [testColor getLStar:&x aStar:&y bStar:&z alpha:&a];
+
+    NSLog(@"UIColor: L: %f A: %f B: %f", x, y, z);
+
+    [testColor getCyan:&x magenta:&y yellow:&z black:&k alpha:&a];
+
+    NSLog(@"UIColor: C: %f M: %f Y: %f, K: %f", x, y, z, k);
+
+    [testColor getX:&x Y:&y Z:&z alpha:&a];
+
+    NSLog(@"UIColor: X: %f Y: %f Z: %f", x, y, z);
+
+    [testColor getHue:&x saturation:&y lightness:&z alpha:&a];
+
+    NSLog(@"UIColor: H: %f S: %f L: %f", x, y, z);
+
+    [testColor getHue:&x saturation:&y intensity:&z alpha:&a];
+
+    NSLog(@"UIColor: H: %f S: %f I: %f", x, y, z);
+  }
 }
 
 - (void)testLibColorspaces {
