@@ -22,6 +22,11 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
            bStar:(CGFloat *)yellowtoBlue
            alpha:(CGFloat *)alpha;
 
+- (BOOL)getLStar:(CGFloat *)lightness
+           uStar:(CGFloat *)greenToMagenta
+           vStar:(CGFloat *)yellowtoBlue
+           alpha:(CGFloat *)alpha;
+
 - (BOOL)getCyan:(CGFloat *)cyan
         magenta:(CGFloat *)magenta
          yellow:(CGFloat *)yellow

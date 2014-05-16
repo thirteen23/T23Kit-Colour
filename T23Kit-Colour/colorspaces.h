@@ -79,7 +79,7 @@ typedef struct color_t {
 #define LUV p.luv
 #define LUV_L p.luv.a
 #define LUV_U p.luv.b
-#define LUV_v p.luv.c
+#define LUV_V p.luv.c
 
 #define CMYK p.cmyk
 #define CMYK_C p.cmyk.a

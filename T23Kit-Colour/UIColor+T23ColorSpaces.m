@@ -46,6 +46,28 @@
   return YES;
 }
 
+- (BOOL)getLStar:(CGFloat *)lightness
+           uStar:(CGFloat *)greenToMagenta
+           vStar:(CGFloat *)yellowtoBlue
+           alpha:(CGFloat *)alpha {
+
+  color_t luv = {0.0f}, rgb = {0.0f};
+  CGFloat r, g, b, a;
+
+  [self getRed:&r green:&g blue:&b alpha:&a];
+  rgb.RGB_R = r;
+  rgb.RGB_G = g;
+  rgb.RGB_B = b;
+
+  RGB_2_LUV(rgb.RGB, &luv.LUV);
+  *lightness = luv.LUV_L;
+  *greenToMagenta = luv.LUV_U;
+  *yellowtoBlue = luv.LUV_V;
+  *alpha = a;
+
+  return YES;
+}
+
 - (BOOL)getCyan:(CGFloat *)cyan
         magenta:(CGFloat *)magenta
          yellow:(CGFloat *)yellow
