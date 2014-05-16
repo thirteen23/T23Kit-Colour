@@ -402,9 +402,9 @@ void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb) {
   g = &(rgb->b);
   b = &(rgb->c);
 
-  *r = 1.0f - (c + k);
-  *g = 1.0f - (m + k);
-  *b = 1.0f - (y + k);
+  *r = (1.0f - c) * (1.0f - k);
+  *g = (1.0f - m) * (1.0f - k);
+  *b = (1.0f - y) * (1.0f - k);
 
   sanitize_rgb(rgb);
 }
@@ -495,26 +495,19 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
 #pragma mark - To CMYK
 
 void rgb2cmyk(pixel_t rgb, pixel_t *cmyk) {
-  color_val_t *c, _c, *m, _m, *y, _y, *k, _k;
-
-  _c = _k = 1.0f - rgb.a;
-  _m = 1.0f - rgb.b;
-  _y = 1.0f - rgb.c;
+  color_val_t max, *c, *m, *y, *k;
 
   c = &(cmyk->a);
   m = &(cmyk->b);
   y = &(cmyk->c);
   k = &(cmyk->d);
 
-  if (_m < _k)
-    _k = _m;
-  if (_y < _k)
-    _k = _y;
+  max = color_max(rgb.a, rgb.b, rgb.c);
 
-  *c = _c - _k;
-  *m = _m - _k;
-  *y = _y - _k;
-  *k = _k;
+  *k = 1.0f - max;
+  *c = (1.0f - rgb.a - *k) / (1.0f - *k);
+  *m = (1.0f - rgb.b - *k) / (1.0f - *k);
+  *y = (1.0f - rgb.c - *k) / (1.0f - *k);
 }
 void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk) { rgb2cmyk(rgb, cmyk); }
 void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk) { rgb2cmyk(rgb, cmyk); }
@@ -630,10 +623,10 @@ void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi) {
              ? fmod(((g - b) / delta), 6.0f)
              : (max == g) ? (b - r) / delta + 2.0f : (r - g) / delta + 4.0f;
     *h *= 60.0f;
-    *h = DEG_TO_RAD(*h);
+    *h = (DEG_TO_RAD(*h) / M_2PI);
+    *h = (0.0f > *h) ? *h += 1.0f : (1.0f < *h) ? *h -= 1.0f : *h;
     *s = 1.0f - (min / (*i));
   }
-  // h [0, 2π], everyone else [0, 1]
 }
 
 void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi) {
@@ -661,10 +654,10 @@ void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi) {
              ? fmodf(((g - b) / delta), 6.0f)
              : (max == g) ? (b - r) / delta + 2.0f : (r - g) / delta + 4.0f;
     *h *= 60.0f;
-    *h = DEG_TO_RAD(*h);
+    *h = (DEG_TO_RAD(*h) / M_2PI);
+    *h = (0.0f > *h) ? *h += 1.0f : (1.0f < *h) ? *h -= 1.0f : *h;
     *s = 1.0f - (min / (*i));
   }
-  // h [0, 2π], everyone else [0, 1]
 }
 
 #pragma mark - to Hunter LAB

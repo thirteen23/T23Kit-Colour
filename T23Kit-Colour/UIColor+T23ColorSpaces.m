@@ -124,7 +124,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_HSL(rgb.RGB, &hsi.HSL);
+  RGB_2_HSI(rgb.RGB, &hsi.HSL);
   *hue = hsi.HSI_H;
   *saturation = hsi.HSI_S;
   *intensity = hsi.HSI_I;
