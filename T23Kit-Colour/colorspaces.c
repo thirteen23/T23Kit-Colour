@@ -9,7 +9,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <tgmath.h>
 #include "colorspaces.h"
 
 #define epsilon 0.008856f
