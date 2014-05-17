@@ -21,13 +21,6 @@
 
 #define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 
-/*
- * Commonly used values are 2:1 for acceptability and 1:1 for the threshold
- * of imperceptibility.
- */
-#define CMC1984_l 2.0f
-#define CMC1984_c 1.0f
-
 static pixel_t RGB2XYZ[3] = {{0.4124564f, 0.2126729f, 0.0193339f, 0.0f},
                              {0.3575761f, 0.7151522f, 0.1191920f, 0.0f},
                              {0.1804375f, 0.0721750f, 0.9503041f, 0.0f}};
@@ -1231,6 +1224,11 @@ void _cmc1984_double_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
 
   S_H = S_C * (F * T + 1 - F);
 
+  /*
+   * Commonly used values are 2:1 for acceptability and 1:1 for the threshold
+   * of imperceptibility.
+   */
+
   *dl = sqrt(pow((L_d / (l * S_L)), 2.0f) + pow((C_d / (c * S_C)), 2.0f) +
              (H_d_ab2 / pow(S_H, 2.0f)));
 }
@@ -1268,6 +1266,11 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
           : 0.36f + fabsf(0.4f * cosf(DEG_TO_RAD(H_1 + 35.0f)));
 
   S_H = S_C * (F * T + 1 - F);
+
+  /*
+   * Commonly used values are 2:1 for acceptability and 1:1 for the threshold
+   * of imperceptibility.
+   */
 
   *dl = sqrtf(powf((L_d / (l * S_L)), 2.0f) + powf((C_d / (c * S_C)), 2.0f) +
               (H_d_ab2 / powf(S_H, 2.0f)));
