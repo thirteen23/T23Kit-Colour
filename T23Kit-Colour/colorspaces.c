@@ -925,14 +925,16 @@ void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab) {
   lch_ab->a = lab.a;
 
   lch_ab->b = sqrt(pow(lab.b, 2.0f) + pow(lab.c, 2.0f));
-  lch_ab->c = atan2(lab.c, lab.b);
+  lch_ab->c = RAD_TO_DEG(atan2(lab.c, lab.b));
 
   while (lch_ab->c < 0.0f) {
-    lch_ab->c += M_2PI;
+    lch_ab->c += RAD_TO_DEG(M_2PI);
   }
-  while (lch_ab->c > M_2PI) {
-    lch_ab->c -= M_2PI;
+  while (lch_ab->c > RAD_TO_DEG(M_2PI)) {
+    lch_ab->c -= RAD_TO_DEG(M_2PI);
   }
+
+  lch_ab->c /= RAD_TO_DEG(M_2PI);
 }
 
 void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab) {
@@ -940,14 +942,16 @@ void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab) {
   lch_ab->a = lab.a;
 
   lch_ab->b = sqrtf(powf(lab.b, 2.0f) + powf(lab.c, 2.0f));
-  lch_ab->c = atan2f(lab.c, lab.b);
+  lch_ab->c = RAD_TO_DEG(atan2f(lab.c, lab.b));
 
   while (lch_ab->c < 0.0f) {
-    lch_ab->c += M_2PI;
+    lch_ab->c += RAD_TO_DEG(M_2PI);
   }
-  while (lch_ab->c > M_2PI) {
-    lch_ab->c -= M_2PI;
+  while (lch_ab->c > RAD_TO_DEG(M_2PI)) {
+    lch_ab->c -= RAD_TO_DEG(M_2PI);
   }
+
+  lch_ab->c /= RAD_TO_DEG(M_2PI);
 }
 
 void _luv2lch_ab_double_(pixel_t luv, pixel_t *lch_ab) {
@@ -972,42 +976,46 @@ void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv) {
   pixel_t lab = {0.0f};
 
   _rgb2lab_double_(rgb, &lab);
-  _lab2lch_ab_double_(lab, lch_uv);
+  _lab2lch_uv_double_(lab, lch_uv);
 }
 
 void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv) {
   pixel_t lab = {0.0f};
 
   _rgb2lab_float_(rgb, &lab);
-  _lab2lch_ab_float_(lab, lch_uv);
+  _lab2lch_uv_float_(lab, lch_uv);
 }
 
 void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv) {
   lch_uv->a = luv.a;
 
   lch_uv->b = sqrt(pow(luv.b, 2.0f) + pow(luv.c, 2.0f));
-  lch_uv->c = atan2(luv.c, luv.b);
+  lch_uv->c = RAD_TO_DEG(atan2(luv.c, luv.b));
 
   while (lch_uv->c < 0.0f) {
-    lch_uv->c += M_2PI;
+    lch_uv->c += RAD_TO_DEG(M_2PI);
   }
-  while (lch_uv->c > M_2PI) {
-    lch_uv->c -= M_2PI;
+  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
+    lch_uv->c -= RAD_TO_DEG(M_2PI);
   }
+
+  lch_uv->c /= RAD_TO_DEG(M_2PI);
 }
 
 void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv) {
   lch_uv->a = luv.a;
 
   lch_uv->b = sqrtf(powf(luv.b, 2.0f) + powf(luv.c, 2.0f));
-  lch_uv->c = atan2f(luv.c, luv.b);
+  lch_uv->c = RAD_TO_DEG(atan2f(luv.c, luv.b));
 
   while (lch_uv->c < 0.0f) {
-    lch_uv->c += M_2PI;
+    lch_uv->c += RAD_TO_DEG(M_2PI);
   }
-  while (lch_uv->c > M_2PI) {
-    lch_uv->c -= M_2PI;
+  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
+    lch_uv->c -= RAD_TO_DEG(M_2PI);
   }
+
+  lch_uv->c /= RAD_TO_DEG(M_2PI);
 }
 
 void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv) {
@@ -1015,7 +1023,7 @@ void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv) {
 
   _lab2xyz_double_(lab, &xyz);
   _xyz2luv_double_(xyz, &luv);
-  _luv2lch_ab_double_(luv, lch_uv);
+  _luv2lch_uv_double_(luv, lch_uv);
 }
 
 void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv) {
@@ -1023,7 +1031,7 @@ void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv) {
 
   _lab2xyz_float_(lab, &xyz);
   _xyz2luv_float_(xyz, &luv);
-  _luv2lch_ab_float_(luv, lch_uv);
+  _luv2lch_uv_float_(luv, lch_uv);
 }
 
 #pragma mark - To XYZ
@@ -1211,10 +1219,10 @@ void _cmc1984_double_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
 
   H_1 = RAD_TO_DEG(atan2(lab.c, lab.b));
   while (H_1 < 0.0f) {
-    H_1 += 360.0f;
+    H_1 += RAD_TO_DEG(M_2PI);
   }
-  while (H_1 > 360.0f) {
-    H_1 -= 360.0f;
+  while (H_1 > RAD_TO_DEG(M_2PI)) {
+    H_1 -= RAD_TO_DEG(M_2PI);
   }
 
   T = (164.0f <= H_1 && 345.0f >= H_1)
@@ -1249,10 +1257,10 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
 
   H_1 = RAD_TO_DEG(atan2f(lab.c, lab.b));
   while (H_1 < 0.0f) {
-    H_1 += 360.0f;
+    H_1 += RAD_TO_DEG(M_2PI);
   }
-  while (H_1 > 360.0f) {
-    H_1 -= 360.0f;
+  while (H_1 > RAD_TO_DEG(M_2PI)) {
+    H_1 -= RAD_TO_DEG(M_2PI);
   }
 
   T = (164.0f <= H_1 && 345.0f >= H_1)
@@ -1344,18 +1352,18 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
   /* Apparently you must work in degrees from here on out? */
   h_1_p = (0.0f == C_1_p) ? 0.0f : RAD_TO_DEG(atan2(lab.c, a_1_p));
   while (h_1_p < 0.0f) {
-    h_1_p += 360.0f;
+    h_1_p += RAD_TO_DEG(M_2PI);
   }
-  while (h_1_p > 360.0f) {
-    h_1_p -= 360.0f;
+  while (h_1_p > RAD_TO_DEG(M_2PI)) {
+    h_1_p -= RAD_TO_DEG(M_2PI);
   }
 
   h_2_p = (0.0f == C_2_p) ? 0.0f : RAD_TO_DEG(atan2(plab.c, a_2_p));
   while (h_2_p < 0.0f) {
-    h_2_p += 360.0f;
+    h_2_p += RAD_TO_DEG(M_2PI);
   }
-  while (h_2_p > 360.0f) {
-    h_2_p -= 360.0f;
+  while (h_2_p > RAD_TO_DEG(M_2PI)) {
+    h_2_p -= RAD_TO_DEG(M_2PI);
   }
 
   /* Calculate L_d_p, C_d_p, and H_d_p */
@@ -1369,9 +1377,10 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
     h_d_p = (180.0f >= fabs(h_2_p - h_1_p))
                 ? (h_2_p - h_1_p)
                 : (180.0f < (h_2_p - h_1_p))
-                      ? ((h_2_p - h_1_p) - 360.0f)
-                      : (-180.0f > (h_2_p - h_1_p)) ? ((h_2_p - h_1_p) + 360.0f)
-                                                    : 0.0f;
+                      ? ((h_2_p - h_1_p) - RAD_TO_DEG(M_2PI))
+                      : (-180.0f > (h_2_p - h_1_p))
+                            ? ((h_2_p - h_1_p) + RAD_TO_DEG(M_2PI))
+                            : 0.0f;
   }
 
   H_d_p = 2.0f * sqrt(C_1_p * C_2_p) * sin(DEG_TO_RAD(h_d_p / 2.0f));
@@ -1387,13 +1396,14 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
   if (0.0f == (C_1_p * C_2_p)) {
     h_b_p = h_d_p_sum;
   } else {
-    h_b_p = (180.0f >= h_d_p_abs)
-                ? (h_d_p_sum / 2.0f)
-                : ((180.0f < h_d_p_abs) && (360.0f > h_d_p_sum))
-                      ? ((h_d_p_sum + 360.0f) / 2.0f)
-                      : ((180.0f < h_d_p_abs) && (360.0f <= h_d_p_sum))
-                            ? ((h_d_p_sum - 360.0f) / 2.0f)
-                            : NAN;
+    h_b_p =
+        (180.0f >= h_d_p_abs)
+            ? (h_d_p_sum / 2.0f)
+            : ((180.0f < h_d_p_abs) && (RAD_TO_DEG(M_2PI) > h_d_p_sum))
+                  ? ((h_d_p_sum + RAD_TO_DEG(M_2PI)) / 2.0f)
+                  : ((180.0f < h_d_p_abs) && (RAD_TO_DEG(M_2PI) <= h_d_p_sum))
+                        ? ((h_d_p_sum - RAD_TO_DEG(M_2PI)) / 2.0f)
+                        : NAN;
   }
 
   T = 1.0f - (0.17f * cos(DEG_TO_RAD(h_b_p - 30.0f))) +
@@ -1473,18 +1483,18 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
   /* Apparently you must work in degrees from here on out? */
   h_1_p = (0.0f == C_1_p) ? 0.0f : RAD_TO_DEG(atan2f(lab.c, a_1_p));
   while (h_1_p < 0.0f) {
-    h_1_p += 360.0f;
+    h_1_p += RAD_TO_DEG(M_2PI);
   }
-  while (h_1_p > 360.0f) {
-    h_1_p -= 360.0f;
+  while (h_1_p > RAD_TO_DEG(M_2PI)) {
+    h_1_p -= RAD_TO_DEG(M_2PI);
   }
 
   h_2_p = (0.0f == C_2_p) ? 0.0f : RAD_TO_DEG(atan2f(plab.c, a_2_p));
   while (h_2_p < 0.0f) {
-    h_2_p += 360.0f;
+    h_2_p += RAD_TO_DEG(M_2PI);
   }
-  while (h_2_p > 360.0f) {
-    h_2_p -= 360.0f;
+  while (h_2_p > RAD_TO_DEG(M_2PI)) {
+    h_2_p -= RAD_TO_DEG(M_2PI);
   }
 
   /* Calculate L_d_p, C_d_p, and H_d_p */
@@ -1498,9 +1508,10 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
     h_d_p = (180.0f >= fabsf(h_2_p - h_1_p))
                 ? (h_2_p - h_1_p)
                 : (180.0f < (h_2_p - h_1_p))
-                      ? ((h_2_p - h_1_p) - 360.0f)
-                      : (-180.0f > (h_2_p - h_1_p)) ? ((h_2_p - h_1_p) + 360.0f)
-                                                    : 0.0f;
+                      ? ((h_2_p - h_1_p) - RAD_TO_DEG(M_2PI))
+                      : (-180.0f > (h_2_p - h_1_p))
+                            ? ((h_2_p - h_1_p) + RAD_TO_DEG(M_2PI))
+                            : 0.0f;
   }
 
   H_d_p = 2.0f * sqrtf(C_1_p * C_2_p) * sinf(DEG_TO_RAD(h_d_p / 2.0f));
@@ -1516,13 +1527,14 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
   if (0.0f == (C_1_p * C_2_p)) {
     h_b_p = h_d_p_sum;
   } else {
-    h_b_p = (180.0f >= h_d_p_abs)
-                ? (h_d_p_sum / 2.0f)
-                : ((180.0f < h_d_p_abs) && (360.0f > h_d_p_sum))
-                      ? ((h_d_p_sum + 360.0f) / 2.0f)
-                      : ((180.0f < h_d_p_abs) && (360.0f <= h_d_p_sum))
-                            ? ((h_d_p_sum - 360.0f) / 2.0f)
-                            : NAN;
+    h_b_p =
+        (180.0f >= h_d_p_abs)
+            ? (h_d_p_sum / 2.0f)
+            : ((180.0f < h_d_p_abs) && (RAD_TO_DEG(M_2PI) > h_d_p_sum))
+                  ? ((h_d_p_sum + RAD_TO_DEG(M_2PI)) / 2.0f)
+                  : ((180.0f < h_d_p_abs) && (RAD_TO_DEG(M_2PI) <= h_d_p_sum))
+                        ? ((h_d_p_sum - RAD_TO_DEG(M_2PI)) / 2.0f)
+                        : NAN;
   }
 
   T = 1.0f - (0.17f * cosf(DEG_TO_RAD(h_b_p - 30.0f))) +

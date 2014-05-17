@@ -51,15 +51,15 @@ typedef struct color_t {
 #define HSV_S p.hsv.b
 #define HSV_V p.hsv.c
 
-#define LCH_AB p.lab_ab
-#define LCH_AB_L p.lab_ab.a
-#define LCH_AB_C p.lab_ab.b
-#define LCH_AB_H p.lab_ab.c
+#define LCH_AB p.lch_ab
+#define LCH_AB_L p.lch_ab.a
+#define LCH_AB_C p.lch_ab.b
+#define LCH_AB_H p.lch_ab.c
 
-#define LCH_UV p.lab_uv
-#define LCH_UV_L p.lab_uv.a
-#define LCH_UV_C p.lab_uv.b
-#define LCH_UV_H p.lab_uv.c
+#define LCH_UV p.lch_uv
+#define LCH_UV_L p.lch_uv.a
+#define LCH_UV_C p.lch_uv.b
+#define LCH_UV_H p.lch_uv.c
 
 #define HSI p.hsi
 #define HSI_H p.hsi.a

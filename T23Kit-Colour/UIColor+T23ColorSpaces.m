@@ -68,6 +68,48 @@
   return YES;
 }
 
+- (BOOL)getLStar:(CGFloat *)lightness
+           cStar:(CGFloat *)chroma
+         hStarAB:(CGFloat *)hue
+           alpha:(CGFloat *)alpha {
+  color_t lch_ab = {0.0f}, rgb = {0.0f};
+  CGFloat r, g, b, a;
+
+  [self getRed:&r green:&g blue:&b alpha:&a];
+  rgb.RGB_R = r;
+  rgb.RGB_G = g;
+  rgb.RGB_B = b;
+
+  RGB_2_LCH_AB(rgb.RGB, &lch_ab.LCH_AB);
+  *lightness = lch_ab.LCH_AB_L;
+  *chroma = lch_ab.LCH_AB_C;
+  *hue = lch_ab.LCH_AB_H;
+  *alpha = a;
+
+  return YES;
+}
+
+- (BOOL)getLStar:(CGFloat *)lightness
+           cStar:(CGFloat *)chroma
+         hStarUV:(CGFloat *)hue
+           alpha:(CGFloat *)alpha {
+  color_t lch_uv = {0.0f}, rgb = {0.0f};
+  CGFloat r, g, b, a;
+
+  [self getRed:&r green:&g blue:&b alpha:&a];
+  rgb.RGB_R = r;
+  rgb.RGB_G = g;
+  rgb.RGB_B = b;
+
+  RGB_2_LCH_UV(rgb.RGB, &lch_uv.LCH_UV);
+  *lightness = lch_uv.LCH_UV_L;
+  *chroma = lch_uv.LCH_UV_C;
+  *hue = lch_uv.LCH_UV_H;
+  *alpha = a;
+
+  return YES;
+}
+
 - (BOOL)getCyan:(CGFloat *)cyan
         magenta:(CGFloat *)magenta
          yellow:(CGFloat *)yellow

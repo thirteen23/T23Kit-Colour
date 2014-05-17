@@ -49,6 +49,32 @@ static pixel_t LUV_TEST[] = {{53.2408, 175.0151, 37.7564, 1.0},
                              {97.8674, -16.3973, -3.5374, 1.0},
                              {47.8301, -17.5102, -101.2174, 1.0}};
 
+static pixel_t LCH_AB_TEST[] = {{53.2408, 104.5518, 0.1111, 1.0},
+                                {87.7347, 119.7759, 0.3778, 1.0},
+                                {32.2970, 133.8076, 0.8508, 1.0},
+                                {97.1393, 96.9054, 0.2857, 1.0},
+                                {91.1132, 50.1209, 0.5455, 1.0},
+                                {60.3242, 115.5407, 0.9118, 1.0},
+                                {69.6958, 67.3129, 0.9079, 1.0},
+                                {47.5728, 74.3006, 0.9623, 1.0},
+                                {72.6067, 90.9966, 0.3820, 1.0},
+                                {54.6505, 57.1458, 0.3322, 1.0},
+                                {97.8674, 10.5016, 0.5521, 1.0},
+                                {47.8301, 70.3498, 0.8109, 1.0}};
+
+static pixel_t LCH_UV_TEST[] = {{53.2408, 179.0414, 0.0338, 1.0},
+                                {87.7347, 135.7804, 0.3548, 1.0},
+                                {32.2970, 130.6812, 0.7385, 1.0},
+                                {97.1393, 107.0643, 0.2385, 1.0},
+                                {91.1132, 72.0987, 0.5338, 1.0},
+                                {60.3242, 137.4048, 0.8548, 1.0},
+                                {69.6958, 84.7403, 0.8548, 1.0},
+                                {47.5728, 100.2035, 0.9404, 1.0},
+                                {72.6067, 102.8464, 0.3548, 1.0},
+                                {54.6505, 60.0304, 0.2969, 1.0},
+                                {97.8674, 16.7746, 0.5338, 1.0},
+                                {47.8301, 102.7208, 0.7227, 1.0}};
+
 static pixel_t HLAB_TEST[] = {{46.116470, 78.942963, 29.795856, 1.0},
                               {84.566666, -72.515923, 50.840080, 1.0},
                               {26.865406, 72.872406, -190.919449, 1.0},
@@ -311,6 +337,24 @@ static color_val_t cmc_2_1_1984D[] = {
     XCTAssertEqualWithAccuracy(x, LUV_TEST[i].a, 0.001, @"Failed test: %lu", i);
     XCTAssertEqualWithAccuracy(y, LUV_TEST[i].b, 0.001, @"Failed test: %lu", i);
     XCTAssertEqualWithAccuracy(z, LUV_TEST[i].c, 0.001, @"Failed test: %lu", i);
+
+    [testColor getLStar:&x cStar:&y hStarAB:&z alpha:&a];
+
+    XCTAssertEqualWithAccuracy(x, LCH_AB_TEST[i].a, 0.001, @"Failed test: %lu",
+                               i);
+    XCTAssertEqualWithAccuracy(y, LCH_AB_TEST[i].b, 0.001, @"Failed test: %lu",
+                               i);
+    XCTAssertEqualWithAccuracy(z, LCH_AB_TEST[i].c, 0.001, @"Failed test: %lu",
+                               i);
+
+    [testColor getLStar:&x cStar:&y hStarUV:&z alpha:&a];
+
+    XCTAssertEqualWithAccuracy(x, LCH_UV_TEST[i].a, 0.001, @"Failed test: %lu",
+                               i);
+    XCTAssertEqualWithAccuracy(y, LCH_UV_TEST[i].b, 0.001, @"Failed test: %lu",
+                               i);
+    XCTAssertEqualWithAccuracy(z, LCH_UV_TEST[i].c, 0.001, @"Failed test: %lu",
+                               i);
 
     [testColor getCyan:&x magenta:&y yellow:&z black:&k alpha:&a];
 
