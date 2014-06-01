@@ -1,10 +1,10 @@
-//
-//  colorspaces.c
-//  FrickBits
-//
-//  Created by Michael Van Milligan on 3/4/14.
-//  Copyright (c) 2014 Michael Van Milligan. All rights reserved.
-//
+/*
+ *  colorspaces.c
+ *  T23Kit-Colour
+ *
+ *  Created by Michael Van Milligan on 4/11/14.
+ *  Copyright (c) 2014 Thirteen23. All rights reserved.
+ */
 
 #include <assert.h>
 #include <stdlib.h>
@@ -21,6 +21,11 @@
 
 #define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 
+/*
+ * sRGB matrices to XYZ with (Observer = 2°, Illuminant = D65)
+ *
+ * See http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+ */
 static pixel_t RGB2XYZ[3] = {{0.4124564f, 0.2126729f, 0.0193339f, 0.0f},
                              {0.3575761f, 0.7151522f, 0.1191920f, 0.0f},
                              {0.1804375f, 0.0721750f, 0.9503041f, 0.0f}};

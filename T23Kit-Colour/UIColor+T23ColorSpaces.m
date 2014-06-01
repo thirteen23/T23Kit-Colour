@@ -1,3 +1,11 @@
+/*
+ *  UIColor+T23ColorSpaces.m
+ *  T23Kit-Colour
+ *
+ *  Created by Michael Van Milligan on 4/11/14.
+ *  Copyright (c) 2014 Thirteen23. All rights reserved.
+ */
+
 #import "UIColor+T23ColorSpaces.h"
 
 @implementation UIColor (T23ColorSpaces)

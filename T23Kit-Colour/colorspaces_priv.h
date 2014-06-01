@@ -1,10 +1,10 @@
-//
-//  colorspaces_priv.h
-//  FrickBits
-//
-//  Created by Michael Van Milligan on 4/11/14.
-//  Copyright (c) 2014 Thirteen23. All rights reserved.
-//
+/*
+ *  colorspaces_priv.h
+ *  T23Kit-Colour
+ *
+ *  Created by Michael Van Milligan on 4/11/14.
+ *  Copyright (c) 2014 Thirteen23. All rights reserved.
+ */
 
 #ifdef __cplusplus
 extern "C" {
