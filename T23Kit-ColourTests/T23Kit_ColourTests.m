@@ -1,14 +1,14 @@
-//
-//  T23Kit_ColourTests.m
-//  T23Kit-ColourTests
-//
-//  Created by Michael Van Milligan on 5/13/14.
-//  Copyright (c) 2014 Thirteen23. All rights reserved.
-//
+/*
+ *  T23Kit_ColourTests.m
+ *  T23Kit-Colour
+ *
+ *  Created by Michael Van Milligan on 4/11/14.
+ *  Copyright (c) 2014 Thirteen23. All rights reserved.
+ */
 
+#include "colorspaces.h"
 #import <XCTest/XCTest.h>
 #import "UIColor+T23ColorSpaces.h"
-#include "colorspaces.h"
 
 static pixel_t RGB_TEST[] = {{1.000000, 0.000000, 0.000000, 1.0},
                              {0.000000, 1.000000, 0.000000, 1.0},

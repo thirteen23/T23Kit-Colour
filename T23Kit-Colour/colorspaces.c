@@ -1443,27 +1443,6 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
   E_d_00 = sqrt(L_term + C_term + H_term + R_term);
 
   *dl = E_d_00;
-
-  //  COLORSPACE_LOG("L*1: %f\n", lab.a);
-  //  COLORSPACE_LOG("L*2: %f\n", plab.a);
-  //  COLORSPACE_LOG("a*1: %f\n", lab.b);
-  //  COLORSPACE_LOG("a*2: %f\n", plab.b);
-  //  COLORSPACE_LOG("b*1: %f\n", lab.c);
-  //  COLORSPACE_LOG("b*2: %f\n", plab.c);
-  //  COLORSPACE_LOG("a'1: %f\n", a_1_p);
-  //  COLORSPACE_LOG("a'2: %f\n", a_2_p);
-  //  COLORSPACE_LOG("C'1: %f\n", C_1_p);
-  //  COLORSPACE_LOG("C'2: %f\n", C_2_p);
-  //  COLORSPACE_LOG("h'1: %f\n", h_1_p);
-  //  COLORSPACE_LOG("h'2: %f\n", h_2_p);
-  //  COLORSPACE_LOG("hBAR': %f\n", h_b_p);
-  //  COLORSPACE_LOG("G: %f\n", G);
-  //  COLORSPACE_LOG("T: %f\n", T);
-  //  COLORSPACE_LOG("S_L: %f\n", S_L);
-  //  COLORSPACE_LOG("S_C: %f\n", S_C);
-  //  COLORSPACE_LOG("S_H: %f\n", S_H);
-  //  COLORSPACE_LOG("R_T: %f\n", R_T);
-  //  COLORSPACE_LOG("E_d_00: %f\n", E_d_00);
 }
 
 void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
@@ -1575,25 +1554,4 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
   E_d_00 = sqrtf(L_term + C_term + H_term + R_term);
 
   *dl = E_d_00;
-
-  //  COLORSPACE_LOG("L*1: %f\n", lab.a);
-  //  COLORSPACE_LOG("L*2: %f\n", plab.a);
-  //  COLORSPACE_LOG("a*1: %f\n", lab.b);
-  //  COLORSPACE_LOG("a*2: %f\n", plab.b);
-  //  COLORSPACE_LOG("b*1: %f\n", lab.c);
-  //  COLORSPACE_LOG("b*2: %f\n", plab.c);
-  //  COLORSPACE_LOG("a'1: %f\n", a_1_p);
-  //  COLORSPACE_LOG("a'2: %f\n", a_2_p);
-  //  COLORSPACE_LOG("C'1: %f\n", C_1_p);
-  //  COLORSPACE_LOG("C'2: %f\n", C_2_p);
-  //  COLORSPACE_LOG("h'1: %f\n", h_1_p);
-  //  COLORSPACE_LOG("h'2: %f\n", h_2_p);
-  //  COLORSPACE_LOG("hBAR': %f\n", h_b_p);
-  //  COLORSPACE_LOG("G: %f\n", G);
-  //  COLORSPACE_LOG("T: %f\n", T);
-  //  COLORSPACE_LOG("S_L: %f\n", S_L);
-  //  COLORSPACE_LOG("S_C: %f\n", S_C);
-  //  COLORSPACE_LOG("S_H: %f\n", S_H);
-  //  COLORSPACE_LOG("R_T: %f\n", R_T);
-  //  COLORSPACE_LOG("E_d_00: %f\n", E_d_00);
 }

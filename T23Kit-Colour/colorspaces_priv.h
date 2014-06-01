@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+#import <CoreGraphics/CoreGraphics.h>
+
 #ifndef LIBCOLORSPACES_PRIV_H
 #define LIBCOLORSPACES_PRIV_H
 

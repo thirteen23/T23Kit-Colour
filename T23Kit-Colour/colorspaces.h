@@ -13,7 +13,6 @@ extern "C" {
 #ifndef LIBCOLORSPACES_H
 #define LIBCOLORSPACES_H
 
-#import <CoreGraphics/CoreGraphics.h>
 #include "colorspaces_priv.h"
 
 typedef struct color_t {
