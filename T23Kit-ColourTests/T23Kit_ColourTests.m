@@ -387,6 +387,28 @@ static color_val_t cmc_2_1_1984D[] = {
   }
 }
 
+- (void)testComplements {
+  UIColor *redComplement = [[UIColor redColor] getComplement];
+  UIColor *greenComplement = [[UIColor greenColor] getComplement];
+  UIColor *blueComplement = [[UIColor blueColor] getComplement];
+  UIColor *cyanComplement = [[UIColor cyanColor] getComplement];
+  UIColor *yellowComplement = [[UIColor yellowColor] getComplement];
+  UIColor *magentaComplement = [[UIColor magentaColor] getComplement];
+  UIColor *orangeComplement = [[UIColor orangeColor] getComplement];
+  UIColor *purpleComplement = [[UIColor purpleColor] getComplement];
+  UIColor *brownComplement = [[UIColor brownColor] getComplement];
+
+  NSLog(@"Red complement: %@", redComplement);
+  NSLog(@"Green complement: %@", greenComplement);
+  NSLog(@"Blue complement: %@", blueComplement);
+  NSLog(@"Cyan complement: %@", cyanComplement);
+  NSLog(@"Yellow complement: %@", yellowComplement);
+  NSLog(@"Magenta complement: %@", magentaComplement);
+  NSLog(@"Orange complement: %@", orangeComplement);
+  NSLog(@"Purple complement: %@", purpleComplement);
+  NSLog(@"Brown complement: %@", brownComplement);
+}
+
 - (void)testLibColorspaces {
 
   CGFloat distance = 0.0f;

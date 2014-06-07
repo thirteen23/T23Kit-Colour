@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the XYZ color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  *
  *  The conversions are from RGB space and uses the sRGB matrix for calculation,
  *  i.e, sRGB matrices to XYZ and back with (Observer = 2°, Illuminant = D65)
@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the Hunter 1948 L, a, b color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  */
 - (BOOL)getHunterLStar:(CGFloat *)lightness
                  aStar:(CGFloat *)greenToMagenta
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the CIELAB color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  */
 - (BOOL)getLStar:(CGFloat *)lightness
            aStar:(CGFloat *)greenToMagenta
@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the CIELUV color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  */
 - (BOOL)getLStar:(CGFloat *)lightness
            uStar:(CGFloat *)greenToMagenta
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the CIELCH(ab) color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  */
 - (BOOL)getLStar:(CGFloat *)lightness
            cStar:(CGFloat *)chroma
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the CIELCH(uv) color space
  *  @discussion Values returned are nominal values and therefore aren't
- *  normalized in any way, e.g., percentage.
+ *  normalized in any way, e.g., not a ratio or percentage.
  */
 - (BOOL)getLStar:(CGFloat *)lightness
            cStar:(CGFloat *)chroma
@@ -106,8 +106,8 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the HSL color space
  *  @discussion Values returned are normalized percentage values 0.0f-1.0f. The
- *  Hue value is the fraction angle over 2π. Saturation and lightness are both
- *  just the normalized the percentage.
+ *  Hue value is the radian angle over 2π. Saturation and lightness are both
+ *  just the normalized percentage.
  */
 - (BOOL)getHue:(CGFloat *)hue
     saturation:(CGFloat *)saturation
@@ -117,8 +117,8 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 /*!
  *  @abstract Convert current color to the HSI color space
  *  @discussion Values returned are normalized percentage values 0.0f-1.0f. The
- *  Hue value is the fraction angle over 2π. Saturation and intensity are both
- *  just the normalized the percentage.
+ *  Hue value is the radian angle over 2π. Saturation and intensity are both
+ *  just the normalized percentage.
  */
 - (BOOL)getHue:(CGFloat *)hue
     saturation:(CGFloat *)saturation
@@ -126,12 +126,40 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
          alpha:(CGFloat *)alpha;
 
 /*!
+ *  @abstract Grab the triadic set from the HSV space
+ *  @discussionNSArray contains 3 UIColors: The original color and 2 others
+ *  where the hue is shifted ±120º while keeping S and V held constant
+ */
+- (NSArray *)getTriadic;
+
+/*!
+ *  @abstract Grab the split complements from the HSV space
+ *  @discussion NSArray contains 3 UIColors: The original color and 2 others
+ *  where the hue is shifted ±150º while keeping S and V held constant
+ */
+- (NSArray *)getSplitComplements;
+
+/*!
+ *  @abstract Grab the analogous set from the HSV space
+ *  @discussion NSArray contains 3 UIColors: The original color and 2 others
+ *  where the hue is shifted ±30º while keeping S and V held constant
+ */
+- (NSArray *)getAnalogous;
+
+/*!
+ *  @abstract Grab the complement from the HSV space
+ *  @discussion UIColor returned is the color rotated H by 180º while keeping S
+ *  and V held constant
+ */
+- (UIColor *)getComplement;
+
+/*!
  *  @abstract Acquire color distance measure between current UIColor object and
  *  the UIColor compare parameter.
 
  *  @discussion Return values vary based on what distance metric used. However,
  *  all distance values returned base closeness to 0.0f as closeness in color
- *  range.
+ *  range. (See literature on the topic)
  *
  *  Color Distance Formulas:
  *

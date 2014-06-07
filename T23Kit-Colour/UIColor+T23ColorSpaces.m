@@ -5,7 +5,6 @@
  *  Created by Michael Van Milligan on 4/11/14.
  *  Copyright (c) 2014 Thirteen23. All rights reserved.
  */
-
 #import "UIColor+T23ColorSpaces.h"
 
 @implementation UIColor (T23ColorSpaces)
@@ -203,6 +202,79 @@
   *alpha = a;
 
   return YES;
+}
+
+- (NSArray *)getTriadic {
+  UIColor *plus120 = nil, *minus120 = nil;
+  CGFloat H, S, V, A;
+  CGFloat HUE = 0.0f, HUEP, HUEM;
+
+  [self getHue:&H saturation:&S brightness:&V alpha:&A];
+
+  HUE = (H * M_2PI);
+  HUEM = (0.0f > HUE - DEG_TO_RAD(120)) ? M_2PI + (HUE - DEG_TO_RAD(120))
+                                        : HUE - DEG_TO_RAD(120);
+  HUEP = (M_2PI < HUE + DEG_TO_RAD(120)) ? (HUE + DEG_TO_RAD(120)) - M_2PI
+                                         : HUE + DEG_TO_RAD(120);
+
+  plus120 = [UIColor colorWithHue:HUEP saturation:S brightness:V alpha:A];
+  minus120 = [UIColor colorWithHue:HUEM saturation:S brightness:V alpha:A];
+
+  return @[ plus120, minus120, self ];
+}
+
+- (NSArray *)getSplitComplements {
+  UIColor *plus150 = nil, *minus150 = nil;
+  CGFloat H, S, V, A;
+  CGFloat HUE = 0.0f, HUEP, HUEM;
+
+  [self getHue:&H saturation:&S brightness:&V alpha:&A];
+
+  HUE = (H * M_2PI);
+  HUEM = (0.0f > HUE - DEG_TO_RAD(150)) ? M_2PI + (HUE - DEG_TO_RAD(150))
+                                        : HUE - DEG_TO_RAD(150);
+  HUEP = (M_2PI < HUE + DEG_TO_RAD(150)) ? (HUE + DEG_TO_RAD(150)) - M_2PI
+                                         : HUE + DEG_TO_RAD(150);
+
+  plus150 = [UIColor colorWithHue:HUEP saturation:S brightness:V alpha:A];
+  minus150 = [UIColor colorWithHue:HUEM saturation:S brightness:V alpha:A];
+
+  return @[ plus150, minus150, self ];
+}
+
+- (NSArray *)getAnalogous {
+  UIColor *plus30 = nil, *minus30 = nil;
+  CGFloat H, S, V, A;
+  CGFloat HUE = 0.0f, HUEP, HUEM;
+
+  [self getHue:&H saturation:&S brightness:&V alpha:&A];
+
+  HUE = (H * M_2PI);
+  HUEM = (0.0f > HUE - DEG_TO_RAD(30)) ? M_2PI + (HUE - DEG_TO_RAD(30))
+                                       : HUE - DEG_TO_RAD(30);
+  HUEP = (M_2PI < HUE + DEG_TO_RAD(30)) ? (HUE + DEG_TO_RAD(30)) - M_2PI
+                                        : HUE + DEG_TO_RAD(30);
+
+  plus30 = [UIColor colorWithHue:HUEP saturation:S brightness:V alpha:A];
+  minus30 = [UIColor colorWithHue:HUEM saturation:S brightness:V alpha:A];
+
+  return @[ plus30, minus30, self ];
+}
+
+- (UIColor *)getComplement {
+  CGFloat H, S, V, A;
+  CGFloat HUE = 0.0f;
+
+  [self getHue:&H saturation:&S brightness:&V alpha:&A];
+
+  HUE = (H * M_2PI);
+
+  HUE += M_PI;
+  HUE = (HUE > (M_2PI)) ? HUE - M_2PI : HUE;
+
+  H = (HUE / M_2PI);
+
+  return [UIColor colorWithHue:H saturation:S brightness:V alpha:A];
 }
 
 - (CGFloat)getDistanceMetricBetweenColor:(UIColor *)compare

@@ -13,6 +13,15 @@ extern "C" {
 #ifndef LIBCOLORSPACES_H
 #define LIBCOLORSPACES_H
 
+#define epsilon 0.008856f
+#define kappa 7.787f
+
+#define M_2PI (2.0f * M_PI)
+#define DEG_TO_RAD(A) ((A) * (M_PI / 180.0))
+#define RAD_TO_DEG(R) ((R) * (180.0 / M_PI))
+
+#define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
+
 #include "colorspaces_priv.h"
 
 typedef struct color_t {

@@ -12,15 +12,6 @@
 #include <tgmath.h>
 #include "colorspaces.h"
 
-#define epsilon 0.008856f
-#define kappa 7.787f
-
-#define M_2PI (2.0f * M_PI)
-#define DEG_TO_RAD(A) ((A) * (M_PI / 180.0))
-#define RAD_TO_DEG(R) ((R) * (180.0 / M_PI))
-
-#define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
-
 /*
  * sRGB matrices to XYZ with (Observer = 2°, Illuminant = D65)
  *
@@ -63,9 +54,12 @@ static inline color_val_t neg_powf(color_val_t b, color_val_t e) {
 static inline void sanitize_rgb(pixel_t *rgb) {
   color_val_t *r = &(rgb->a), *g = &(rgb->b), *b = &(rgb->c);
 
-  *r = ((0.0f > *r) || (1.0f < *r)) ? -1.0f : *r;
-  *g = ((0.0f > *g) || (1.0f < *g)) ? -1.0f : *g;
-  *b = ((0.0f > *b) || (1.0f < *b)) ? -1.0f : *b;
+  *r = (signbit(*r)) ? *r * -1.0f : *r;
+  *r = (1.0f > (*r * (100000.0f))) ? 0.0f : (1.0f < *r) ? 1.0f : *r;
+  *g = (signbit(*g)) ? *g * -1.0f : *g;
+  *g = (1.0f > (*g * (100000.0f))) ? 0.0f : (1.0f < *g) ? 1.0f : *g;
+  *b = (signbit(*b)) ? *b * -1.0f : *b;
+  *b = (1.0f > (*b * (100000.0f))) ? 0.0f : (1.0f < *b) ? 1.0f : *b;
 }
 
 static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
@@ -152,7 +146,8 @@ void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb) {
   color_val_t h, s, v, f, p, q, t, *r, *g, *b;
   int i;
 
-  h = RAD_TO_DEG(hsv.a);
+  h = (hsv.a * M_2PI);
+  h = RAD_TO_DEG(h);
   s = hsv.b;
   v = hsv.c;
 
@@ -211,7 +206,8 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb) {
   color_val_t h, s, v, f, p, q, t, *r, *g, *b;
   int i;
 
-  h = RAD_TO_DEG(hsv.a);
+  h = (hsv.a * M_2PI);
+  h = RAD_TO_DEG(h);
   s = hsv.b;
   v = hsv.c;
 
@@ -269,14 +265,24 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb) {
 void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb) {
   pixel_t lab = {0.0f};
 
+  COLORSPACE_LOG("LCH: <%f, %f, %f>\n", lch_ab.a, lch_ab.b, lch_ab.c);
+
   _lch_ab2lab_double_(lch_ab, &lab);
+
+  COLORSPACE_LOG("LAB: <%f, %f, %f>\n", lab.a, lab.b, lab.c);
+
   _lab2rgb_double_(lab, rgb);
 }
 
 void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb) {
   pixel_t lab = {0.0f};
 
+  COLORSPACE_LOG("LCH: <%f, %f, %f>\n", lch_ab.a, lch_ab.b, lch_ab.c);
+
   _lch_ab2lab_float_(lch_ab, &lab);
+
+  COLORSPACE_LOG("LAB: <%f, %f, %f>\n", lab.a, lab.b, lab.c);
+
   _lab2rgb_float_(lab, rgb);
 }
 
@@ -372,16 +378,24 @@ void _lab2rgb_double_(pixel_t lab, pixel_t *rgb) {
   pixel_t xyz = {0.0f};
 
   _lab2xyz_double_(lab, &xyz);
+
+  COLORSPACE_LOG("XYZ: <%f, %f, %f>\n", xyz.a, xyz.b, xyz.c);
+
   _xyz2rgb_double_(xyz, rgb);
-  sanitize_rgb(rgb);
+
+  COLORSPACE_LOG("RGB: <%f, %f, %f>\n\n", rgb->a, rgb->b, rgb->c);
 }
 
 void _lab2rgb_float_(pixel_t lab, pixel_t *rgb) {
   pixel_t xyz = {0.0f};
 
   _lab2xyz_float_(lab, &xyz);
+
+  COLORSPACE_LOG("XYZ: <%f, %f, %f>\n", xyz.a, xyz.b, xyz.c);
+
   _xyz2rgb_float_(xyz, rgb);
-  sanitize_rgb(rgb);
+
+  COLORSPACE_LOG("RGB: <%f, %f, %f>\n\n", rgb->a, rgb->b, rgb->c);
 }
 
 void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb) {}
@@ -552,6 +566,7 @@ void rgb2hsv(pixel_t rgb, pixel_t *hsv) {
   }
 
   *h = DEG_TO_RAD(*h);
+  *h /= M_2PI;
 }
 void _rgb2hsv_double_(pixel_t rgb, pixel_t *hsv) { rgb2hsv(rgb, hsv); }
 void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv) { rgb2hsv(rgb, hsv); }
@@ -751,15 +766,15 @@ void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab) {
 
   l_ = lch_ab.a;
   c = lch_ab.b;
-  h = lch_ab.c;
+  h = (lch_ab.c * M_2PI);
 
   l = &(lab->a);
   a = &(lab->b);
   b = &(lab->c);
 
   *l = l_;
-  *a = c * cos(DEG_TO_RAD(h));
-  *b = c * sin(DEG_TO_RAD(h));
+  *a = c * cos(h);
+  *b = c * sin(h);
 }
 
 void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab) {
@@ -767,15 +782,15 @@ void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab) {
 
   l_ = lch_ab.a;
   c = lch_ab.b;
-  h = lch_ab.c;
+  h = (lch_ab.c * M_2PI);
 
   l = &(lab->a);
   a = &(lab->b);
   b = &(lab->c);
 
   *l = l_;
-  *a = c * cosf(DEG_TO_RAD(h));
-  *b = c * sinf(DEG_TO_RAD(h));
+  *a = c * cosf(h);
+  *b = c * sinf(h);
 }
 
 void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab) {
@@ -875,15 +890,15 @@ void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv) {
 
   l_ = lch_uv.a;
   c = lch_uv.b;
-  h = lch_uv.c;
+  h = (lch_uv.c * M_2PI);
 
   l = &(luv->a);
   u = &(luv->b);
   v = &(luv->c);
 
   *l = l_;
-  *u = c * cos(DEG_TO_RAD(h));
-  *v = c * sin(DEG_TO_RAD(h));
+  *u = c * cos(h);
+  *v = c * sin(h);
 }
 
 void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv) {
@@ -891,15 +906,15 @@ void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv) {
 
   l_ = lch_uv.a;
   c = lch_uv.b;
-  h = lch_uv.c;
+  h = (lch_uv.c * M_2PI);
 
   l = &(luv->a);
   u = &(luv->b);
   v = &(luv->c);
 
   *l = l_;
-  *u = c * cosf(DEG_TO_RAD(h));
-  *v = c * sinf(DEG_TO_RAD(h));
+  *u = c * cosf(h);
+  *v = c * sinf(h);
 }
 
 #pragma mark - To LCH(AB)
