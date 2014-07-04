@@ -1105,7 +1105,7 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz) {
 }
 
 void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {
-  color_val_t *x, *y, *z, var_X, var_Y, var_Z;
+  color_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
 
   var_Y = hlab.a / 10.0f;
   var_X = hlab.b / 17.5f * hlab.a / 10.0f;
@@ -1117,7 +1117,7 @@ void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {
 }
 
 void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz) {
-  color_val_t *x, *y, *z, var_X, var_Y, var_Z;
+  color_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
 
   var_Y = hlab.a / 10.0f;
   var_X = hlab.b / 17.5f * hlab.a / 10.0f;
@@ -1161,7 +1161,7 @@ void _lab2xyz_float_(pixel_t lab, pixel_t *xyz) {
 }
 
 void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x, *y, *z;
+  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 
@@ -1180,7 +1180,7 @@ void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
 }
 
 void _luv2xyz_float_(pixel_t luv, pixel_t *xyz) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x, *y, *z;
+  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 
