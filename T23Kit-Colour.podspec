@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "T23Kit-Colour"
-  s.version      = "0.0.1"
+  s.version      = “0.0.2”
   s.summary      = "UIColor Category with various colorspace transformations and ∆-E methods."
   s.description  = <<-DESC
                   UIColor category with support for non-standard colorspace conversions from RGB, neighbour color generation methods, and color distance methods.
