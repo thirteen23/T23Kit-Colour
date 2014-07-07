@@ -83,4 +83,4 @@ _______________
 Releases are tagged in the git commit history using (mostly) [semantic versioning](http://semver.org). Check out the [releases and release notes](https://github.com/thirteen23/T23Kit-Colour/blob/master/RELEASE) for each version.
 
 
-Designed & maintained by Thirteen23 Developers (current: [Michael Van Milligan](mailto:michael.vanmilligan@thirteen23.com)). Distributed with the MIT license.
+Designed & maintained by [Thirteen23 Developers](mailto:dev@thirteen23.com). Distributed with the MIT license.
