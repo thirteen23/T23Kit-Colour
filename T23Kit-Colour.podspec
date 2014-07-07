@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/thirteen23/T23Kit-Colour.git", :tag => "0.0.1" }
   s.source_files  = "T23Kit-Colour"
   s.public_header_files = "T23Kit-Colour/*.h"
-  s.private_header_files = "T23Kit-Colour/*_priv.h"
   s.frameworks = "UIKit"
   s.requires_arc = false
 end
