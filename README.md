@@ -67,7 +67,7 @@ _______________
 
 1.	Add the pod `T23Kit-Colour` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
-    	`pod 'T23Kit-Colour'`
+    `pod 'T23Kit-Colour'`
 
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
 3.	`#import "UIColor+T23ColourSpaces.h"` wherever you want to use the API.
