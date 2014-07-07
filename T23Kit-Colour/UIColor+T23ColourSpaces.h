@@ -1,5 +1,5 @@
 /*
- *  UIColor+T23ColorSpaces.h
+ *  UIColor+T23ColourSpaces.h
  *  T23Kit-Colour
  *
  *  Created by Michael Van Milligan on 4/11/14.
@@ -7,10 +7,10 @@
  */
 
 #import <UIKit/UIKit.h>
-#include "colorspaces.h"
+#include "colourspaces.h"
 
 /*
- * Color conversion category for UIColor.
+ * Colour conversion category for UIColor.
  *
  *  Much prop's to:
  *    Wikipedia (http://en.wikipedia.org/wiki/Color_difference)
@@ -19,19 +19,19 @@
  */
 
 /* Distance formula options */
-typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
-  T23UIColorDistanceFormulaCEI76 = 0, /* default */
-  T23UIColorDistanceFormulaCMC1984_1_1,
-  T23UIColorDistanceFormulaCMC1984_2_1,
-  T23UIColorDistanceFormulaCEI94_GRAPHICS,
-  T23UIColorDistanceFormulaCEI94_TEXTILES,
-  T23UIColorDistanceFormulaCIEDE2000
+typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
+  T23UIColourDistanceFormulaCEI76 = 0, /* default */
+  T23UIColourDistanceFormulaCMC1984_1_1,
+  T23UIColourDistanceFormulaCMC1984_2_1,
+  T23UIColourDistanceFormulaCEI94_GRAPHICS,
+  T23UIColourDistanceFormulaCEI94_TEXTILES,
+  T23UIColourDistanceFormulaCIEDE2000
 };
 
-@interface UIColor (T23ColorSpaces)
+@interface UIColor (T23ColourSpaces)
 
 /*!
- *  @abstract Convert current color to the XYZ color space
+ *  @abstract Convert current colour to the XYZ colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  *
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
        alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the Hunter 1948 L, a, b color space
+ *  @abstract Convert current colour to the Hunter 1948 L, a, b colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  */
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
                  alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the CIELAB color space
+ *  @abstract Convert current colour to the CIELAB colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  */
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
            alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the CIELUV color space
+ *  @abstract Convert current colour to the CIELUV colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  */
@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
            alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the CIELCH(ab) color space
+ *  @abstract Convert current colour to the CIELCH(ab) colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  */
@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
            alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the CIELCH(uv) color space
+ *  @abstract Convert current colour to the CIELCH(uv) colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
  */
@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
            alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the CMYK color space
+ *  @abstract Convert current colour to the CMYK colour space
  *  @discussion Values returned are normalized percentage values 0.0f-1.0f
  */
 - (BOOL)getCyan:(CGFloat *)cyan
@@ -104,7 +104,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
           alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the HSL color space
+ *  @abstract Convert current colour to the HSL colour space
  *  @discussion Values returned are normalized percentage values 0.0f-1.0f. The
  *  Hue value is the radian angle over 2π. Saturation and lightness are both
  *  just the normalized percentage.
@@ -115,7 +115,7 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
          alpha:(CGFloat *)alpha;
 
 /*!
- *  @abstract Convert current color to the HSI color space
+ *  @abstract Convert current colour to the HSI colour space
  *  @discussion Values returned are normalized percentage values 0.0f-1.0f. The
  *  Hue value is the radian angle over 2π. Saturation and intensity are both
  *  just the normalized percentage.
@@ -127,61 +127,61 @@ typedef NS_ENUM(NSInteger, T23UIColorDistanceOptions) {
 
 /*!
  *  @abstract Grab the triadic set from the HSV space
- *  @discussionNSArray contains 3 UIColors: The original color and 2 others
+ *  @discussionNSArray contains 3 UIColors: The original colour and 2 others
  *  where the hue is shifted ±120º while keeping S and V held constant
  */
 - (NSArray *)getTriadic;
 
 /*!
  *  @abstract Grab the split complements from the HSV space
- *  @discussion NSArray contains 3 UIColors: The original color and 2 others
+ *  @discussion NSArray contains 3 UIColors: The original colour and 2 others
  *  where the hue is shifted ±150º while keeping S and V held constant
  */
 - (NSArray *)getSplitComplements;
 
 /*!
  *  @abstract Grab the analogous set from the HSV space
- *  @discussion NSArray contains 3 UIColors: The original color and 2 others
+ *  @discussion NSArray contains 3 UIColors: The original colour and 2 others
  *  where the hue is shifted ±30º while keeping S and V held constant
  */
 - (NSArray *)getAnalogous;
 
 /*!
  *  @abstract Grab the complement from the HSV space
- *  @discussion UIColor returned is the color rotated H by 180º while keeping S
+ *  @discussion UIColor returned is the colour rotated H by 180º while keeping S
  *  and V held constant
  */
 - (UIColor *)getComplement;
 
 /*!
- *  @abstract Acquire color distance measure between current UIColor object and
+ *  @abstract Acquire colour distance measure between current UIColor object and
  *  the UIColor compare parameter.
 
  *  @discussion Return values vary based on what distance metric used. However,
- *  all distance values returned base closeness to 0.0f as closeness in color
+ *  all distance values returned base closeness to 0.0f as closeness in colour
  *  range. (See literature on the topic)
  *
- *  Color Distance Formulas:
+ *  Colour Distance Formulas:
  *
- *  T23UIColorDistanceFormulaCEI76: This is the formula based on the CIE76
+ *  T23UIColourDistanceFormulaCEI76: This is the formula based on the CIE76
  *  standard
  *
- *  T23UIColorDistanceFormulaCMC1984_1_1: This is the formula based on the CMC
+ *  T23UIColourDistanceFormulaCMC1984_1_1: This is the formula based on the CMC
  *  l:c (1984) standard where l=1 & c=1
  *
- *  T23UIColorDistanceFormulaCMC1984_2_1: This is the formula based on the CMC
+ *  T23UIColourDistanceFormulaCMC1984_2_1: This is the formula based on the CMC
  *  l:c (1984) standard where l=2 & c=1
  *
- *  T23UIColorDistanceFormulaCEI94_GRAPHICS: This is the formula based on the
+ *  T23UIColourDistanceFormulaCEI94_GRAPHICS: This is the formula based on the
  *  CIE94 standard using the graphics KL, K1 and K2 values of: {1, 0.045, 0.015}
  *
- *  T23UIColorDistanceFormulaCEI94_TEXTILES: This is the formula based on the
+ *  T23UIColourDistanceFormulaCEI94_TEXTILES: This is the formula based on the
  *  CIE94 standard using the textiles KL, K1 and K2 values of {2, 0.048, 0.014}
  *
- *  T23UIColorDistanceFormulaCIEDE2000: This is the formula based on the
+ *  T23UIColourDistanceFormulaCIEDE2000: This is the formula based on the
  *  CIEDE2000 standard
  */
-- (CGFloat)getDistanceMetricBetweenColor:(UIColor *)compare
-                             withOptions:(T23UIColorDistanceOptions)options;
+- (CGFloat)getDistanceMetricBetweenUIColor:(UIColor *)compare
+                             withOptions:(T23UIColourDistanceOptions)options;
 
 @end

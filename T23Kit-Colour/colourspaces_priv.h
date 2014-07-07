@@ -1,5 +1,5 @@
 /*
- *  colorspaces_priv.h
+ *  colourspaces_priv.h
  *  T23Kit-Colour
  *
  *  Created by Michael Van Milligan on 4/11/14.
@@ -18,13 +18,13 @@ extern "C" {
 #define LIBCOLORSPACES_EXTERN extern
 
 /* Types for now */
-typedef CGFloat color_val_t;
+typedef CGFloat colour_val_t;
 
 typedef struct pixel_t {
-  color_val_t a;
-  color_val_t b;
-  color_val_t c;
-  color_val_t d;
+  colour_val_t a;
+  colour_val_t b;
+  colour_val_t c;
+  colour_val_t d;
 } pixel_t;
 
 LIBCOLORSPACES_EXTERN void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb);
@@ -135,28 +135,28 @@ LIBCOLORSPACES_EXTERN void _print_pixel_float_(pixel_t p);
 
 /* Distance Metrics */
 LIBCOLORSPACES_EXTERN void _cie76_double_(pixel_t lab, pixel_t plab,
-                                          color_val_t *dl);
+                                          colour_val_t *dl);
 LIBCOLORSPACES_EXTERN void _cie76_float_(pixel_t lab, pixel_t plab,
-                                         color_val_t *dl);
+                                         colour_val_t *dl);
 
 LIBCOLORSPACES_EXTERN void _cmc1984_double_(pixel_t lab, pixel_t plab,
-                                            color_val_t l, color_val_t c,
-                                            color_val_t *dl);
+                                            colour_val_t l, colour_val_t c,
+                                            colour_val_t *dl);
 LIBCOLORSPACES_EXTERN void _cmc1984_float_(pixel_t lab, pixel_t plab,
-                                           color_val_t l, color_val_t c,
-                                           color_val_t *dl);
+                                           colour_val_t l, colour_val_t c,
+                                           colour_val_t *dl);
 
 LIBCOLORSPACES_EXTERN void _cie94_double_(pixel_t lab, pixel_t plab, int media,
-                                          color_val_t *dl);
+                                          colour_val_t *dl);
 LIBCOLORSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab, int media,
-                                         color_val_t *dl);
+                                         colour_val_t *dl);
 
 LIBCOLORSPACES_EXTERN void _ciede2000_double_(pixel_t lab, pixel_t plab,
-                                              color_val_t kl, color_val_t kc,
-                                              color_val_t kh, color_val_t *dl);
+                                              colour_val_t kl, colour_val_t kc,
+                                              colour_val_t kh, colour_val_t *dl);
 LIBCOLORSPACES_EXTERN void _ciede2000_float_(pixel_t lab, pixel_t plab,
-                                             color_val_t kl, color_val_t kc,
-                                             color_val_t kh, color_val_t *dl);
+                                             colour_val_t kl, colour_val_t kc,
+                                             colour_val_t kh, colour_val_t *dl);
 
 #endif /* LIBCOLORSPACES_PRIV_H */
 

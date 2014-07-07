@@ -1,5 +1,5 @@
 /*
- *  colorspaces.c
+ *  colourspaces.c
  *  T23Kit-Colour
  *
  *  Created by Michael Van Milligan on 4/11/14.
@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <tgmath.h>
-#include "colorspaces.h"
+#include "colourspaces.h"
 
 /*
  * sRGB matrices to XYZ with (Observer = 2°, Illuminant = D65)
@@ -27,32 +27,32 @@ static pixel_t XYZ2RGB[3] = {{3.2404542f, -0.9692660f, 0.0556434f, 0.0f},
 
 #pragma mark - Prototypes
 
-static inline color_val_t neg_pow(color_val_t a, color_val_t p);
-static inline color_val_t neg_powf(color_val_t a, color_val_t p);
+static inline colour_val_t neg_pow(colour_val_t a, colour_val_t p);
+static inline colour_val_t neg_powf(colour_val_t a, colour_val_t p);
 
 static inline void sanitize_rgb(pixel_t *rgb);
 
 static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
                                               pixel_t m2, pixel_t *result);
-static inline color_val_t color_min(color_val_t a, color_val_t b,
-                                    color_val_t c);
-static inline color_val_t color_max(color_val_t a, color_val_t b,
-                                    color_val_t c);
+static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
+                                    colour_val_t c);
+static inline colour_val_t colour_max(colour_val_t a, colour_val_t b,
+                                    colour_val_t c);
 
-static color_val_t hue2rgb(color_val_t v1, color_val_t v2, color_val_t vH);
+static colour_val_t hue2rgb(colour_val_t v1, colour_val_t v2, colour_val_t vH);
 
 #pragma mark - Utilities
 
-static inline color_val_t neg_pow(color_val_t b, color_val_t e) {
+static inline colour_val_t neg_pow(colour_val_t b, colour_val_t e) {
   return (0.0f <= b) ? pow(b, e) : -1.0f * pow(-1.0f * b, e);
 }
 
-static inline color_val_t neg_powf(color_val_t b, color_val_t e) {
+static inline colour_val_t neg_powf(colour_val_t b, colour_val_t e) {
   return (0.0f <= b) ? powf(b, e) : -1.0f * powf(-1.0f * b, e);
 }
 
 static inline void sanitize_rgb(pixel_t *rgb) {
-  color_val_t *r = &(rgb->a), *g = &(rgb->b), *b = &(rgb->c);
+  colour_val_t *r = &(rgb->a), *g = &(rgb->b), *b = &(rgb->c);
 
   *r = (signbit(*r)) ? *r * -1.0f : *r;
   *r = (1.0f > (*r * (100000.0f))) ? 0.0f : (1.0f < *r) ? 1.0f : *r;
@@ -69,9 +69,9 @@ static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
   result->c = (p.a * m0.c) + (p.b * m1.c) + (p.c * m2.c);
 }
 
-static inline color_val_t color_min(color_val_t a, color_val_t b,
-                                    color_val_t c) {
-  color_val_t m = a;
+static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
+                                    colour_val_t c) {
+  colour_val_t m = a;
   if (m > b)
     m = b;
   if (m > c)
@@ -79,9 +79,9 @@ static inline color_val_t color_min(color_val_t a, color_val_t b,
   return m;
 }
 
-static inline color_val_t color_max(color_val_t a, color_val_t b,
-                                    color_val_t c) {
-  color_val_t m = a;
+static inline colour_val_t colour_max(colour_val_t a, colour_val_t b,
+                                    colour_val_t c) {
+  colour_val_t m = a;
   if (m < b)
     m = b;
   if (m < c)
@@ -89,7 +89,7 @@ static inline color_val_t color_max(color_val_t a, color_val_t b,
   return m;
 }
 
-color_val_t hue2rgb(color_val_t v1, color_val_t v2, color_val_t vH) {
+colour_val_t hue2rgb(colour_val_t v1, colour_val_t v2, colour_val_t vH) {
 
   if (0.0f > vH) {
     vH += 1.0f;
@@ -117,7 +117,7 @@ void _print_pixel_float_(pixel_t p) { print_pixel(p); }
 #pragma mark - To RGB
 
 void hsl2rgb(pixel_t hsl, pixel_t *rgb) {
-  color_val_t var_1, var_2, *r, *g, *b;
+  colour_val_t var_1, var_2, *r, *g, *b;
 
   r = &(rgb->a);
   g = &(rgb->b);
@@ -143,7 +143,7 @@ void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb) { hsl2rgb(hsl, rgb); }
 void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb) { hsl2rgb(hsl, rgb); }
 
 void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb) {
-  color_val_t h, s, v, f, p, q, t, *r, *g, *b;
+  colour_val_t h, s, v, f, p, q, t, *r, *g, *b;
   int i;
 
   h = (hsv.a * M_2PI);
@@ -203,7 +203,7 @@ void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb) {
 }
 
 void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb) {
-  color_val_t h, s, v, f, p, q, t, *r, *g, *b;
+  colour_val_t h, s, v, f, p, q, t, *r, *g, *b;
   int i;
 
   h = (hsv.a * M_2PI);
@@ -301,7 +301,7 @@ void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb) {
 }
 
 void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb) {
-  color_val_t *r, *g, *b, h, s, i;
+  colour_val_t *r, *g, *b, h, s, i;
 
   // h [0, 2π], everyone else [0, 1]
 
@@ -338,7 +338,7 @@ void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb) {
 }
 
 void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb) {
-  color_val_t *r, *g, *b, h, s, i;
+  colour_val_t *r, *g, *b, h, s, i;
 
   // h [0, 2π], everyone else [0, 1]
 
@@ -403,7 +403,7 @@ void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb) {}
 void _hlab2rgb_float_(pixel_t hlab, pixel_t *rgb) {}
 
 void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb) {
-  color_val_t c, m, y, k, *r, *g, *b;
+  colour_val_t c, m, y, k, *r, *g, *b;
 
   c = cmyk.a;
   m = cmyk.b;
@@ -422,7 +422,7 @@ void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb) {
 }
 
 void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb) {
-  color_val_t c, m, y, k, *r, *g, *b;
+  colour_val_t c, m, y, k, *r, *g, *b;
 
   c = cmyk.a;
   m = cmyk.b;
@@ -441,7 +441,7 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb) {
 }
 
 void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
-  color_val_t *r, *g, *b, R, G, B;
+  colour_val_t *r, *g, *b, R, G, B;
   pixel_t var_xyz = {0.0f};
 
   var_xyz.a = xyz.a / 100.0f;
@@ -473,7 +473,7 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
 }
 
 void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
-  color_val_t *r, *g, *b, R, G, B;
+  colour_val_t *r, *g, *b, R, G, B;
   pixel_t var_xyz = {0.0f};
 
   var_xyz.a = xyz.a / 100.0f;
@@ -507,14 +507,14 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
 #pragma mark - To CMYK
 
 void rgb2cmyk(pixel_t rgb, pixel_t *cmyk) {
-  color_val_t max, *c, *m, *y, *k;
+  colour_val_t max, *c, *m, *y, *k;
 
   c = &(cmyk->a);
   m = &(cmyk->b);
   y = &(cmyk->c);
   k = &(cmyk->d);
 
-  max = color_max(rgb.a, rgb.b, rgb.c);
+  max = colour_max(rgb.a, rgb.b, rgb.c);
 
   *k = 1.0f - max;
   *c = (1.0f - rgb.a - *k) / (1.0f - *k);
@@ -527,7 +527,7 @@ void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk) { rgb2cmyk(rgb, cmyk); }
 #pragma mark - To HSV
 
 void rgb2hsv(pixel_t rgb, pixel_t *hsv) {
-  color_val_t max, min, delta, r, g, b, *h, *s, *v;
+  colour_val_t max, min, delta, r, g, b, *h, *s, *v;
 
   h = &(hsv->a);
   s = &(hsv->b);
@@ -537,8 +537,8 @@ void rgb2hsv(pixel_t rgb, pixel_t *hsv) {
   g = rgb.b;
   b = rgb.c;
 
-  min = color_min(r, g, b);
-  max = color_max(r, g, b);
+  min = colour_min(r, g, b);
+  max = colour_max(r, g, b);
 
   *v = max;
   delta = (max - min);
@@ -574,14 +574,14 @@ void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv) { rgb2hsv(rgb, hsv); }
 #pragma mark - To HSL
 
 void rgb2hsl(pixel_t rgb, pixel_t *hsl) {
-  color_val_t max, min, delta, *h, *s, *l, dr, dg, db;
+  colour_val_t max, min, delta, *h, *s, *l, dr, dg, db;
 
   h = &(hsl->a);
   s = &(hsl->b);
   l = &(hsl->c);
 
-  min = color_min(rgb.a, rgb.b, rgb.c);
-  max = color_max(rgb.a, rgb.b, rgb.c);
+  min = colour_min(rgb.a, rgb.b, rgb.c);
+  max = colour_max(rgb.a, rgb.b, rgb.c);
   delta = max - min;
 
   *l = (max + min) / 2.0f;
@@ -612,7 +612,7 @@ void _rgb2hsl_float_(pixel_t rgb, pixel_t *hsl) { rgb2hsl(rgb, hsl); }
 #pragma mark - To HSI
 
 void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi) {
-  color_val_t *h, *s, *i, r, g, b, max, min, delta;
+  colour_val_t *h, *s, *i, r, g, b, max, min, delta;
 
   h = &(hsi->a);
   s = &(hsi->b);
@@ -622,8 +622,8 @@ void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi) {
   g = rgb.b;
   b = rgb.c;
 
-  min = color_min(r, g, b);
-  max = color_max(r, g, b);
+  min = colour_min(r, g, b);
+  max = colour_max(r, g, b);
   delta = max - min;
 
   *i = (1.0f / 3.0f) * (r + b + g);
@@ -643,7 +643,7 @@ void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi) {
 }
 
 void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi) {
-  color_val_t *h, *s, *i, r, g, b, max, min, delta;
+  colour_val_t *h, *s, *i, r, g, b, max, min, delta;
 
   h = &(hsi->a);
   s = &(hsi->b);
@@ -653,8 +653,8 @@ void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi) {
   g = rgb.b;
   b = rgb.c;
 
-  min = color_min(r, g, b);
-  max = color_max(r, g, b);
+  min = colour_min(r, g, b);
+  max = colour_max(r, g, b);
   delta = max - min;
 
   *i = (1.0f / 3.0f) * (r + b + g);
@@ -690,7 +690,7 @@ void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab) {
 }
 
 void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab) {
-  color_val_t *hl, *a, *b;
+  colour_val_t *hl, *a, *b;
 
   hl = &(hlab->a);
   a = &(hlab->b);
@@ -702,7 +702,7 @@ void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab) {
 }
 
 void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab) {
-  color_val_t *hl, *a, *b;
+  colour_val_t *hl, *a, *b;
 
   hl = &(hlab->a);
   a = &(hlab->b);
@@ -730,7 +730,7 @@ void _rgb2lab_float_(pixel_t rgb, pixel_t *lab) {
 }
 
 void _xyz2lab_double_(pixel_t xyz, pixel_t *lab) {
-  color_val_t x, y, z;
+  colour_val_t x, y, z;
 
   x = xyz.a / 95.047f;
   y = xyz.b / 100.000f;
@@ -746,7 +746,7 @@ void _xyz2lab_double_(pixel_t xyz, pixel_t *lab) {
 }
 
 void _xyz2lab_float_(pixel_t xyz, pixel_t *lab) {
-  color_val_t x, y, z;
+  colour_val_t x, y, z;
 
   x = xyz.a / 95.047f;
   y = xyz.b / 100.000f;
@@ -762,7 +762,7 @@ void _xyz2lab_float_(pixel_t xyz, pixel_t *lab) {
 }
 
 void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab) {
-  color_val_t l_, c, h, *l, *a, *b;
+  colour_val_t l_, c, h, *l, *a, *b;
 
   l_ = lch_ab.a;
   c = lch_ab.b;
@@ -778,7 +778,7 @@ void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab) {
 }
 
 void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab) {
-  color_val_t l_, c, h, *l, *a, *b;
+  colour_val_t l_, c, h, *l, *a, *b;
 
   l_ = lch_ab.a;
   c = lch_ab.b;
@@ -826,7 +826,7 @@ void _rgb2luv_float_(pixel_t rgb, pixel_t *luv) {
 }
 
 void _xyz2luv_double_(pixel_t xyz, pixel_t *luv) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
 
   l = &(luv->a);
   u = &(luv->b);
@@ -848,7 +848,7 @@ void _xyz2luv_double_(pixel_t xyz, pixel_t *luv) {
 }
 
 void _xyz2luv_float_(pixel_t xyz, pixel_t *luv) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
 
   l = &(luv->a);
   u = &(luv->b);
@@ -886,7 +886,7 @@ void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv) {
 }
 
 void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv) {
-  color_val_t l_, c, h, *l, *u, *v;
+  colour_val_t l_, c, h, *l, *u, *v;
 
   l_ = lch_uv.a;
   c = lch_uv.b;
@@ -902,7 +902,7 @@ void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv) {
 }
 
 void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv) {
-  color_val_t l_, c, h, *l, *u, *v;
+  colour_val_t l_, c, h, *l, *u, *v;
 
   l_ = lch_uv.a;
   c = lch_uv.b;
@@ -1105,7 +1105,7 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz) {
 }
 
 void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {
-  color_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
+  colour_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
 
   var_Y = hlab.a / 10.0f;
   var_X = hlab.b / 17.5f * hlab.a / 10.0f;
@@ -1117,7 +1117,7 @@ void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {
 }
 
 void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz) {
-  color_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
+  colour_val_t *x = NULL, *y = NULL, *z = NULL, var_X, var_Y, var_Z;
 
   var_Y = hlab.a / 10.0f;
   var_X = hlab.b / 17.5f * hlab.a / 10.0f;
@@ -1129,7 +1129,7 @@ void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz) {
 }
 
 void _lab2xyz_double_(pixel_t lab, pixel_t *xyz) {
-  color_val_t x, y, z;
+  colour_val_t x, y, z;
 
   y = (lab.a + 16.0f) / 116.0f;
   x = lab.b / 500.0f + y;
@@ -1145,7 +1145,7 @@ void _lab2xyz_double_(pixel_t lab, pixel_t *xyz) {
 }
 
 void _lab2xyz_float_(pixel_t lab, pixel_t *xyz) {
-  color_val_t x, y, z;
+  colour_val_t x, y, z;
 
   y = (lab.a + 16.0f) / 116.0f;
   x = lab.b / 500.0f + y;
@@ -1161,7 +1161,7 @@ void _lab2xyz_float_(pixel_t lab, pixel_t *xyz) {
 }
 
 void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 
@@ -1180,7 +1180,7 @@ void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
 }
 
 void _luv2xyz_float_(pixel_t luv, pixel_t *xyz) {
-  color_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 
@@ -1200,19 +1200,19 @@ void _luv2xyz_float_(pixel_t luv, pixel_t *xyz) {
 
 #pragma mark - Distance Formulas
 
-void _cie76_double_(pixel_t lab, pixel_t plab, color_val_t *dl) {
+void _cie76_double_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
   *dl = sqrt(pow(plab.a - lab.a, 2.0f) + pow(plab.b - lab.b, 2.0f) +
              pow(plab.c - lab.c, 2.0f));
 }
 
-void _cie76_float_(pixel_t lab, pixel_t plab, color_val_t *dl) {
+void _cie76_float_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
   *dl = sqrtf(powf(plab.a - lab.a, 2.0f) + powf(plab.b - lab.b, 2.0f) +
               powf(plab.c - lab.c, 2.0f));
 }
 
-void _cmc1984_double_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
-                      color_val_t *dl) {
-  color_val_t C_1, C_2, C_d, H_1, H_d_ab2, L_d, S_L, S_C, S_H, F, T;
+void _cmc1984_double_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
+                      colour_val_t *dl) {
+  colour_val_t C_1, C_2, C_d, H_1, H_d_ab2, L_d, S_L, S_C, S_H, F, T;
 
   L_d = (lab.a - plab.a);
 
@@ -1253,9 +1253,9 @@ void _cmc1984_double_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
              (H_d_ab2 / pow(S_H, 2.0f)));
 }
 
-void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
-                     color_val_t *dl) {
-  color_val_t C_1, C_2, C_d, H_1, H_d_ab2, L_d, S_L, S_C, S_H, F, T;
+void _cmc1984_float_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
+                     colour_val_t *dl) {
+  colour_val_t C_1, C_2, C_d, H_1, H_d_ab2, L_d, S_L, S_C, S_H, F, T;
 
   L_d = (lab.a - plab.a);
 
@@ -1296,8 +1296,8 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, color_val_t l, color_val_t c,
               (H_d_ab2 / powf(S_H, 2.0f)));
 }
 
-void _cie94_double_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
-  color_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
+void _cie94_double_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
+  colour_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
       K_H;
 
   L_d = (lab.a - plab.a);
@@ -1323,8 +1323,8 @@ void _cie94_double_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
              (D_H_ab2 / (pow(K_H, 2.0f) * pow(S_H, 2.0f))));
 }
 
-void _cie94_float_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
-  color_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
+void _cie94_float_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
+  colour_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
       K_H;
 
   L_d = (lab.a - plab.a);
@@ -1350,9 +1350,9 @@ void _cie94_float_(pixel_t lab, pixel_t plab, int media, color_val_t *dl) {
               (D_H_ab2 / (powf(K_H, 2.0f) * powf(S_H, 2.0f))));
 }
 
-void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
-                        color_val_t kc, color_val_t kh, color_val_t *dl) {
-  color_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
+void _ciede2000_double_(pixel_t lab, pixel_t plab, colour_val_t kl,
+                        colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
+  colour_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
       C_sb_p, C_b_p, C_d_p, C_term, G, h_1_p, h_2_p, h_d_p, H_d_p, h_b_p,
       h_d_p_abs, h_d_p_sum, H_term, T, S_L, S_C, S_H, R_C, R_T, R_term, T_d,
       E_d_00;
@@ -1460,9 +1460,9 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, color_val_t kl,
   *dl = E_d_00;
 }
 
-void _ciede2000_float_(pixel_t lab, pixel_t plab, color_val_t kl,
-                       color_val_t kc, color_val_t kh, color_val_t *dl) {
-  color_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
+void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
+                       colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
+  colour_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
       C_sb_p, C_b_p, C_d_p, C_term, G, h_1_p, h_2_p, h_d_p, H_d_p, h_b_p,
       h_d_p_abs, h_d_p_sum, H_term, T, S_L, S_C, S_H, R_C, R_T, R_term, T_d,
       E_d_00;

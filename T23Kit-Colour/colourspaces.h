@@ -1,5 +1,5 @@
 /*
- *  colorspaces.h
+ *  colourspaces.h
  *  T23Kit-Colour
  *
  *  Created by Michael Van Milligan on 4/11/14.
@@ -22,9 +22,9 @@ extern "C" {
 
 #define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 
-#include "colorspaces_priv.h"
+#include "colourspaces_priv.h"
 
-typedef struct color_t {
+typedef struct colour_t {
   union {
     pixel_t rgb;
     pixel_t hsl;
@@ -39,7 +39,7 @@ typedef struct color_t {
     pixel_t xyz;
     pixel_t xyY;
   } p;
-} color_t;
+} colour_t;
 
 #define LIBCOLORSPACES_GRAPHICS (1)
 #define LIBCOLORSPACES_TEXTILES (-1)

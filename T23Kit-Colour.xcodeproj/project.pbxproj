@@ -14,9 +14,9 @@
 		4A21EB0419227DC100BF9603 /* libT23Kit-Colour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEC19227DC100BF9603 /* libT23Kit-Colour.a */; };
 		4A21EB0A19227DC100BF9603 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4A21EB0819227DC100BF9603 /* InfoPlist.strings */; };
 		4A21EB0C19227DC100BF9603 /* T23Kit_ColourTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB0B19227DC100BF9603 /* T23Kit_ColourTests.m */; };
-		4A21EB1D19227ECD00BF9603 /* UIColor+T23ColorSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */; };
-		4A21EB4A1922802F00BF9603 /* colorspaces.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1819227EBA00BF9603 /* colorspaces.c */; };
-		4A21EB4B192282A300BF9603 /* UIColor+T23ColorSpaces.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */; };
+		4A21EB1D19227ECD00BF9603 /* UIColor+T23ColourSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1C19227ECD00BF9603 /* UIColor+T23ColourSpaces.m */; };
+		4A21EB4A1922802F00BF9603 /* colourspaces.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A21EB1819227EBA00BF9603 /* colourspaces.c */; };
+		4A21EB4B192282A300BF9603 /* UIColor+T23ColourSpaces.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A21EB1B19227ECD00BF9603 /* UIColor+T23ColourSpaces.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +36,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				4A21EB4B192282A300BF9603 /* UIColor+T23ColorSpaces.h in CopyFiles */,
+				4A21EB4B192282A300BF9603 /* UIColor+T23ColourSpaces.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,11 +52,11 @@
 		4A21EB0719227DC100BF9603 /* T23Kit-ColourTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "T23Kit-ColourTests-Info.plist"; sourceTree = "<group>"; };
 		4A21EB0919227DC100BF9603 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4A21EB0B19227DC100BF9603 /* T23Kit_ColourTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = T23Kit_ColourTests.m; sourceTree = "<group>"; };
-		4A21EB1719227EBA00BF9603 /* colorspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorspaces_priv.h; sourceTree = "<group>"; };
-		4A21EB1819227EBA00BF9603 /* colorspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = colorspaces.c; sourceTree = "<group>"; };
-		4A21EB1919227EBA00BF9603 /* colorspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colorspaces.h; sourceTree = "<group>"; };
-		4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+T23ColorSpaces.h"; sourceTree = "<group>"; };
-		4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+T23ColorSpaces.m"; sourceTree = "<group>"; };
+		4A21EB1719227EBA00BF9603 /* colourspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colourspaces_priv.h; sourceTree = "<group>"; };
+		4A21EB1819227EBA00BF9603 /* colourspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = colourspaces.c; sourceTree = "<group>"; };
+		4A21EB1919227EBA00BF9603 /* colourspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = colourspaces.h; sourceTree = "<group>"; };
+		4A21EB1B19227ECD00BF9603 /* UIColor+T23ColourSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+T23ColourSpaces.h"; sourceTree = "<group>"; };
+		4A21EB1C19227ECD00BF9603 /* UIColor+T23ColourSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+T23ColourSpaces.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,8 +150,8 @@
 		4A21EB1519227E7F00BF9603 /* Categories  */ = {
 			isa = PBXGroup;
 			children = (
-				4A21EB1B19227ECD00BF9603 /* UIColor+T23ColorSpaces.h */,
-				4A21EB1C19227ECD00BF9603 /* UIColor+T23ColorSpaces.m */,
+				4A21EB1B19227ECD00BF9603 /* UIColor+T23ColourSpaces.h */,
+				4A21EB1C19227ECD00BF9603 /* UIColor+T23ColourSpaces.m */,
 			);
 			name = "Categories ";
 			sourceTree = "<group>";
@@ -159,9 +159,9 @@
 		4A21EB1619227E8D00BF9603 /* libcolorspaces */ = {
 			isa = PBXGroup;
 			children = (
-				4A21EB1719227EBA00BF9603 /* colorspaces_priv.h */,
-				4A21EB1819227EBA00BF9603 /* colorspaces.c */,
-				4A21EB1919227EBA00BF9603 /* colorspaces.h */,
+				4A21EB1719227EBA00BF9603 /* colourspaces_priv.h */,
+				4A21EB1819227EBA00BF9603 /* colourspaces.c */,
+				4A21EB1919227EBA00BF9603 /* colourspaces.h */,
 			);
 			name = libcolorspaces;
 			sourceTree = "<group>";
@@ -247,8 +247,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A21EB4A1922802F00BF9603 /* colorspaces.c in Sources */,
-				4A21EB1D19227ECD00BF9603 /* UIColor+T23ColorSpaces.m in Sources */,
+				4A21EB4A1922802F00BF9603 /* colourspaces.c in Sources */,
+				4A21EB1D19227ECD00BF9603 /* UIColor+T23ColourSpaces.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +441,7 @@
 				4A21EB1119227DC100BF9603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4A21EB1219227DC100BF9603 /* Build configuration list for PBXNativeTarget "T23Kit-ColourTests" */ = {
 			isa = XCConfigurationList;
@@ -449,6 +450,7 @@
 				4A21EB1419227DC100BF9603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

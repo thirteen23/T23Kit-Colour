@@ -1,17 +1,17 @@
 #T23Kit-Colour
-UIColor Category with various colorspace transformations, neighbourhood color generations, and ∆-E metrics.
+UIColor Category with various colourspace transformations, neighbourhood colour generations, and ∆-E metrics.
 _______________
 ##Discussion
 
 Currently there are three pieces to this library:
 
-1. **UIColor conversions to non-standard color spaces**
-2. **UIColor neighbourhood color generations**
+1. **UIColor conversions to non-standard colour spaces**
+2. **UIColor neighbourhood colour generations**
 3. **UIColor distance (∆-E) metrics**
 
-###Color Conversions
+###Colour Conversions
 
-Below are the currently supported colorspace conversions:
+Below are the currently supported colourspace conversions:
 *   CIE XYZ
 *   Hunter 1948 (L, a, b)
 *   CIE 1976 (L\*, a\*, b\*)
@@ -22,18 +22,18 @@ Below are the currently supported colorspace conversions:
 *   HSL
 *   HSI
 
-**Note: Please see [UIColor+T23ColorSpaces.h](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/UIColor%2BT23ColorSpaces.h) for the format of values that are returned.**
+**Note: Please see [UIColor+T23ColourSpaces.h](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/UIColor%2BT23ColourSpaces.h) for the format of values that are returned.**
 
-###Neighbourhood Color Generations
+###Neighbourhood Colour Generations
 Below are the currently supported neighbourhood generations
 *   Triadic
 *   Split Complements
 *   Analogous
 *   Complementary
 
-**Note: Please see [EasyRGB's](http://www.easyrgb.com/index.php?X=WEEL) defintion of these neighbourhoods.**
-###Color Distance Formulas (∆-E)
-Below are the currently supported color distance metrics
+**Note: Please see [EasyRGB's](http://www.easyrgb.com/index.php?X=WEEL) definition of these neighbourhoods.**
+###Colour Distance Formulas (∆-E)
+Below are the currently supported colour distance metrics
 *   CIE76
 *   CIE94
 *   CIEDE2000
@@ -44,7 +44,7 @@ _______________
 
 ##API
 
-**`UIColor+T23ColorSpaces`**
+**`UIColor+T23ColourSpaces`**
 
     - (BOOL)getX:Y:Z:alpha:
     - (BOOL)getHunterLStar:aStar:bStar:alpha:
@@ -59,24 +59,24 @@ _______________
     - (NSArray *)getSplitComplements
     - (NSArray *)getAnalogous
     - (UIColor *)getComplement
-    - (CGFloat)getDistanceMetricBetweenColor:withOptions:
+    - (CGFloat)getDistanceMetricBetweenUIColor:withOptions:
 
 ##Setup
 
 ####Using [CocoaPods](http://cocoapods.org):
 
-1.	Add the pod ` T23Kit-Colour` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
+1.	Add the pod `T23Kit-Colour` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
-    	pod ' T23Kit-Colour'
+    	pod 'T23Kit-Colour'
 
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.	`#import "UIColor+T23ColorSpaces.h"` wherever you want to use the API.
+3.	`#import "UIColor+T23ColourSpaces.h"` wherever you want to use the API.
 
 ####Manually from GitHub
 
 1.	Download the source files in the [T23Kit-Colour Source directory](https://github.com/thirteen23/T23Kit-Colour/tree/master/T23Kit-Colour).
 2.	Add files to your Xcode project.
-3.	`#import "UIColor+T23ColorSpaces.h"` wherever you want to use the API.
+3.	`#import "UIColor+T23ColourSpaces.h"` wherever you want to use the API.
 
 ##Releases
 

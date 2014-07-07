@@ -1,20 +1,20 @@
 /*
- *  UIColor+T23ColorSpaces.m
+ *  UIColor+T23ColourSpaces.m
  *  T23Kit-Colour
  *
  *  Created by Michael Van Milligan on 4/11/14.
  *  Copyright (c) 2014 Thirteen23. All rights reserved.
  */
-#import "UIColor+T23ColorSpaces.h"
+#import "UIColor+T23ColourSpaces.h"
 
-@implementation UIColor (T23ColorSpaces)
+@implementation UIColor (T23ColourSpaces)
 
 - (BOOL)getHunterLStar:(CGFloat *)lightness
                  aStar:(CGFloat *)greenToMagenta
                  bStar:(CGFloat *)yellowtoBlue
                  alpha:(CGFloat *)alpha {
 
-  color_t hlab = {0.0f}, rgb = {0.0f};
+  colour_t hlab = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -36,7 +36,7 @@
            bStar:(CGFloat *)yellowtoBlue
            alpha:(CGFloat *)alpha {
 
-  color_t lab = {0.0f}, rgb = {0.0f};
+  colour_t lab = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -58,7 +58,7 @@
            vStar:(CGFloat *)yellowtoBlue
            alpha:(CGFloat *)alpha {
 
-  color_t luv = {0.0f}, rgb = {0.0f};
+  colour_t luv = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -79,7 +79,7 @@
            cStar:(CGFloat *)chroma
          hStarAB:(CGFloat *)hue
            alpha:(CGFloat *)alpha {
-  color_t lch_ab = {0.0f}, rgb = {0.0f};
+  colour_t lch_ab = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -100,7 +100,7 @@
            cStar:(CGFloat *)chroma
          hStarUV:(CGFloat *)hue
            alpha:(CGFloat *)alpha {
-  color_t lch_uv = {0.0f}, rgb = {0.0f};
+  colour_t lch_uv = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -123,7 +123,7 @@
           black:(CGFloat *)black
           alpha:(CGFloat *)alpha {
 
-  color_t cmyk = {0.0f}, rgb = {0.0f};
+  colour_t cmyk = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -145,7 +145,7 @@
            Y:(CGFloat *)luminance
            Z:(CGFloat *)quasiBlue
        alpha:(CGFloat *)alpha {
-  color_t xyz = {0.0f}, rgb = {0.0f};
+  colour_t xyz = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -166,7 +166,7 @@
     saturation:(CGFloat *)saturation
      lightness:(CGFloat *)lightness
          alpha:(CGFloat *)alpha {
-  color_t hsl = {0.0f}, rgb = {0.0f};
+  colour_t hsl = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -187,7 +187,7 @@
     saturation:(CGFloat *)saturation
      intensity:(CGFloat *)intensity
          alpha:(CGFloat *)alpha {
-  color_t hsi = {0.0f}, rgb = {0.0f};
+  colour_t hsi = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
   [self getRed:&r green:&g blue:&b alpha:&a];
@@ -277,12 +277,12 @@
   return [UIColor colorWithHue:H saturation:S brightness:V alpha:A];
 }
 
-- (CGFloat)getDistanceMetricBetweenColor:(UIColor *)compare
-                             withOptions:(T23UIColorDistanceOptions)options {
+- (CGFloat)getDistanceMetricBetweenUIColor:(UIColor *)compare
+                             withOptions:(T23UIColourDistanceOptions)options {
 
   CGFloat distance = 0.0f;
   CGFloat r, g, b, a;
-  color_t rgb = {0.0f}, self_lab = {0.0f}, comp_lab = {0.0f};
+  colour_t rgb = {0.0f}, self_lab = {0.0f}, comp_lab = {0.0f};
 
   [self getRed:&r green:&g blue:&b alpha:&a];
   rgb.RGB_R = r;
@@ -299,35 +299,35 @@
   RGB_2_LAB(rgb.RGB, &comp_lab.LAB);
 
   switch (options) {
-  case T23UIColorDistanceFormulaCEI76:
-    CIE_76(self_lab.LAB, comp_lab.LAB, (color_val_t *)&distance);
+  case T23UIColourDistanceFormulaCEI76:
+    CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
     break;
 
-  case T23UIColorDistanceFormulaCMC1984_1_1:
-    CMC_1984(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, (color_val_t *)&distance);
+  case T23UIColourDistanceFormulaCMC1984_1_1:
+    CMC_1984(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, (colour_val_t *)&distance);
     break;
 
-  case T23UIColorDistanceFormulaCMC1984_2_1:
-    CMC_1984(self_lab.LAB, comp_lab.LAB, 2.0f, 1.0f, (color_val_t *)&distance);
+  case T23UIColourDistanceFormulaCMC1984_2_1:
+    CMC_1984(self_lab.LAB, comp_lab.LAB, 2.0f, 1.0f, (colour_val_t *)&distance);
     break;
 
-  case T23UIColorDistanceFormulaCEI94_GRAPHICS:
+  case T23UIColourDistanceFormulaCEI94_GRAPHICS:
     CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_GRAPHICS,
-           (color_val_t *)&distance);
+           (colour_val_t *)&distance);
     break;
 
-  case T23UIColorDistanceFormulaCEI94_TEXTILES:
+  case T23UIColourDistanceFormulaCEI94_TEXTILES:
     CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_TEXTILES,
-           (color_val_t *)&distance);
+           (colour_val_t *)&distance);
     break;
 
-  case T23UIColorDistanceFormulaCIEDE2000:
+  case T23UIColourDistanceFormulaCIEDE2000:
     CIEDE_2000(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, 1.0f,
-               (color_val_t *)&distance);
+               (colour_val_t *)&distance);
     break;
 
   default:
-    CIE_76(self_lab.LAB, comp_lab.LAB, (color_val_t *)&distance);
+    CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
     break;
   }
 
