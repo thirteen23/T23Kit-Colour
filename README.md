@@ -17,15 +17,15 @@ Below are the currently supported colourspace conversions:
 *   Hunter 1948 (L, a, b)
 *   CIE 1976 (L\*, a\*, b\*)
 *   CIE 1976 (L\*, u\*, v\*) 
-*   CIE 1976 (L\*, C\*, H\*ab)
-*   CIE 1976 (L\*, C\*, H\*uv)
+*   CIE 1976 (L\*, C\*, H\*<sub>ab</sub>)
+*   CIE 1976 (L\*, C\*, H\*<sub>uv</sub>)
 *   CMYK
 *   HSL
 *   HSI
 
 **Note: Please see [UIColor+T23ColourSpaces.h](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/UIColor%2BT23ColourSpaces.h) for the format of values that are returned.**
 
-*( <sup>1</sup> The default currently uses the sRGB working matrices for converting to/from XYZ space. Please see rgb_working_matrices in [colourspaces.c](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/colourspaces.c) for more detail)*
+*<sup>1</sup> The default currently uses the sRGB working matrices for converting to/from XYZ space. Please see rgb_working_matrices in [colourspaces.c](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/colourspaces.c) for more detail*
 ###Neighbourhood Colour Generations
 Below are the currently supported neighbourhood generations
 *   Triadic
