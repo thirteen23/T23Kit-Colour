@@ -12,18 +12,263 @@
 #include <tgmath.h>
 #include "colourspaces.h"
 
-/*
- * sRGB matrices to XYZ with (Observer = 2°, Illuminant = D65)
- *
- * See http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
- */
-static pixel_t RGB2XYZ[3] = {{0.4124564f, 0.2126729f, 0.0193339f, 0.0f},
-                             {0.3575761f, 0.7151522f, 0.1191920f, 0.0f},
-                             {0.1804375f, 0.0721750f, 0.9503041f, 0.0f}};
+typedef struct rgb_working_matrix {
+  pixel_t rgb2xyz[3];
+  pixel_t xyz2rgb[3];
+} rgb_working_matrix;
 
-static pixel_t XYZ2RGB[3] = {{3.2404542f, -0.9692660f, 0.0556434f, 0.0f},
-                             {-1.5371385f, 1.8760108f, -0.2040259f, 0.0f},
-                             {-0.4985314f, 0.0415560f, 1.0572252f, 0.0f}};
+/*
+ *  RGB workspace matrices for converting to/from XYZ
+ *
+ *  See http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+ *
+ *  Note: currently only sRGB D65 is supported but anyone reading this code can
+ *  easily massage it for anything else.
+ *
+ */
+static rgb_working_matrix rgb_working_matrices[colourspace_rgb_profile_max] = {
+    /* 0 */
+    { /* Adobe RGB (1998) D65 */
+     {/* rgb2xyz */
+      {0.4124564f, 0.3575761f, 0.1804375f, 0.0f},
+      {0.2126729f, 0.7151522f, 0.0721750f, 0.0f},
+      {0.0193339f, 0.1191920f, 0.9503041f, 0.0f}},
+     {/* xyz2rgb */
+      {3.2404542f, -1.5371385f, -0.4985314f, 0.0f},
+      {-0.9692660f, 1.8760108f, 0.0415560f, 0.0f},
+      {0.0556434f, -0.2040259f, 1.0572252f, 0.0f}}},
+    /* 1 */
+    { /* AppleRGB D65 */
+     {/* rgb2xyz */
+      {0.4497288f, 0.3162486f, 0.1844926f, 0.0f},
+      {0.2446525f, 0.6720283f, 0.0833192f, 0.0f},
+      {0.0251848f, 0.1411824f, 0.9224628f, 0.0f}},
+     {/* xyz2rgb */
+      {2.9515373f, -1.2894116f, -0.4738445f, 0.0f},
+      {-1.0851093f, 1.9908566f, 0.0372026f, 0.0f},
+      {0.0854934f, -0.2694964f, 1.0912975f, 0.0f}}},
+    /* 2 */
+    { /* Best RGB D50 */
+     {/* rgb2xyz */
+      {0.6326696f, 0.2045558f, 0.1269946f, 0.0f},
+      {0.2284569f, 0.7373523f, 0.0341908f, 0.0f},
+      {0.0000000f, 0.0095142f, 0.8156958f, 0.0f}},
+     {/* xyz2rgb */
+      {1.7552599f, -0.4836786f, -0.2530000f, 0.0f},
+      {-0.5441336f, 1.5068789f, 0.0215528f, 0.0f},
+      {0.0063467f, -0.0175761f, 1.2256959f, 0.0f}}},
+    /* 3 */
+    { /* Beta RGB D50 */
+     {/* rgb2xyz */
+      {0.6712537f, 0.1745834f, 0.1183829f, 0.0f},
+      {0.3032726f, 0.6637861f, 0.0329413f, 0.0f},
+      {0.0000000f, 0.0407010f, 0.7845090f, 0.0f}},
+     {/* xyz2rgb */
+      {1.6832270f, -0.4282363f, -0.2360185f, 0.0f},
+      {-0.7710229f, 1.7065571f, 0.0446900f, 0.0f},
+      {0.0400013f, -0.0885376f, 1.2723640f, 0.0f}}},
+    /* 4 */
+    { /* Bruce RGB D65 */
+     {/* rgb2xyz */
+      {0.4674162f, 0.2944512f, 0.1886026f, 0.0f},
+      {0.2410115f, 0.6835475f, 0.0754410f, 0.0f},
+      {0.0219101f, 0.0736128f, 0.9933071f, 0.0f}},
+     {/* xyz2rgb */
+      {2.7454669f, -1.1358136f, -0.4350269f, 0.0f},
+      {-0.9692660f, 1.8760108f, 0.0415560f, 0.0f},
+      {0.0112723f, -0.1139754f, 1.0132541f, 0.0f}}},
+    /* 5 */
+    { /* CIE RGB E */
+     {/* rgb2xyz */
+      {0.4887180f, 0.3106803f, 0.2006017f, 0.0f},
+      {0.1762044f, 0.8129847f, 0.0108109f, 0.0f},
+      {0.0000000f, 0.0102048f, 0.9897952f, 0.0f}},
+     {/* xyz2rgb */
+      {2.3706743f, -0.9000405f, -0.4706338f, 0.0f},
+      {-0.5138850f, 1.4253036f, 0.0885814f, 0.0f},
+      {0.0052982f, -0.0146949f, 1.0093968f, 0.0f}}},
+    /* 6 */
+    { /* ColorMatch RGB D50 */
+     {/* rgb2xyz */
+      {0.5093439f, 0.3209071f, 0.1339691f, 0.0f},
+      {0.2748840f, 0.6581315f, 0.0669845f, 0.0f},
+      {0.0242545f, 0.1087821f, 0.6921735f, 0.0f}},
+     {/* xyz2rgb */
+      {2.6422874f, -1.2234270f, -0.3930143f, 0.0f},
+      {-1.1119763f, 2.0590183f, 0.0159614f, 0.0f},
+      {0.0821699f, -0.2807254f, 1.4559877f, 0.0f}}},
+    /* 7 */
+    { /* Don RGB 4 D50 */
+     {/* rgb2xyz */
+      {0.6457711f, 0.1933511f, 0.1250978f, 0.0f},
+      {0.2783496f, 0.6879702f, 0.0336802f, 0.0f},
+      {0.0037113f, 0.0179861f, 0.8035125f, 0.0f}},
+     {/* xyz2rgb */
+      {1.7603902f, -0.4881198f, -0.2536126f, 0.0f},
+      {-0.7126288f, 1.6527432f, 0.0416715f, 0.0f},
+      {0.0078207f, -0.0347411f, 1.2447743f, 0.0f}}},
+    /* 8 */
+    { /* ECI RGB D50 */
+     {/* rgb2xyz */
+      {0.6502043f, 0.1780774f, 0.1359384f, 0.0f},
+      {0.3202499f, 0.6020711f, 0.0776791f, 0.0f},
+      {0.0000000f, 0.0678390f, 0.7573710f, 0.0f}},
+     {/* xyz2rgb */
+      {1.7827618f, -0.4969847f, -0.2690101f, 0.0f},
+      {-0.9593623f, 1.9477962f, -0.0275807f, 0.0f},
+      {0.0859317f, -0.1744674f, 1.3228273f, 0.0f}}},
+    /* 9 */
+    { /* Ekta Space PS5 D50 */
+     {/* rgb2xyz */
+      {0.5938914f, 0.2729801f, 0.0973485f, 0.0f},
+      {0.2606286f, 0.7349465f, 0.0044249f, 0.0f},
+      {0.0000000f, 0.0419969f, 0.7832131f, 0.0f}},
+     {/* xyz2rgb */
+      {2.0043819f, -0.7304844f, -0.2450052f, 0.0f},
+      {-0.7110285f, 1.6202126f, 0.0792227f, 0.0f},
+      {0.0381263f, -0.0868780f, 1.2725438f, 0.0f}}},
+    /* 10 */
+    { /* NTSC RGB C */
+     {/* rgb2xyz */
+      {0.6068909f, 0.1735011f, 0.2003480f, 0.0f},
+      {0.2989164f, 0.5865990f, 0.1144845f, 0.0f},
+      {0.0000000f, 0.0660957f, 1.1162243f, 0.0f}},
+     {/* xyz2rgb */
+      {1.9099961f, -0.5324542f, -0.2882091f, 0.0f},
+      {-0.9846663f, 1.9991710f, -0.0283082f, 0.0f},
+      {0.0583056f, -0.1183781f, 0.8975535f, 0.0f}}},
+    /* 11 */
+    { /* PAL/SECAM RGB D65 */
+     {/* rgb2xyz */
+      {0.4306190f, 0.3415419f, 0.1783091f, 0.0f},
+      {0.2220379f, 0.7066384f, 0.0713236f, 0.0f},
+      {0.0201853f, 0.1295504f, 0.9390944f, 0.0f}},
+     {/* xyz2rgb */
+      {3.0628971f, -1.3931791f, -0.4757517f, 0.0f},
+      {-0.9692660f, 1.8760108f, 0.0415560f, 0.0f},
+      {0.0678775f, -0.2288548f, 1.0693490, 0.0f}}},
+    /* 12 */
+    { /* ProPhoto RGB D50 */
+     {/* rgb2xyz */
+      {0.7976749f, 0.1351917f, 0.0313534f, 0.0f},
+      {0.2880402f, 0.7118741f, 0.0000857f, 0.0f},
+      {0.0000000f, 0.0000000f, 0.8252100f, 0.0f}},
+     {/* xyz2rgb */
+      {1.3459433f, -0.2556075f, -0.0511118f, 0.0f},
+      {-0.5445989f, 1.5081673f, 0.0205351f, 0.0f},
+      {0.0000000f, 0.0000000f, 1.2118128f, 0.0f}}},
+    /* 13 */
+    { /* SMPTE-C RGB D65 */
+     {/* rgb2xyz */
+      {0.3935891f, 0.3652497f, 0.1916313f, 0.0f},
+      {0.2124132f, 0.7010437f, 0.0865432f, 0.0f},
+      {0.0187423f, 0.1119313f, 0.9581563f, 0.0f}},
+     {/* xyz2rgb */
+      {3.5053960f, -1.7394894f, -0.5439640f, 0.0f},
+      {-1.0690722f, 1.9778245f, 0.0351722f, 0.0f},
+      {0.0563200f, -0.1970226f, 1.0502026f, 0.0f}}},
+    /* 14 */
+    { /* sRGB D65 */
+     {/* rgb2xyz */
+      {0.4124564f, 0.3575761f, 0.1804375f, 0.0f},
+      {0.2126729f, 0.7151522f, 0.0721750f, 0.0f},
+      {0.0193339f, 0.1191920f, 0.9503041f, 0.0f}},
+     {/* xyz2rgb */
+      {3.2404542f, -1.5371385f, -0.4985314f, 0.0f},
+      {-0.9692660f, 1.8760108f, 0.0415560f, 0.0f},
+      {0.0556434f, -0.2040259f, 1.0572252f, 0.0f}}},
+    /* 15 */
+    { /* Wide Gamut RGB D50 */
+     {/* rgb2xyz */
+      {0.7161046f, 0.1009296f, 0.1471858f, 0.0f},
+      {0.2581874f, 0.7249378f, 0.0168748f, 0.0f},
+      {0.0000000f, 0.0517813f, 0.7734287f, 0.0f}},
+     {/* xyz2rgb */
+      {1.4628067f, -0.1840623f, -0.2743606f, 0.0f},
+      {-0.5217933f, 1.4472381f, 0.0677227f, 0.0f},
+      {0.0349342f, -0.0968930f, 1.2884099f, 0.0f}}},
+    /* 16 */
+    { /* Adobe RGB (1998) D50 */
+     {/* rgb2xyz */
+      {0.6097559f, 0.2052401f, 0.1492240f, 0.0f},
+      {0.3111242f, 0.6256560f, 0.0632197f, 0.0f},
+      {0.0194811f, 0.0608902f, 0.7448387f, 0.0f}},
+     {/* xyz2rgb */
+      {1.9624274f, -0.6105343f, -0.3413404f, 0.0f},
+      {-0.9787684f, 1.9161415f, 0.0334540f, 0.0f},
+      {0.0286869f, -0.1406752f, 1.3487655f, 0.0f}}},
+    /* 17 */
+    { /* AppleRGB D50 */
+     {/* rgb2xyz */
+      {0.4755678f, 0.3396722f, 0.1489800f, 0.0f},
+      {0.2551812f, 0.6725693f, 0.0722496f, 0.0f},
+      {0.0184697f, 0.1133771f, 0.6933632f, 0.0f}},
+     {/* xyz2rgb */
+      {2.8510695f, -1.3605261f, -0.4708281f, 0.0f},
+      {-1.0927680f, 2.0348871f, 0.0227598f, 0.0f},
+      {0.1027403f, -0.2964984f, 1.4510659f, 0.0f}}},
+    /* 18 */
+    { /* Bruce RGB D50 */
+     {/* rgb2xyz */
+      {0.4941816f, 0.3204834f, 0.1495550f, 0.0f},
+      {0.2521531f, 0.6844869f, 0.0633600f, 0.0f},
+      {0.0157886f, 0.0629304f, 0.7464909f, 0.0f}},
+     {/* xyz2rgb */
+      {2.6502856f, -1.2014485f, -0.4289936f, 0.0f},
+      {-0.9787684f, 1.9161415f, 0.0334540f, 0.0f},
+      {0.0264570f, -0.1361227f, 1.3458542f, 0.0f}}},
+    /* 19 */
+    { /* CIE RGB D50 */
+     {/* rgb2xyz */
+      {0.4868870f, 0.3062984f, 0.1710347f, 0.0f},
+      {0.1746583f, 0.8247541f, 0.0005877f, 0.0f},
+      {-0.0012563f, 0.0169832f, 0.8094831f, 0.0f}},
+     {/* xyz2rgb */
+      {2.3638081f, -0.8676030f, -0.4988161f, 0.0f},
+      {-0.5005940f, 1.3962369f, 0.1047562f, 0.0f},
+      {0.0141712f, -0.0306400f, 1.2323842f, 0.0f}}},
+    /* 20 */
+    { /* NTSC RGB D50 */
+     {/* rgb2xyz */
+      {0.6343706f, 0.1852204f, 0.1446290f, 0.0f},
+      {0.3109496f, 0.5915984f, 0.0974520f, 0.0f},
+      {-0.0011817f, 0.0555518f, 0.7708399f, 0.0f}},
+     {/* xyz2rgb */
+      {1.8464881f, -0.5521299f, -0.2766458f, 0.0f},
+      {-0.9826630f, 2.0044755f, -0.0690396f, 0.0f},
+      {0.0736477f, -0.1453020f, 1.3018376f, 0.0f}}},
+    /* 21 */
+    { /* PAL/SECAM RGB D50 */
+     {/* rgb2xyz */
+      {0.4552773f, 0.3675500f, 0.1413926f, 0.0f},
+      {0.2323025f, 0.7077956f, 0.0599019f, 0.0f},
+      {0.0145457f, 0.1049154f, 0.7057489f, 0.0f}},
+     {/* xyz2rgb */
+      {2.9603944f, -1.4678519f, -0.4685105f, 0.0f},
+      {-0.9787684f, 1.9161415f, 0.0334540f, 0.0f},
+      {0.0844874f, -0.2545973f, 1.4216174f, 0.0f}}},
+    /* 22 */
+    { /* SMPTE-C RGB D50 */
+     {/* rgb2xyz */
+      {0.4163290f, 0.3931464f, 0.1547446f, 0.0f},
+      {0.2216999f, 0.7032549f, 0.0750452f, 0.0f},
+      {0.0136576f, 0.0913604f, 0.7201920f, 0.0f}},
+     {/* xyz2rgb */
+      {3.3921940f, -1.8264027f, -0.5385522f, 0.0f},
+      {-1.0770996f, 2.0213975f, 0.0207989f, 0.0f},
+      {0.0723073f, -0.2217902f, 1.3960932f, 0.0f}}},
+    /* 23 */
+    { /* sRGB D50 */
+     {/* rgb2xyz */
+      {0.4360747f, 0.3850649f, 0.1430804f, 0.0f},
+      {0.2225045f, 0.7168786f, 0.0606169f, 0.0f},
+      {0.0139322f, 0.0971045f, 0.7141733f, 0.0f}},
+     {/* xyz2rgb */
+      {3.1338561f, -1.6168667f, -0.4906146f, 0.0f},
+      {-0.9787684f, 1.9161415f, 0.0334540f, 0.0f},
+      {0.0719453f, -0.2289914f, 1.4052427f, 0.0f}}}
+    /* ### */
+};
 
 #pragma mark - Prototypes
 
@@ -35,11 +280,14 @@ static inline void sanitize_rgb(pixel_t *rgb);
 static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
                                               pixel_t m2, pixel_t *result);
 static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
-                                    colour_val_t c);
+                                      colour_val_t c);
 static inline colour_val_t colour_max(colour_val_t a, colour_val_t b,
-                                    colour_val_t c);
+                                      colour_val_t c);
 
 static colour_val_t hue2rgb(colour_val_t v1, colour_val_t v2, colour_val_t vH);
+
+static colour_val_t cubic_interpolation(colour_val_t t, colour_val_t a,
+                                        colour_val_t b);
 
 #pragma mark - Utilities
 
@@ -64,13 +312,13 @@ static inline void sanitize_rgb(pixel_t *rgb) {
 
 static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
                                               pixel_t m2, pixel_t *result) {
-  result->a = (p.a * m0.a) + (p.b * m1.a) + (p.c * m2.a);
-  result->b = (p.a * m0.b) + (p.b * m1.b) + (p.c * m2.b);
-  result->c = (p.a * m0.c) + (p.b * m1.c) + (p.c * m2.c);
+  result->a = (p.a * m0.a) + (p.b * m0.b) + (p.c * m0.c);
+  result->b = (p.a * m1.a) + (p.b * m1.b) + (p.c * m1.c);
+  result->c = (p.a * m2.a) + (p.b * m2.b) + (p.c * m2.c);
 }
 
 static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
-                                    colour_val_t c) {
+                                      colour_val_t c) {
   colour_val_t m = a;
   if (m > b)
     m = b;
@@ -80,7 +328,7 @@ static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
 }
 
 static inline colour_val_t colour_max(colour_val_t a, colour_val_t b,
-                                    colour_val_t c) {
+                                      colour_val_t c) {
   colour_val_t m = a;
   if (m < b)
     m = b;
@@ -113,6 +361,11 @@ void print_pixel(pixel_t p) {
 }
 void _print_pixel_double_(pixel_t p) { print_pixel(p); }
 void _print_pixel_float_(pixel_t p) { print_pixel(p); }
+
+static inline colour_val_t cubic_interpolation(colour_val_t t, colour_val_t a,
+                                               colour_val_t b) {
+  return (colour_val_t)(a + (t * t * (3.0f - 2.0f * t)) * (b - a));
+}
 
 #pragma mark - To RGB
 
@@ -448,7 +701,11 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
   var_xyz.b = xyz.b / 100.0f;
   var_xyz.c = xyz.c / 100.0f;
 
-  apply_working_space_matrix(var_xyz, XYZ2RGB[0], XYZ2RGB[1], XYZ2RGB[2], rgb);
+  apply_working_space_matrix(
+      var_xyz,
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[0],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[1],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[2], rgb);
 
   r = &(rgb->a);
   g = &(rgb->b);
@@ -480,7 +737,11 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
   var_xyz.b = xyz.b / 100.0f;
   var_xyz.c = xyz.c / 100.0f;
 
-  apply_working_space_matrix(var_xyz, XYZ2RGB[0], XYZ2RGB[1], XYZ2RGB[2], rgb);
+  apply_working_space_matrix(
+      var_xyz,
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[0],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[1],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[2], rgb);
 
   r = &(rgb->a);
   g = &(rgb->b);
@@ -503,6 +764,45 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
 
   sanitize_rgb(rgb);
 }
+
+void ryb2rgb(pixel_t ryb, pixel_t *rgb) {
+
+  colour_val_t x0, x1, x2, x3, y0, y1, *r = NULL, *g = NULL, *b = NULL;
+
+  r = &(rgb->a);
+  g = &(rgb->b);
+  b = &(rgb->c);
+
+  // R
+  x0 = cubic_interpolation(ryb.c, 1.0f, 0.163f);
+  x1 = cubic_interpolation(ryb.c, 1.0f, 0.0f);
+  x2 = cubic_interpolation(ryb.c, 1.0f, 0.5f);
+  x3 = cubic_interpolation(ryb.c, 1.0f, 0.2f);
+  y0 = cubic_interpolation(ryb.b, x0, x1);
+  y1 = cubic_interpolation(ryb.b, x2, x3);
+  *r = cubic_interpolation(ryb.a, y0, y1);
+
+  // G
+  x0 = cubic_interpolation(ryb.c, 1.0f, 0.373f);
+  x1 = cubic_interpolation(ryb.c, 1.0f, 0.66f);
+  x2 = cubic_interpolation(ryb.c, 0.0f, 0.0f);
+  x3 = cubic_interpolation(ryb.c, 0.5f, 0.094f);
+  y0 = cubic_interpolation(ryb.b, x0, x1);
+  y1 = cubic_interpolation(ryb.b, x2, x3);
+  *g = cubic_interpolation(ryb.a, y0, y1);
+
+  // B
+  x0 = cubic_interpolation(ryb.c, 1.0f, 0.6f);
+  x1 = cubic_interpolation(ryb.c, 0.0f, 0.2f);
+  x2 = cubic_interpolation(ryb.c, 0.0f, 0.5f);
+  x3 = cubic_interpolation(ryb.c, 0.0f, 0.0f);
+  y0 = cubic_interpolation(ryb.b, x0, x1);
+  y1 = cubic_interpolation(ryb.b, x2, x3);
+  *b = cubic_interpolation(ryb.a, y0, y1);
+}
+
+void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb) { ryb2rgb(ryb, rgb); }
+void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb) { ryb2rgb(ryb, rgb); }
 
 #pragma mark - To CMYK
 
@@ -1080,7 +1380,10 @@ void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz) {
   p.b *= 100.0f;
   p.c *= 100.0f;
 
-  apply_working_space_matrix(p, RGB2XYZ[0], RGB2XYZ[1], RGB2XYZ[2], xyz);
+  apply_working_space_matrix(
+      p, rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[0],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[1],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[2], xyz);
 }
 
 void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz) {
@@ -1101,7 +1404,10 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz) {
   p.b *= 100.0f;
   p.c *= 100.0f;
 
-  apply_working_space_matrix(p, RGB2XYZ[0], RGB2XYZ[1], RGB2XYZ[2], xyz);
+  apply_working_space_matrix(
+      p, rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[0],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[1],
+      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[2], xyz);
 }
 
 void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {
@@ -1161,7 +1467,8 @@ void _lab2xyz_float_(pixel_t lab, pixel_t *xyz) {
 }
 
 void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
-  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL,
+                                                  *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 
@@ -1180,7 +1487,8 @@ void _luv2xyz_double_(pixel_t luv, pixel_t *xyz) {
 }
 
 void _luv2xyz_float_(pixel_t luv, pixel_t *xyz) {
-  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL, *z = NULL;
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *x = NULL, *y = NULL,
+                                                  *z = NULL;
 
   var_Y = (luv.a + 16.0f) / 116.0f;
 

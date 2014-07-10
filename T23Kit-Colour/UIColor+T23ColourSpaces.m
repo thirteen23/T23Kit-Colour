@@ -9,6 +9,40 @@
 
 @implementation UIColor (T23ColourSpaces)
 
++ (UIColor *)colorWithRed:(CGFloat)red
+                   yellow:(CGFloat)yellow
+                     blue:(CGFloat)blue
+                    alpha:(CGFloat)alpha {
+
+  colour_t ryb = {0.0f}, rgb = {0.0f};
+  ryb.RYB_R = red;
+  ryb.RYB_Y = yellow;
+  ryb.RYB_B = blue;
+
+  RYB_2_RGB(ryb.RYB, &rgb.RGB);
+
+  return [UIColor colorWithRed:rgb.RGB_R
+                         green:rgb.RGB_G
+                          blue:rgb.RGB_B
+                         alpha:alpha];
+}
+
+- (UIColor *)initWithRed:(CGFloat)red
+                  yellow:(CGFloat)yellow
+                    blue:(CGFloat)blue
+                   alpha:(CGFloat)alpha {
+
+  colour_t ryb = {0.0f}, rgb = {0.0f};
+  ryb.RYB_R = red;
+  ryb.RYB_Y = yellow;
+  ryb.RYB_B = blue;
+
+  RYB_2_RGB(ryb.RYB, &rgb.RGB);
+
+  return
+      [self initWithRed:rgb.RGB_R green:rgb.RGB_G blue:rgb.RGB_B alpha:alpha];
+}
+
 - (BOOL)getHunterLStar:(CGFloat *)lightness
                  aStar:(CGFloat *)greenToMagenta
                  bStar:(CGFloat *)yellowtoBlue
@@ -204,6 +238,14 @@
   return YES;
 }
 
+- (BOOL)getRed:(CGFloat *)red
+        yellow:(CGFloat *)yellow
+          blue:(CGFloat *)blue
+         alpha:(CGFloat *)alpha {
+
+  return YES;
+}
+
 - (NSArray *)getTriadic {
   UIColor *plus120 = nil, *minus120 = nil;
   CGFloat H, S, V, A;
@@ -278,7 +320,7 @@
 }
 
 - (CGFloat)getDistanceMetricBetweenUIColor:(UIColor *)compare
-                             withOptions:(T23UIColourDistanceOptions)options {
+                               withOptions:(T23UIColourDistanceOptions)options {
 
   CGFloat distance = 0.0f;
   CGFloat r, g, b, a;

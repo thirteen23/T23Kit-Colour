@@ -31,6 +31,26 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
 @interface UIColor (T23ColourSpaces)
 
 /*!
+ *  @abstract Acquire an autoreleased UIColor with RYB colour values
+ *  @discussion UIColor returned is generated from RYB->RGB conversion. (Please
+ *  see: http://vis.computer.org/vis2004/DVD/infovis/papers/gossett.pdf)
+ */
++ (UIColor *)colorWithRed:(CGFloat)red
+                   yellow:(CGFloat)yellow
+                     blue:(CGFloat)blue
+                    alpha:(CGFloat)alpha;
+
+/*!
+ *  @abstract Initialize a UIColor with RYB colour values
+ *  @discussion UIColor returned is generated from RYB->RGB conversion. (Please
+ *  see http://vis.computer.org/vis2004/DVD/infovis/papers/gossett.pdf)
+ */
+- (UIColor *)initWithRed:(CGFloat)red
+                  yellow:(CGFloat)yellow
+                    blue:(CGFloat)blue
+                   alpha:(CGFloat)alpha;
+
+/*!
  *  @abstract Convert current colour to the XYZ colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.
@@ -182,6 +202,6 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
  *  CIEDE2000 standard
  */
 - (CGFloat)getDistanceMetricBetweenUIColor:(UIColor *)compare
-                             withOptions:(T23UIColourDistanceOptions)options;
+                               withOptions:(T23UIColourDistanceOptions)options;
 
 @end

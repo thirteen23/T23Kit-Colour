@@ -54,6 +54,9 @@ LIBCOLORSPACES_EXTERN void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb);
 LIBCOLORSPACES_EXTERN void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb);
 LIBCOLORSPACES_EXTERN void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb);
 
+LIBCOLORSPACES_EXTERN void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb);
+LIBCOLORSPACES_EXTERN void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb);
+
 LIBCOLORSPACES_EXTERN void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk);
 LIBCOLORSPACES_EXTERN void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk);
 
@@ -153,7 +156,8 @@ LIBCOLORSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab, int media,
 
 LIBCOLORSPACES_EXTERN void _ciede2000_double_(pixel_t lab, pixel_t plab,
                                               colour_val_t kl, colour_val_t kc,
-                                              colour_val_t kh, colour_val_t *dl);
+                                              colour_val_t kh,
+                                              colour_val_t *dl);
 LIBCOLORSPACES_EXTERN void _ciede2000_float_(pixel_t lab, pixel_t plab,
                                              colour_val_t kl, colour_val_t kc,
                                              colour_val_t kh, colour_val_t *dl);

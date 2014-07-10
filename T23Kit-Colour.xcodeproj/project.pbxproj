@@ -160,8 +160,8 @@
 			isa = PBXGroup;
 			children = (
 				4A21EB1719227EBA00BF9603 /* colourspaces_priv.h */,
-				4A21EB1819227EBA00BF9603 /* colourspaces.c */,
 				4A21EB1919227EBA00BF9603 /* colourspaces.h */,
+				4A21EB1819227EBA00BF9603 /* colourspaces.c */,
 			);
 			name = libcolorspaces;
 			sourceTree = "<group>";
