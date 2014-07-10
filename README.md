@@ -1,4 +1,4 @@
-#T23Kit-Colour
+#T23Kit - Colour
 UIColor Category with various colourspace transformations, neighbourhood colour generations, and ∆-E metrics.
 _______________
 ##Discussion
@@ -12,7 +12,8 @@ Currently there are three pieces to this library:
 ###Colour Conversions
 
 Below are the currently supported colourspace conversions:
-*   CIE XYZ
+*   RYB *(Only from RYB)*
+*   CIE XYZ <sup>1</sup>
 *   Hunter 1948 (L, a, b)
 *   CIE 1976 (L\*, a\*, b\*)
 *   CIE 1976 (L\*, u\*, v\*) 
@@ -24,6 +25,7 @@ Below are the currently supported colourspace conversions:
 
 **Note: Please see [UIColor+T23ColourSpaces.h](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/UIColor%2BT23ColourSpaces.h) for the format of values that are returned.**
 
+*( <sup>1</sup> The default currently uses the sRGB working matrices for converting to/from XYZ space. Please see rgb_working_matrices in [colourspaces.c](https://github.com/thirteen23/T23Kit-Colour/blob/master/T23Kit-Colour/colourspaces.c) for more detail)*
 ###Neighbourhood Colour Generations
 Below are the currently supported neighbourhood generations
 *   Triadic
@@ -45,7 +47,9 @@ _______________
 ##API
 
 **`UIColor+T23ColourSpaces`**
-
+    
+    + (UIColor *)colorWithRed:yellow:blue:alpha:
+    - (UIColor *)initWithRed:yellow:blue:alpha:
     - (BOOL)getX:Y:Z:alpha:
     - (BOOL)getHunterLStar:aStar:bStar:alpha:
     - (BOOL)getLStar:aStar:bStar:alpha:
