@@ -1,4 +1,11 @@
 Release Notes:
 
+(0.0.3)
+Added support for RYB->RGB conversion.
+Added more RGB working matrices in case anyone wants to plumb the C code into their library. Probably will expose these in a future release.
+
+(0.0.2)
+Fixed up some testing requirements and added better documentation
+
 (0.0.1)
 First initial release.
