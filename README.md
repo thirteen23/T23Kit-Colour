@@ -1,4 +1,4 @@
-#T23Kit - Colour
+#T23Kit-Colour
 UIColor Category with various colourspace transformations, neighbourhood colour generations, and ∆-E metrics.
 _______________
 ##Discussion
