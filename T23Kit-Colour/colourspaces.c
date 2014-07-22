@@ -30,13 +30,13 @@ static rgb_working_matrix rgb_working_matrices[colourspace_rgb_profile_max] = {
     /* 0 */
     { /* Adobe RGB (1998) D65 */
      {/* rgb2xyz */
-      {0.4124564f, 0.3575761f, 0.1804375f, 0.0f},
-      {0.2126729f, 0.7151522f, 0.0721750f, 0.0f},
-      {0.0193339f, 0.1191920f, 0.9503041f, 0.0f}},
+      {0.5767309f, 0.1855540f, 0.1881852f, 0.0f},
+      {0.2973769f, 0.6273491f, 0.0752741f, 0.0f},
+      {0.0270343f, 0.0706872f, 0.9911085f, 0.0f}},
      {/* xyz2rgb */
-      {3.2404542f, -1.5371385f, -0.4985314f, 0.0f},
+      {2.0413690f, -0.5649464f, -0.3446944f, 0.0f},
       {-0.9692660f, 1.8760108f, 0.0415560f, 0.0f},
-      {0.0556434f, -0.2040259f, 1.0572252f, 0.0f}}},
+      {0.0134474f, -0.1183897f, 1.0154096f, 0.0f}}},
     /* 1 */
     { /* AppleRGB D65 */
      {/* rgb2xyz */
@@ -269,6 +269,10 @@ static rgb_working_matrix rgb_working_matrices[colourspace_rgb_profile_max] = {
       {0.0719453f, -0.2289914f, 1.4052427f, 0.0f}}}
     /* ### */
 };
+
+static colour_val_t rgb_model_gamma[colourspace_rgb_profile_max] = {
+    2.2f, 1.8f, 2.2f,  2.2f, 2.2f, 2.2f, 1.8f, 2.2f, 0.0f, 2.2f, 2.2f, 2.2f,
+    1.8f, 2.2f, -2.2f, 2.2f, 2.2f, 1.8f, 2.2f, 2.2f, 2.2f, 2.2f, 2.2f, -2.2f};
 
 #pragma mark - Prototypes
 
@@ -515,7 +519,8 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb) {
   sanitize_rgb(rgb);
 }
 
-void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb) {
+void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
+                         colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
   COLORSPACE_LOG("LCH: <%f, %f, %f>\n", lch_ab.a, lch_ab.b, lch_ab.c);
@@ -524,10 +529,11 @@ void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb) {
 
   COLORSPACE_LOG("LAB: <%f, %f, %f>\n", lab.a, lab.b, lab.c);
 
-  _lab2rgb_double_(lab, rgb);
+  _lab2rgb_double_(lab, rgb, prof);
 }
 
-void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb) {
+void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
+                        colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
   COLORSPACE_LOG("LCH: <%f, %f, %f>\n", lch_ab.a, lch_ab.b, lch_ab.c);
@@ -536,21 +542,23 @@ void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb) {
 
   COLORSPACE_LOG("LAB: <%f, %f, %f>\n", lab.a, lab.b, lab.c);
 
-  _lab2rgb_float_(lab, rgb);
+  _lab2rgb_float_(lab, rgb, prof);
 }
 
-void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb) {
+void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb,
+                         colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
   _lch_uv2lab_double_(lch_uv, &lab);
-  _lab2rgb_double_(lab, rgb);
+  _lab2rgb_double_(lab, rgb, prof);
 }
 
-void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb) {
+void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
+                        colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
   _lch_uv2lab_float_(lch_uv, &lab);
-  _lab2rgb_float_(lab, rgb);
+  _lab2rgb_float_(lab, rgb, prof);
 }
 
 void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb) {
@@ -627,26 +635,26 @@ void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb) {
   sanitize_rgb(rgb);
 }
 
-void _lab2rgb_double_(pixel_t lab, pixel_t *rgb) {
+void _lab2rgb_double_(pixel_t lab, pixel_t *rgb, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
   _lab2xyz_double_(lab, &xyz);
 
   COLORSPACE_LOG("XYZ: <%f, %f, %f>\n", xyz.a, xyz.b, xyz.c);
 
-  _xyz2rgb_double_(xyz, rgb);
+  _xyz2rgb_double_(xyz, rgb, prof);
 
   COLORSPACE_LOG("RGB: <%f, %f, %f>\n\n", rgb->a, rgb->b, rgb->c);
 }
 
-void _lab2rgb_float_(pixel_t lab, pixel_t *rgb) {
+void _lab2rgb_float_(pixel_t lab, pixel_t *rgb, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
   _lab2xyz_float_(lab, &xyz);
 
   COLORSPACE_LOG("XYZ: <%f, %f, %f>\n", xyz.a, xyz.b, xyz.c);
 
-  _xyz2rgb_float_(xyz, rgb);
+  _xyz2rgb_float_(xyz, rgb, prof);
 
   COLORSPACE_LOG("RGB: <%f, %f, %f>\n\n", rgb->a, rgb->b, rgb->c);
 }
@@ -693,7 +701,7 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb) {
   sanitize_rgb(rgb);
 }
 
-void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
+void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb, colourspace_rgb_profile prof) {
   colour_val_t *r, *g, *b, R, G, B;
   pixel_t var_xyz = {0.0f};
 
@@ -701,11 +709,9 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
   var_xyz.b = xyz.b / 100.0f;
   var_xyz.c = xyz.c / 100.0f;
 
-  apply_working_space_matrix(
-      var_xyz,
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[0],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[1],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[2], rgb);
+  apply_working_space_matrix(var_xyz, rgb_working_matrices[prof].xyz2rgb[0],
+                             rgb_working_matrices[prof].xyz2rgb[1],
+                             rgb_working_matrices[prof].xyz2rgb[2], rgb);
 
   r = &(rgb->a);
   g = &(rgb->b);
@@ -729,7 +735,7 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb) {
   sanitize_rgb(rgb);
 }
 
-void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
+void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb, colourspace_rgb_profile prof) {
   colour_val_t *r, *g, *b, R, G, B;
   pixel_t var_xyz = {0.0f};
 
@@ -737,11 +743,9 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb) {
   var_xyz.b = xyz.b / 100.0f;
   var_xyz.c = xyz.c / 100.0f;
 
-  apply_working_space_matrix(
-      var_xyz,
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[0],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[1],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].xyz2rgb[2], rgb);
+  apply_working_space_matrix(var_xyz, rgb_working_matrices[prof].xyz2rgb[0],
+                             rgb_working_matrices[prof].xyz2rgb[1],
+                             rgb_working_matrices[prof].xyz2rgb[2], rgb);
 
   r = &(rgb->a);
   g = &(rgb->b);
@@ -975,17 +979,19 @@ void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi) {
 
 #pragma mark - to Hunter LAB
 
-void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab) {
+void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab,
+                       colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_double_(rgb, &xyz);
+  _rgb2xyz_double_(rgb, &xyz, prof);
   _xyz2hlab_double_(xyz, hlab);
 }
 
-void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab) {
+void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
+                      colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_float_(rgb, &xyz);
+  _rgb2xyz_float_(rgb, &xyz, prof);
   _xyz2hlab_float_(xyz, hlab);
 }
 
@@ -1015,17 +1021,17 @@ void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab) {
 
 #pragma mark - To LAB
 
-void _rgb2lab_double_(pixel_t rgb, pixel_t *lab) {
+void _rgb2lab_double_(pixel_t rgb, pixel_t *lab, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_double_(rgb, &xyz);
+  _rgb2xyz_double_(rgb, &xyz, prof);
   _xyz2lab_double_(xyz, lab);
 }
 
-void _rgb2lab_float_(pixel_t rgb, pixel_t *lab) {
+void _rgb2lab_float_(pixel_t rgb, pixel_t *lab, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_float_(rgb, &xyz);
+  _rgb2xyz_float_(rgb, &xyz, prof);
   _xyz2lab_float_(xyz, lab);
 }
 
@@ -1111,17 +1117,17 @@ void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab) {
 
 #pragma mark - To LUV
 
-void _rgb2luv_double_(pixel_t rgb, pixel_t *luv) {
+void _rgb2luv_double_(pixel_t rgb, pixel_t *luv, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_double_(rgb, &xyz);
+  _rgb2xyz_double_(rgb, &xyz, prof);
   _xyz2luv_double_(xyz, luv);
 }
 
-void _rgb2luv_float_(pixel_t rgb, pixel_t *luv) {
+void _rgb2luv_float_(pixel_t rgb, pixel_t *luv, colourspace_rgb_profile prof) {
   pixel_t xyz = {0.0f};
 
-  _rgb2xyz_float_(rgb, &xyz);
+  _rgb2xyz_float_(rgb, &xyz, prof);
   _xyz2luv_float_(xyz, luv);
 }
 
@@ -1219,17 +1225,19 @@ void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv) {
 
 #pragma mark - To LCH(AB)
 
-void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab) {
+void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab,
+                         colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
-  _rgb2lab_double_(rgb, &lab);
+  _rgb2lab_double_(rgb, &lab, prof);
   _lab2lch_ab_double_(lab, lch_ab);
 }
 
-void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab) {
+void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
+                        colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
-  _rgb2lab_float_(rgb, &lab);
+  _rgb2lab_float_(rgb, &lab, prof);
   _lab2lch_ab_float_(lab, lch_ab);
 }
 
@@ -1285,17 +1293,19 @@ void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab) {
 
 #pragma mark - To LCH(UV)
 
-void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv) {
+void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
+                         colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
-  _rgb2lab_double_(rgb, &lab);
+  _rgb2lab_double_(rgb, &lab, prof);
   _lab2lch_uv_double_(lab, lch_uv);
 }
 
-void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv) {
+void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
+                        colourspace_rgb_profile prof) {
   pixel_t lab = {0.0f};
 
-  _rgb2lab_float_(rgb, &lab);
+  _rgb2lab_float_(rgb, &lab, prof);
   _lab2lch_uv_float_(lab, lch_uv);
 }
 
@@ -1362,52 +1372,110 @@ void xyY2xyz(pixel_t xyY, pixel_t *xyz) {
 void _xyY2xyz_double_(pixel_t xyY, pixel_t *xyz) { xyY2xyz(xyY, xyz); }
 void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz) { xyY2xyz(xyY, xyz); }
 
-void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz) {
+void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz, colourspace_rgb_profile prof) {
   pixel_t p = {0.0f};
 
   p.a = rgb.a;
   p.b = rgb.b;
   p.c = rgb.c;
 
-  p.a = (fabs(p.a) <= 0.04045f) ? p.a / 12.92f
-                                : neg_pow((p.a + 0.055f) / 1.055f, 2.4f);
-  p.b = (fabs(p.b) <= 0.04045f) ? p.b / 12.92f
-                                : neg_pow((p.b + 0.055f) / 1.055f, 2.4f);
-  p.c = (fabs(p.c) <= 0.04045f) ? p.c / 12.92f
-                                : neg_pow((p.c + 0.055f) / 1.055f, 2.4f);
+  if (rgb_model_gamma[prof] > 0.0f) {
+
+    p.a = (p.a >= 0.0f) ? neg_pow(p.a, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.a), rgb_model_gamma[prof]);
+    p.b = (p.b >= 0.0f) ? neg_pow(p.b, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.b), rgb_model_gamma[prof]);
+    p.c = (p.c >= 0.0f) ? neg_pow(p.c, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.c), rgb_model_gamma[prof]);
+
+  } else if (rgb_model_gamma[prof] < 0.0f) {
+
+    p.a = (fabs(p.a) <= 0.04045f) ? p.a / 12.92f
+                                  : neg_pow((p.a + 0.055f) / 1.055f, 2.4f);
+    p.b = (fabs(p.b) <= 0.04045f) ? p.b / 12.92f
+                                  : neg_pow((p.b + 0.055f) / 1.055f, 2.4f);
+    p.c = (fabs(p.c) <= 0.04045f) ? p.c / 12.92f
+                                  : neg_pow((p.c + 0.055f) / 1.055f, 2.4f);
+
+  } else {
+
+    p.a = (p.a <= 0.08f)
+              ? (2700.0f * p.a / 24389.0)
+              : ((((1000000.0f * p.a + 480000.0f) * p.a + 76800.0f) * p.a +
+                  4096.0f) /
+                 1560896.0f);
+    p.b = (p.b <= 0.08f)
+              ? (2700.0f * p.b / 24389.0)
+              : ((((1000000.0f * p.b + 480000.0f) * p.b + 76800.0f) * p.b +
+                  4096.0f) /
+                 1560896.0f);
+    p.c = (p.c <= 0.08f)
+              ? (2700.0f * p.c / 24389.0)
+              : ((((1000000.0f * p.c + 480000.0f) * p.c + 76800.0f) * p.c +
+                  4096.0f) /
+                 1560896.0f);
+  }
 
   p.a *= 100.0f;
   p.b *= 100.0f;
   p.c *= 100.0f;
 
-  apply_working_space_matrix(
-      p, rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[0],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[1],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[2], xyz);
+  apply_working_space_matrix(p, rgb_working_matrices[prof].rgb2xyz[0],
+                             rgb_working_matrices[prof].rgb2xyz[1],
+                             rgb_working_matrices[prof].rgb2xyz[2], xyz);
 }
 
-void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz) {
+void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz, colourspace_rgb_profile prof) {
   pixel_t p = {0.0f};
 
   p.a = rgb.a;
   p.b = rgb.b;
   p.c = rgb.c;
 
-  p.a = (fabsf(p.a) <= 0.04045f) ? p.a / 12.92f
-                                 : neg_powf((p.a + 0.055f) / 1.055f, 2.4f);
-  p.b = (fabsf(p.b) <= 0.04045f) ? p.b / 12.92f
-                                 : neg_powf((p.b + 0.055f) / 1.055f, 2.4f);
-  p.c = (fabsf(p.c) <= 0.04045f) ? p.c / 12.92f
-                                 : neg_powf((p.c + 0.055f) / 1.055f, 2.4f);
+  if (rgb_model_gamma[prof] > 0.0f) {
+
+    p.a = (p.a >= 0.0f) ? neg_pow(p.a, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.a), rgb_model_gamma[prof]);
+    p.b = (p.b >= 0.0f) ? neg_pow(p.b, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.b), rgb_model_gamma[prof]);
+    p.c = (p.c >= 0.0f) ? neg_pow(p.c, rgb_model_gamma[prof])
+                        : -1.0f * neg_pow((-1.0f * p.c), rgb_model_gamma[prof]);
+
+  } else if (rgb_model_gamma[prof] < 0.0f) {
+
+    p.a = (fabsf(p.a) <= 0.04045f) ? p.a / 12.92f
+                                   : neg_powf((p.a + 0.055f) / 1.055f, 2.4f);
+    p.b = (fabsf(p.b) <= 0.04045f) ? p.b / 12.92f
+                                   : neg_powf((p.b + 0.055f) / 1.055f, 2.4f);
+    p.c = (fabsf(p.c) <= 0.04045f) ? p.c / 12.92f
+                                   : neg_powf((p.c + 0.055f) / 1.055f, 2.4f);
+
+  } else {
+
+    p.a = (p.a <= 0.08f)
+              ? (2700.0f * p.a / 24389.0)
+              : ((((1000000.0f * p.a + 480000.0f) * p.a + 76800.0f) * p.a +
+                  4096.0f) /
+                 1560896.0f);
+    p.b = (p.b <= 0.08f)
+              ? (2700.0f * p.b / 24389.0)
+              : ((((1000000.0f * p.b + 480000.0f) * p.b + 76800.0f) * p.b +
+                  4096.0f) /
+                 1560896.0f);
+    p.c = (p.c <= 0.08f)
+              ? (2700.0f * p.c / 24389.0)
+              : ((((1000000.0f * p.c + 480000.0f) * p.c + 76800.0f) * p.c +
+                  4096.0f) /
+                 1560896.0f);
+  }
 
   p.a *= 100.0f;
   p.b *= 100.0f;
   p.c *= 100.0f;
 
-  apply_working_space_matrix(
-      p, rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[0],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[1],
-      rgb_working_matrices[colourspace_rgb_profile_srgb_d65].rgb2xyz[2], xyz);
+  apply_working_space_matrix(p, rgb_working_matrices[prof].rgb2xyz[0],
+                             rgb_working_matrices[prof].rgb2xyz[1],
+                             rgb_working_matrices[prof].rgb2xyz[2], xyz);
 }
 
 void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz) {

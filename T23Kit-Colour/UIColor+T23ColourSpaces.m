@@ -56,7 +56,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_HLAB(rgb.RGB, &hlab.LAB);
+  RGB_2_HLAB(rgb.RGB, &hlab.LAB, colourspace_rgb_profile_srgb_d65);
   *lightness = hlab.LAB_L;
   *greenToMagenta = hlab.LAB_A;
   *yellowtoBlue = hlab.LAB_B;
@@ -78,7 +78,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LAB(rgb.RGB, &lab.LAB);
+  RGB_2_LAB(rgb.RGB, &lab.LAB, colourspace_rgb_profile_srgb_d65);
   *lightness = lab.LAB_L;
   *greenToMagenta = lab.LAB_A;
   *yellowtoBlue = lab.LAB_B;
@@ -100,7 +100,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LUV(rgb.RGB, &luv.LUV);
+  RGB_2_LUV(rgb.RGB, &luv.LUV, colourspace_rgb_profile_srgb_d65);
   *lightness = luv.LUV_L;
   *greenToMagenta = luv.LUV_U;
   *yellowtoBlue = luv.LUV_V;
@@ -121,7 +121,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LCH_AB(rgb.RGB, &lch_ab.LCH_AB);
+  RGB_2_LCH_AB(rgb.RGB, &lch_ab.LCH_AB, colourspace_rgb_profile_srgb_d65);
   *lightness = lch_ab.LCH_AB_L;
   *chroma = lch_ab.LCH_AB_C;
   *hue = lch_ab.LCH_AB_H;
@@ -142,7 +142,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LCH_UV(rgb.RGB, &lch_uv.LCH_UV);
+  RGB_2_LCH_UV(rgb.RGB, &lch_uv.LCH_UV, colourspace_rgb_profile_srgb_d65);
   *lightness = lch_uv.LCH_UV_L;
   *chroma = lch_uv.LCH_UV_C;
   *hue = lch_uv.LCH_UV_H;
@@ -187,7 +187,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_XYZ(rgb.RGB, &xyz.XYZ);
+  RGB_2_XYZ(rgb.RGB, &xyz.XYZ, colourspace_rgb_profile_srgb_d65);
   *coneResponse = xyz.XYZ_X;
   *luminance = xyz.XYZ_Y;
   *quasiBlue = xyz.XYZ_Z;
@@ -331,14 +331,14 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LAB(rgb.RGB, &self_lab.LAB);
+  RGB_2_LAB(rgb.RGB, &self_lab.LAB, colourspace_rgb_profile_srgb_d65);
 
   [compare getRed:&r green:&g blue:&b alpha:&a];
   rgb.RGB_R = r;
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_LAB(rgb.RGB, &comp_lab.LAB);
+  RGB_2_LAB(rgb.RGB, &comp_lab.LAB, colourspace_rgb_profile_srgb_d65);
 
   switch (options) {
   case T23UIColourDistanceFormulaCEI76:

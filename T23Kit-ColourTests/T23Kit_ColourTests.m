@@ -10,6 +10,8 @@
 #import <XCTest/XCTest.h>
 #import "UIColor+T23ColourSpaces.h"
 
+#define CGFloatAreEqual(X, Y) (fabs(X - Y) <= 0.0001f)
+
 static pixel_t RGB_TEST[] = {{1.000000, 0.000000, 0.000000, 1.0},
                              {0.000000, 1.000000, 0.000000, 1.0},
                              {0.000000, 0.000000, 1.000000, 1.0},
@@ -285,6 +287,57 @@ static colour_val_t cmc_2_1_1984D[] = {
     1.006004, 1.113025, 1.053353,  1.420486,  1.247404,  1.765559,  2.024991,
     3.060441, 1.739572, 1.889083,  0.990070,  0.952801,  1.427773};
 
+/* XYZ answers for {0.254902, 0.411765, 0.882353, 1.0} */
+static pixel_t rgb_2_xyz_working_space_matrix_test_results[] = {
+    /* Adobe RGB (1998) D65 */
+    {19.7744, 16.0927, 76.3921},
+    /* Apple RGB D65 */
+    {24.9717, 22.3474, 76.7122},
+    /* Best RGB D50 */
+    {15.6745, 14.1944, 62.0708},
+    /* Beta RGB D50 */
+    {14.7858, 13.4249, 60.1456},
+    /* Bruce RGB D65 */
+    {20.8118, 16.6247, 76.5752},
+    /* CIE RGB E */
+    {22.0586, 13.2347, 75.3000},
+    /* Color Match RGB D50 */
+    {21.5420, 21.0203, 57.6646},
+    /* Don RGB D50 */
+    {15.4361, 13.7011, 61.2844},
+    /* ECI RGB D50 */
+    {14.9707, 14.3113, 55.7638},
+    /* Ekta Space RGB D50 */
+    {14.2033, 12.0592, 60.0656},
+    /* NTSC RGB C */
+    {20.6759, 18.4990, 85.6933},
+    /* PAL/SECAM RGB D65 */
+    {20.5169, 16.5461, 73.2445},
+    /* ProPhoto RGB D50 */
+    {12.0525, 16.8804, 65.8750},
+    /* SMPTE-C RGB D65 */
+    {21.6820, 17.5747, 74.4346},
+    /* sRGB D65 */
+    {20.8174, 16.6611, 73.3384},
+    /* Wide Gamut RGB D50 */
+    {16.1488, 12.8503, 59.4616},
+    /* Adobe RGB (1998) D50 */
+    {17.2588, 15.2214, 57.5164},
+    /* Apple RGB D50 */
+    {22.8318, 21.5646, 57.8032},
+    /* Bruce RGB D50 */
+    {18.3489, 15.7758, 57.6526},
+    /* CIE RGB D50 */
+    {19.7423, 12.6179, 61.6989},
+    /* NTSC RGB D50 */
+    {16.7474, 17.3362, 59.3127},
+    /* PAL/SECAM RGB D50 */
+    {18.2050, 15.7460, 55.1490},
+    /* SMPTE-C RGB D50 */
+    {19.3897, 16.7790, 56.0488},
+    /* sRGB D50 */
+    {18.5178, 15.8672, 55.2185}};
+
 @interface T23Kit_ColourTests : XCTestCase
 
 @end
@@ -451,6 +504,29 @@ static colour_val_t cmc_2_1_1984D[] = {
 
     XCTAssertEqualWithAccuracy(distance, cie1976D[i], 0.0001,
                                @"Failed test: %lu", i);
+  }
+}
+
+- (void)testRGBWorkSpaceMatrices {
+
+  pixel_t rgb = {0.254902f, 0.411765f, 0.882353f, 1.0f}, xyz;
+  size_t test_length = sizeof(rgb_2_xyz_working_space_matrix_test_results) /
+                       sizeof(rgb_2_xyz_working_space_matrix_test_results[0]);
+
+  for (size_t i = 0; i < test_length; i++) {
+    RGB_2_XYZ(rgb, &xyz, (colourspace_rgb_profile)i);
+
+    XCTAssertEqualWithAccuracy(xyz.a,
+                               rgb_2_xyz_working_space_matrix_test_results[i].a,
+                               0.0001, @"Failed test: %lu", i);
+
+    XCTAssertEqualWithAccuracy(xyz.b,
+                               rgb_2_xyz_working_space_matrix_test_results[i].b,
+                               0.0001, @"Failed test: %lu", i);
+
+    XCTAssertEqualWithAccuracy(xyz.c,
+                               rgb_2_xyz_working_space_matrix_test_results[i].c,
+                               0.0001, @"Failed test: %lu", i);
   }
 }
 
