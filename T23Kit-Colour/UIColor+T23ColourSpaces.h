@@ -57,6 +57,7 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
  *
  *  The conversions are from RGB space and uses the sRGB matrix for calculation,
  *  i.e, sRGB matrices to XYZ and back with (Observer = 2°, Illuminant = D65)
+ *  using Bradford adaptation.
  */
 - (BOOL)getX:(CGFloat *)coneResponse
            Y:(CGFloat *)luminance
