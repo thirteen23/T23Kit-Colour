@@ -10,8 +10,8 @@
 extern "C" {
 #endif
 
-#ifndef LIBCOLORSPACES_H
-#define LIBCOLORSPACES_H
+#ifndef LIBCOLOURSPACES_H
+#define LIBCOLOURSPACES_H
 
 #define epsilon 0.008856f
 #define kappa 7.787f
@@ -20,7 +20,7 @@ extern "C" {
 #define DEG_TO_RAD(A) ((A) * (M_PI / 180.0))
 #define RAD_TO_DEG(R) ((R) * (180.0 / M_PI))
 
-#define COLORSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
+#define COLOURSPACE_LOG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 
 #include "colourspaces_priv.h"
 
@@ -358,7 +358,7 @@ typedef struct colour_t {
 #define CIEDE_2000 _ciede2000_float_
 #endif
 
-#endif /* LIBCOLORSPACES_H */
+#endif /* LIBCOLOURSPACES_H */
 
 #ifdef __cplusplus
 }

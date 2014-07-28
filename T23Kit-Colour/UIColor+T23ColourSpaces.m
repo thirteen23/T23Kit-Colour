@@ -19,7 +19,7 @@
   ryb.RYB_Y = yellow;
   ryb.RYB_B = blue;
 
-  RYB_2_RGB(ryb.RYB, &rgb.RGB);
+  RYB_2_RGB(ryb.RYB, &rgb.RGB, 0x0);
 
   return [UIColor colorWithRed:rgb.RGB_R
                          green:rgb.RGB_G
@@ -37,7 +37,7 @@
   ryb.RYB_Y = yellow;
   ryb.RYB_B = blue;
 
-  RYB_2_RGB(ryb.RYB, &rgb.RGB);
+  RYB_2_RGB(ryb.RYB, &rgb.RGB, 0x0);
 
   return
       [self initWithRed:rgb.RGB_R green:rgb.RGB_G blue:rgb.RGB_B alpha:alpha];
@@ -165,7 +165,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_CMYK(rgb.RGB, &cmyk.CMYK);
+  RGB_2_CMYK(rgb.RGB, &cmyk.CMYK, 0x0);
   *cyan = cmyk.CMYK_C;
   *magenta = cmyk.CMYK_M;
   *yellow = cmyk.CMYK_Y;
@@ -208,7 +208,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_HSL(rgb.RGB, &hsl.HSL);
+  RGB_2_HSL(rgb.RGB, &hsl.HSL, 0x0);
   *hue = hsl.HSL_H;
   *saturation = hsl.HSL_S;
   *lightness = hsl.HSL_L;
@@ -229,7 +229,7 @@
   rgb.RGB_G = g;
   rgb.RGB_B = b;
 
-  RGB_2_HSI(rgb.RGB, &hsi.HSL);
+  RGB_2_HSI(rgb.RGB, &hsi.HSL, 0x0);
   *hue = hsi.HSI_H;
   *saturation = hsi.HSI_S;
   *intensity = hsi.HSI_I;

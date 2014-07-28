@@ -338,6 +338,32 @@ static pixel_t rgb_2_xyz_working_space_matrix_test_results[] = {
     /* sRGB D50 */
     {18.5178, 15.8672, 55.2185}};
 
+static colour_val_t rgb_workspace_options[] = {
+    colourspace_rgb_profile_adobe_d65,
+    colourspace_rgb_profile_apple_d65,
+    colourspace_rgb_profile_best_d50,
+    colourspace_rgb_profile_beta_d50,
+    colourspace_rgb_profile_bruce_d65,
+    colourspace_rgb_profile_cie_e,
+    colourspace_rgb_profile_colormatch_d50,
+    colourspace_rgb_profile_don_d50,
+    colourspace_rgb_profile_eci_d50,
+    colourspace_rgb_profile_ekta_space_d50,
+    colourspace_rgb_profile_ntsc_c,
+    colourspace_rgb_profile_pal_secam_d65,
+    colourspace_rgb_profile_prophoto_d50,
+    colourspace_rgb_profile_smpte_c_d65,
+    colourspace_rgb_profile_srgb_d65,
+    colourspace_rgb_profile_wide_gamut_d50,
+    colourspace_rgb_profile_adobe_d50,
+    colourspace_rgb_profile_apple_d50,
+    colourspace_rgb_profile_bruce_d50,
+    colourspace_rgb_profile_cie_d50,
+    colourspace_rgb_profile_ntsc_d50,
+    colourspace_rgb_profile_pal_secam_d50,
+    colourspace_rgb_profile_smpte_c_d50,
+    colourspace_rgb_profile_srgb_d50};
+
 @interface T23Kit_ColourTests : XCTestCase
 
 @end
@@ -514,7 +540,7 @@ static pixel_t rgb_2_xyz_working_space_matrix_test_results[] = {
                        sizeof(rgb_2_xyz_working_space_matrix_test_results[0]);
 
   for (size_t i = 0; i < test_length; i++) {
-    RGB_2_XYZ(rgb, &xyz, (colourspace_rgb_profile)i);
+    RGB_2_XYZ(rgb, &xyz, rgb_workspace_options[i]);
 
     XCTAssertEqualWithAccuracy(xyz.a,
                                rgb_2_xyz_working_space_matrix_test_results[i].a,
