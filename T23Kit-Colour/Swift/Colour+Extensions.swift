@@ -36,6 +36,32 @@ func **= (inout left: Float, right: Float) {
   left = left ** right
 }
 
+infix operator -** { associativity left precedence 160 }
+func -** (left: Double, right: Double) -> Double {
+  return (0.0 <= left) ? pow(left, right) : -1.0 * pow(-1.0 * left, right)
+}
+
+func -** (left: CGFloat, right: CGFloat) -> CGFloat {
+  return (0.0 <= left) ? pow(left, right) : -1.0 * pow(-1.0 * left, right)
+}
+
+func -** (left: Float, right: Float) -> Float {
+  return (0.0 <= left) ? powf(left, right) : -1.0 * powf(-1.0 * left, right)
+}
+
+infix operator -**= { associativity right precedence 90 }
+func -**= (inout left: Double, right: Double) {
+  left = left -** right
+}
+
+func -**= (inout left: CGFloat, right: CGFloat) {
+  left = left -** right
+}
+
+func -**= (inout left: Float, right: Float) {
+  left = left -** right
+}
+
 extension CGFloat {
   var radians:CGFloat {
     get {

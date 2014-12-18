@@ -348,25 +348,20 @@ static inline void apply_working_space_matrix(pixel_t p, pixel_t m0, pixel_t m1,
 static inline colour_val_t colour_min(colour_val_t a, colour_val_t b,
                                       colour_val_t c) {
   colour_val_t m = a;
-  if (m > b)
-    m = b;
-  if (m > c)
-    m = c;
+  if (m > b) m = b;
+  if (m > c) m = c;
   return m;
 }
 
 static inline colour_val_t colour_max(colour_val_t a, colour_val_t b,
                                       colour_val_t c) {
   colour_val_t m = a;
-  if (m < b)
-    m = b;
-  if (m < c)
-    m = c;
+  if (m < b) m = b;
+  if (m < c) m = c;
   return m;
 }
 
 colour_val_t hue2rgb(colour_val_t v1, colour_val_t v2, colour_val_t vH) {
-
   if (0.0f > vH) {
     vH += 1.0f;
   }
@@ -407,7 +402,6 @@ void hsl2rgb(pixel_t hsl, pixel_t *rgb, colourspace_option_flags flags) {
   if (0.0f == hsl.b) {
     *r = *g = *b = 1.0f;
   } else {
-
     var_2 = (0.5f > hsl.c) ? hsl.c * (1.0f + hsl.b)
                            : (hsl.c + hsl.b) - (hsl.b * hsl.c);
 
@@ -456,36 +450,36 @@ void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb,
   t = v * (1.0f - s * (1.0f - f));
 
   switch (i) {
-  case 0:
-    *r = v;
-    *g = t;
-    *b = p;
-    break;
-  case 1:
-    *r = q;
-    *g = v;
-    *b = p;
-    break;
-  case 2:
-    *r = p;
-    *g = v;
-    *b = t;
-    break;
-  case 3:
-    *r = p;
-    *g = q;
-    *b = v;
-    break;
-  case 4:
-    *r = t;
-    *g = p;
-    *b = v;
-    break;
-  default:
-    *r = v;
-    *g = p;
-    *b = q;
-    break;
+    case 0:
+      *r = v;
+      *g = t;
+      *b = p;
+      break;
+    case 1:
+      *r = q;
+      *g = v;
+      *b = p;
+      break;
+    case 2:
+      *r = p;
+      *g = v;
+      *b = t;
+      break;
+    case 3:
+      *r = p;
+      *g = q;
+      *b = v;
+      break;
+    case 4:
+      *r = t;
+      *g = p;
+      *b = v;
+      break;
+    default:
+      *r = v;
+      *g = p;
+      *b = q;
+      break;
   }
   sanitize_rgb(rgb);
 }
@@ -517,36 +511,36 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
   t = v * (1.0f - s * (1.0f - f));
 
   switch (i) {
-  case 0:
-    *r = v;
-    *g = t;
-    *b = p;
-    break;
-  case 1:
-    *r = q;
-    *g = v;
-    *b = p;
-    break;
-  case 2:
-    *r = p;
-    *g = v;
-    *b = t;
-    break;
-  case 3:
-    *r = p;
-    *g = q;
-    *b = v;
-    break;
-  case 4:
-    *r = t;
-    *g = p;
-    *b = v;
-    break;
-  default:
-    *r = v;
-    *g = p;
-    *b = q;
-    break;
+    case 0:
+      *r = v;
+      *g = t;
+      *b = p;
+      break;
+    case 1:
+      *r = q;
+      *g = v;
+      *b = p;
+      break;
+    case 2:
+      *r = p;
+      *g = v;
+      *b = t;
+      break;
+    case 3:
+      *r = p;
+      *g = q;
+      *b = v;
+      break;
+    case 4:
+      *r = t;
+      *g = p;
+      *b = v;
+      break;
+    default:
+      *r = v;
+      *g = p;
+      *b = q;
+      break;
   }
   sanitize_rgb(rgb);
 }
@@ -598,20 +592,17 @@ void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb,
   b = &(rgb->c);
 
   if (0.0f <= h && (M_2PI / 3.0f) >= h) {
-
     *b = (1.0f / 3.0f) * (1.0f - s);
     *r = (1.0f / 3.0f) * ((s * cos(h)) / cos((M_2PI / 6.0f) - h));
     *g = 1.0f - ((*b) + (*r));
 
   } else if ((M_2PI / 3.0f) < h && ((2.0f * M_2PI) / 3.0f) >= h) {
-
     h -= (M_2PI / 3.0f);
     *r = (1.0f / 3.0f) * (1.0f - s);
     *g = (1.0f / 3.0f) * ((s * cos(h)) / cos((M_2PI / 6.0f) - h));
     *b = 1.0f - ((*g) + (*r));
 
   } else {
-
     h -= (2.0f * M_2PI / 3.0f);
     *g = (1.0f / 3.0f) * (1.0f - s);
     *b = (1.0f / 3.0f) * ((s * cos(h)) / cos((M_2PI / 6.0f) - h));
@@ -636,20 +627,17 @@ void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
   b = &(rgb->c);
 
   if (0.0f <= h && (M_2PI / 3.0f) >= h) {
-
     *b = (1.0f / 3.0f) * (1.0f - s);
     *r = (1.0f / 3.0f) * ((s * cosf(h)) / cosf((M_2PI / 6.0f) - h));
     *g = 1.0f - ((*b) + (*r));
 
   } else if ((M_2PI / 3.0f) < h && ((2.0f * M_2PI) / 3.0f) >= h) {
-
     h -= (M_2PI / 3.0f);
     *r = (1.0f / 3.0f) * (1.0f - s);
     *g = (1.0f / 3.0f) * ((s * cosf(h)) / cosf((M_2PI / 6.0f) - h));
     *b = 1.0f - ((*g) + (*r));
 
   } else {
-
     h -= (2.0f * M_2PI / 3.0f);
     *g = (1.0f / 3.0f) * (1.0f - s);
     *b = (1.0f / 3.0f) * ((s * cosf(h)) / cosf((M_2PI / 6.0f) - h));
@@ -714,9 +702,9 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
   g = &(rgb->b);
   b = &(rgb->c);
 
-  *r = 1.0f - (c + k);
-  *g = 1.0f - (m + k);
-  *b = 1.0f - (y + k);
+  *r = (1.0f - c) * (1.0f - k);
+  *g = (1.0f - m) * (1.0f - k);
+  *b = (1.0f - y) * (1.0f - k);
 
   sanitize_rgb(rgb);
 }
@@ -754,13 +742,11 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
   s_b = signbit(B) ? -1.0f : 1.0f;
 
   if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-
     R = neg_pow(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
     G = neg_pow(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
     B = neg_pow(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
 
   } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-
     R = (fabs(R) <= 0.0031308f)
             ? 12.92f * fabs(R)
             : 1.055f * neg_pow(fabs(R), (1.0f / 2.4f)) - 0.055f;
@@ -776,7 +762,6 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
     B *= s_b;
 
   } else {
-
     R = (fabs(R) <= (216.0f / 24389.0f))
             ? (fabs(R) * 24389.0f / 2700.0f)
             : (1.16f * neg_pow(fabs(R), 1.0f / 3.0f) - 0.16f);
@@ -832,13 +817,11 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
   s_b = signbit(B) ? -1.0f : 1.0f;
 
   if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-
     R = neg_powf(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
     G = neg_powf(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
     B = neg_powf(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
 
   } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-
     R = (fabsf(R) <= 0.0031308f)
             ? 12.92f * fabsf(R)
             : 1.055f * neg_powf(fabsf(R), (1.0f / 2.4f)) - 0.055f;
@@ -854,7 +837,6 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
     B *= s_b;
 
   } else {
-
     R = (fabsf(R) <= (216.0f / 24389.0f))
             ? (fabsf(R) * 24389.0f / 2700.0f)
             : (1.16f * neg_powf(fabsf(R), 1.0f / 3.0f) - 0.16f);
@@ -878,7 +860,6 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
 }
 
 void ryb2rgb(pixel_t ryb, pixel_t *rgb, colourspace_option_flags flags) {
-
   colour_val_t x0, x1, x2, x3, y0, y1, *r = NULL, *g = NULL, *b = NULL;
 
   r = &(rgb->a);
@@ -1068,7 +1049,6 @@ void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi,
     *h = 0.0f;
     *s = 0.0f;
   } else {
-
     *h = (max == r)
              ? fmod(((g - b) / delta), 6.0f)
              : (max == g) ? (b - r) / delta + 2.0f : (r - g) / delta + 4.0f;
@@ -1100,7 +1080,6 @@ void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
     *h = 0.0f;
     *s = 0.0f;
   } else {
-
     *h = (max == r)
              ? fmodf(((g - b) / delta), 6.0f)
              : (max == g) ? (b - r) / delta + 2.0f : (r - g) / delta + 4.0f;
@@ -1431,7 +1410,6 @@ void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
 
 void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
                          colourspace_option_flags flags) {
-
   lch_ab->a = lab.a;
 
   lch_ab->b = sqrt(pow(lab.b, 2.0f) + pow(lab.c, 2.0f));
@@ -1449,7 +1427,6 @@ void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
 
 void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
                         colourspace_option_flags flags) {
-
   lch_ab->a = lab.a;
 
   lch_ab->b = sqrtf(powf(lab.b, 2.0f) + powf(lab.c, 2.0f));
@@ -1594,13 +1571,11 @@ void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
           : COLOURSPACE_OPTION_RGB_PROFILE(flags);
 
   if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-
     p.a = neg_pow(p.a, rgb_model_gamma[rgb_model_idx]);
     p.b = neg_pow(p.b, rgb_model_gamma[rgb_model_idx]);
     p.c = neg_pow(p.c, rgb_model_gamma[rgb_model_idx]);
 
   } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-
     p.a = (fabs(p.a) <= 0.04045f)
               ? fabs(p.a) / 12.92f
               : neg_pow((fabs(p.a) + 0.055f) / 1.055f, 2.4f);
@@ -1616,7 +1591,6 @@ void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
     p.c *= s_b;
 
   } else {
-
     p.a =
         (fabs(p.a) <= 0.08f)
             ? (2700.0f * fabs(p.a) / 24389.0f)
@@ -1674,13 +1648,11 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
           : COLOURSPACE_OPTION_RGB_PROFILE(flags);
 
   if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-
     p.a = neg_powf(p.a, rgb_model_gamma[rgb_model_idx]);
     p.b = neg_powf(p.b, rgb_model_gamma[rgb_model_idx]);
     p.c = neg_powf(p.c, rgb_model_gamma[rgb_model_idx]);
 
   } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-
     p.a = (fabsf(p.a) <= 0.04045f)
               ? fabsf(p.a) / 12.92f
               : neg_powf((fabsf(p.a) + 0.055f) / 1.055f, 2.4f);
@@ -1696,7 +1668,6 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
     p.c *= s_b;
 
   } else {
-
     p.a = (fabsf(p.a) <= 0.08f)
               ? (2700.0f * fabsf(p.a) / 24389.0f)
               : ((((1000000.0f * fabsf(p.a) + 480000.0f) * fabsf(p.a) +
