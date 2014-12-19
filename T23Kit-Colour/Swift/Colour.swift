@@ -17,7 +17,7 @@ let κ:CGFloat = 7.787
 
 // MARK: - Enums
 
-enum CIE94 {
+public enum CIE94 {
   case graphics
   case textiles
 }
@@ -1062,3 +1062,176 @@ struct Matrices {
                                                   _20: 0.0719453,   _21: -0.2289914,  _22: 1.4052427)]
     ]
 }
+
+// MARK: - Colour Distance Functions
+
+public func cie76(lhs: LAB, rhs: LAB) -> CGFloat {
+  return sqrt(((lhs.l - rhs.l) ** 2.0) + ((lhs.a - rhs.a) ** 2.0) + ((lhs.b - rhs.b) ** 2.0))
+}
+
+public func cmc1984(lhs: LAB, rhs: LAB, l: CGFloat, c: CGFloat) -> CGFloat {
+  
+  let L_d:CGFloat = (lhs.l - rhs.l)
+  
+  let C_1:CGFloat = sqrt((lhs.a ** 2.0) + (lhs.b ** 2.0))
+  let C_2:CGFloat = sqrt((rhs.a ** 2.0) + (rhs.b ** 2.0))
+  let C_d:CGFloat = (C_1 - C_2)
+  
+  let H_d_ab2:CGFloat =
+    ((lhs.a - rhs.a) ** 2.0) + ((lhs.b - rhs.b) ** 2.0) - (C_d ** 2.0)
+  
+  let F:CGFloat = sqrt((C_1 ** 4.0) / ((C_1 ** 4.0) + 1900.0))
+  
+  let S_L:CGFloat = (16.0 <= lhs.l)
+                      ? (lhs.l * 0.040975) / (1.0 + (lhs.l * 0.01765))
+                      : 0.511
+  
+  let S_C:CGFloat = ((C_1 * 0.0638) / (1.0 + (C_1 * 0.0131))) + 0.638
+  
+  var H_1:CGFloat = atan2(lhs.b, lhs.a).degrees
+  while H_1 < 0.0 {
+    H_1 += M_2PI.degrees
+  }
+  while H_1 > M_2PI.degrees {
+    H_1 -= M_2PI.degrees
+  }
+  
+  let T:CGFloat = (164.0 <= H_1 && 345.0 >= H_1)
+                    ? 0.56 + abs(0.2 * cos((H_1 + 168.0).radians))
+                    : 0.36 + abs(0.4 * cos((H_1 + 35.0).radians))
+  
+  let S_H:CGFloat = S_C * (F * T + 1.0 - F)
+  
+  /*
+   * Commonly used values are 2:1 for acceptability and 1:1 for the threshold
+   * of imperceptibility.
+   */
+  
+  return sqrt(((L_d / (l * S_L)) ** 2.0) + ((C_d / (c * S_C)) ** 2.0) + (H_d_ab2 / (S_H ** 2.0)))
+}
+
+public func cie94(lhs: LAB, rhs: LAB, media: CIE94) -> CGFloat {
+  let L_d:CGFloat = (lhs.l - rhs.l)
+  
+  let C_1:CGFloat = sqrt((lhs.a ** 2.0) + (lhs.b ** 2.0))
+  let C_2:CGFloat = sqrt((rhs.a ** 2.0) + (rhs.b ** 2.0))
+  let C_d:CGFloat = (C_1 - C_2)
+  
+  let D_H_ab2:CGFloat = (((lhs.a - rhs.a) ** 2.0) + ((lhs.b - rhs.b) ** 2.0) - (C_d ** 2.0))
+  
+  let K_L:CGFloat = (.textiles != media) ? 1.0 : 2.0
+  let K_C:CGFloat = 1.0
+  let K_H:CGFloat = K_C
+  
+  let K_1:CGFloat = (.textiles != media) ? 0.045 : 0.048
+  let K_2:CGFloat = (.textiles != media) ? 0.015 : 0.014
+  
+  let S_L:CGFloat = 1.0
+  let S_C:CGFloat = 1.0 + (K_1 * C_1)
+  let S_H:CGFloat = 1.0 + (K_2 * C_1)
+  
+  let term0:CGFloat = ((L_d / (K_L * S_L)) ** 2.0)
+  let term1:CGFloat = ((C_d / (K_C * S_C)) ** 2.0)
+  let term2:CGFloat = (D_H_ab2 / ((K_H ** 2.0) * (S_H ** 2.0)))
+  
+  return sqrt(term0 + term1 + term2)
+}
+
+public func ciede2000(lhs: LAB, rhs: LAB, kl: CGFloat, kc: CGFloat, kh: CGFloat) -> CGFloat {
+  /* Calculate C_i_p, h_i_p */
+  
+  let C_1_s:CGFloat = sqrt((lhs.a ** 2.0) + (lhs.b ** 2.0))
+  let C_2_s:CGFloat = sqrt((rhs.a ** 2.0) + (rhs.b ** 2.0))
+  let C_sb_p:CGFloat = (C_1_s + C_2_s) / 2.0
+  
+  let G:CGFloat = 0.5 * (1.0 - sqrt((C_sb_p ** 7.0) / ((C_sb_p ** 7.0) + (25.0 ** 7.0))))
+  
+  let a_1_p:CGFloat = lhs.a + (G * lhs.a)
+  let a_2_p:CGFloat = rhs.a + (G * rhs.a)
+  
+  let C_1_p:CGFloat = sqrt((a_1_p ** 2.0) + (lhs.b ** 2.0))
+  let C_2_p:CGFloat = sqrt((a_2_p ** 2.0) + (rhs.b ** 2.0))
+  
+  /* Apparently you must work in degrees from here on out? */
+  var h_1_p:CGFloat = (0.0 == C_1_p) ? 0.0 : atan2(lhs.b, a_1_p).degrees
+  while h_1_p < 0.0 {
+    h_1_p += M_2PI.degrees
+  }
+  while (h_1_p > M_2PI.degrees) {
+    h_1_p -= M_2PI.degrees
+  }
+  
+  var h_2_p:CGFloat = (0.0 == C_2_p) ? 0.0 : atan2(rhs.b, a_2_p).degrees
+  while h_2_p < 0.0 {
+    h_2_p += M_2PI.degrees
+  }
+  while h_2_p > M_2PI.degrees {
+    h_2_p -= M_2PI.degrees
+  }
+  
+  /* Calculate L_d_p, C_d_p, and H_d_p */
+  
+  let L_d_p:CGFloat = (rhs.l - lhs.l)
+  let C_d_p:CGFloat = (C_2_p - C_1_p)
+  
+  var h_d_p:CGFloat = 0.0
+  if 0.0 != (C_1_p * C_2_p) {
+    h_d_p = (180.0 >= abs(h_2_p - h_1_p))
+      ? (h_2_p - h_1_p)
+      : (180.0 < (h_2_p - h_1_p))
+        ? ((h_2_p - h_1_p) - M_2PI.degrees)
+        : (-180.0 > (h_2_p - h_1_p))
+          ? ((h_2_p - h_1_p) + M_2PI.degrees)
+          : 0.0
+  }
+  
+  let H_d_p:CGFloat = 2.0 * sqrt(C_1_p * C_2_p) * sin((h_d_p / 2.0).radians)
+  
+  /* Calculate CIEDE2000 Color-Difference E_d_00 */
+  
+  let L_b_p:CGFloat = (lhs.l + rhs.l) / 2.0
+  let C_b_p:CGFloat = (C_1_p + C_2_p) / 2.0
+  
+  let h_d_p_abs:CGFloat = abs(h_1_p - h_2_p)
+  let h_d_p_sum:CGFloat = (h_1_p + h_2_p)
+  
+  var h_b_p:CGFloat = h_d_p_sum
+  if (0.0 != (C_1_p * C_2_p)) {
+    h_b_p = (180.0 >= h_d_p_abs)
+              ? (h_d_p_sum / 2.0)
+              : ((180.0 < h_d_p_abs) && (M_2PI.degrees > h_d_p_sum))
+                ? ((h_d_p_sum + M_2PI.degrees) / 2.0)
+                : ((180.0 < h_d_p_abs) && (M_2PI.degrees <= h_d_p_sum))
+                  ? ((h_d_p_sum - M_2PI.degrees) / 2.0)
+                  : CGFloat.NaN
+  }
+  
+  let t0:CGFloat = (0.17 * cos((h_b_p - 30.0).radians))
+  let t1:CGFloat = (0.24 * cos((2.0 * h_b_p).radians))
+  let t2:CGFloat = (0.32 * cos(((3.0 * h_b_p) + 6.0).radians))
+  let t3:CGFloat = (0.20 * cos(((4.0 * h_b_p) - 63.0).radians))
+  let T:CGFloat = 1.0 - t0 + t1 + t2 - t3
+  
+  let T_d:CGFloat = 30.0 * exp(-1.0 * (((h_b_p - 275.0) / 25.0) ** 2.0))
+  
+  let R_C:CGFloat = 2.0 * sqrt((C_b_p ** 7.0) / (((C_b_p ** 7.0) + (25.0 ** 7.0))))
+  
+  let S_L = 1.0 + ((0.015 * ((L_b_p - 50.0) ** 2.0)) / sqrt(20.0 + ((L_b_p - 50.0) ** 2.0)))
+  
+  let S_C:CGFloat = 1.0 + (0.045 * C_b_p)
+  
+  let S_H:CGFloat = 1.0 + (0.015 * C_b_p * T)
+  
+  let R_T:CGFloat = -1.0 * sin((2.0 * T_d).radians) * R_C
+  
+  let L_term:CGFloat = ((L_d_p / (kl * S_L)) ** 2.0)
+  
+  let C_term:CGFloat = ((C_d_p / (kc * S_C)) ** 2.0)
+  
+  let H_term:CGFloat = ((H_d_p / (kh * S_H)) ** 2.0)
+  
+  let R_term:CGFloat = R_T * (C_d_p / (kc * S_C)) * (H_d_p / (kh * S_H))
+  
+  return sqrt(L_term + C_term + H_term + R_term)
+}
+
