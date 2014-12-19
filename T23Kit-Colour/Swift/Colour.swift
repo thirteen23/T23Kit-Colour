@@ -22,7 +22,7 @@ enum CIE94 {
   case textiles
 }
 
-enum RGBWorkingSpace: String {
+public enum RGBWorkingSpace: String {
   case AdobeD65 = "AdobeD65"
   case AppleD65 = "AppleD65"
   case BestD50 = "BestD50"
@@ -108,7 +108,7 @@ enum RGBWorkingSpace: String {
   }
 }
 
-enum ReferenceWhite: String {
+public enum ReferenceWhite: String {
   case A = "A"
   case B = "B"
   case C = "C"
@@ -149,10 +149,18 @@ struct RGBWorkingSpaceMatrix {
   }
 }
 
-struct RGB {
-  var r:CGFloat = 0.0
-  var g:CGFloat = 0.0
-  var b:CGFloat = 0.0
+public struct RGB {
+  public var r:CGFloat = 0.0
+  public var g:CGFloat = 0.0
+  public var b:CGFloat = 0.0
+  
+  public init() {}
+  
+  public init(r: CGFloat, g: CGFloat, b: CGFloat) {
+    self.r = r
+    self.g = g
+    self.b = b
+  }
   
   mutating func sanitize() -> RGB {
     self.r = 0 != signbit(self.r) ? self.r * -1.0 : self.r
@@ -165,11 +173,84 @@ struct RGB {
     return self
   }
   
-  func toXYZ(rgbSpace: RGBWorkingSpace) -> XYZ {
+  public func toCMYK() -> CMYK {
+    var cmyk:CMYK = CMYK()
+    
+    var m:CGFloat = max(max(self.r, self.g), self.b)
+    
+    cmyk.k = 1.0 - m
+    cmyk.c = (1.0 - self.r - cmyk.k) / (1.0 - cmyk.k)
+    cmyk.m = (1.0 - self.g - cmyk.k) / (1.0 - cmyk.k)
+    cmyk.y = (1.0 - self.b - cmyk.k) / (1.0 - cmyk.k)
+    
+    return cmyk
+  }
+  
+  public func toHSL() -> HSL {
+    var hsl:HSL = HSL()
+    
+    let mn:CGFloat = min(min(self.r, self.g), self.b)
+    let mx:CGFloat = max(max(self.r, self.g), self.b)
+    let delta:CGFloat = mx - mn
+    
+    hsl.l = (mx + mn) / 2.0
+    
+    if 0.0 == mx {
+      hsl.h = 0.0
+      hsl.s = 0.0
+    } else {
+      hsl.s = (0.5 > hsl.l) ? delta / (mx + mn) : delta / (2.0 - mx - mn)
+      
+      let dr:CGFloat = (((mx - self.r) / 6.0) + (delta / 2.0)) / delta
+      let dg:CGFloat = (((mx - self.g) / 6.0) + (delta / 2.0)) / delta
+      let db:CGFloat = (((mx - self.b) / 6.0) + (delta / 2.0)) / delta
+      
+      if self.r == mx {
+        hsl.h = db - dg
+      } else if self.g == mx {
+        hsl.h = (1.0 / 3.0) + dr - db
+      } else if self.b == mx {
+        hsl.h = (2.0 / 3.0) + dg - dr
+      }
+      
+      hsl.h = (0.0 > hsl.h) ? hsl.h + 1.0 : (1.0 < hsl.h) ? hsl.h - 1.0 : hsl.h
+    }
+    
+    return hsl
+  }
+  
+  public func toHSI() -> HSI {
+    var hsi:HSI = HSI()
+    
+    let mn:CGFloat = min(min(self.r, self.g), self.b)
+    let mx:CGFloat = max(max(self.r, self.g), self.b)
+    let delta:CGFloat = mx - mn
+    
+    hsi.i = (1.0 / 3.0) * (self.r + self.b + self.g)
+    if 0.0 == delta {
+      hsi.h = 0.0
+      hsi.s = 0.0
+    } else {
+      hsi.h = (mx == self.r)
+        ? fmod(((self.g - self.b) / delta), 6.0)
+        : (mx == self.g)
+          ? (self.b - self.r) / delta + 2.0
+          : (self.r - self.g) / delta + 4.0
+      
+      hsi.h *= 60.0
+      hsi.h = hsi.h.radians / M_2PI
+      hsi.h = (0.0 > hsi.h) ? hsi.h + 1.0 : (1.0 < hsi.h) ? hsi.h - 1.0 : hsi.h
+      hsi.s = 1.0 - (mn / (hsi.i))
+    }
+    
+    return hsi
+  }
+  
+  public func toXYZ(rgbSpace: RGBWorkingSpace) -> XYZ {
     var xyz:XYZ = XYZ()
     
     let workingMatrix:[RGBWorkingSpaceMatrix] = Matrices.WorkingMatrices[rgbSpace]!
-    let matrix = workingMatrix.first!
+    let matrix:RGBWorkingSpaceMatrix = workingMatrix.first!
     let gamma:CGFloat = Gamma.RGB[rgbSpace]!
     
     xyz.x = self.r
@@ -180,14 +261,14 @@ struct RGB {
     let sG:CGFloat = 0 != signbit(xyz.y) ? -1.0 : 1.0
     let sB:CGFloat = 0 != signbit(xyz.z) ? -1.0 : 1.0
     
-    if 0.0 > gamma {
+    if 0.0 < gamma {
       xyz.x -**= gamma
       xyz.y -**= gamma
       xyz.z -**= gamma
     } else if 0.0 > gamma {
       
       func translate(xyz: CGFloat) -> CGFloat {
-        return (abs(xyz) <= 0.04045) ? abs(xyz) / 12.92 : ((abs(xyz) + 0.055) / 1.055) -** 2.4
+        return (0.04045 >= fabs(xyz)) ? fabs(xyz) / 12.92 : ((fabs(xyz) + 0.055) / 1.055) -** 2.4
       }
       
       xyz.x = translate(xyz.x)
@@ -200,9 +281,9 @@ struct RGB {
     } else {
       
       func translate(xyz: CGFloat) -> CGFloat {
-        let lte:CGFloat = (2700.0 * abs(xyz) / 24389.0)
-        let gt:CGFloat =  ((((1000000.0 * abs(xyz) + 480000.0) * abs(xyz) + 76800.0) * abs(xyz) + 4096.0) / 1560896.0)
-        return (abs(xyz) <= 0.08) ? lte : gt
+        let lte:CGFloat = (2700.0 * fabs(xyz) / 24389.0)
+        let gt:CGFloat =  ((((1000000.0 * fabs(xyz) + 480000.0) * fabs(xyz) + 76800.0) * fabs(xyz) + 4096.0) / 1560896.0)
+        return (0.08 >= fabs(xyz)) ? lte : gt
       }
       
       xyz.x = translate(xyz.x)
@@ -214,7 +295,11 @@ struct RGB {
       xyz.z *= sB
     }
     
-    let apply = matrix.applyWorkingSpace(xyz.x * 100.0, yg: xyz.y * 100.0, zb: xyz.z * 100.0)
+    xyz.x *= 100.0
+    xyz.y *= 100.0
+    xyz.z *= 100.0
+    
+    let apply = matrix.applyWorkingSpace(xyz.x, yg: xyz.y, zb: xyz.z)
     
     xyz.x = apply.xr
     xyz.y = apply.yg
@@ -222,20 +307,105 @@ struct RGB {
     
     return xyz
   }
+  
+  public func toHLAB(rgbSpace: RGBWorkingSpace) -> HLAB {
+    return self.toXYZ(rgbSpace).toHLAB()
+  }
+  
+  public func toLAB(rgbSpace: RGBWorkingSpace) -> LAB {
+    return self.toXYZ(rgbSpace).toLAB(rgbSpace.referenceWhite)
+  }
+  
+  public func toLUV(rgbSpace: RGBWorkingSpace) -> LUV {
+    return self.toXYZ(rgbSpace).toLUV(rgbSpace.referenceWhite)
+  }
+  
+  public func toLCHab(rgbSpace: RGBWorkingSpace) -> LCHab {
+    return self.toXYZ(rgbSpace).toLAB(rgbSpace.referenceWhite).toLCHab()
+  }
+  
+  public func toLCHuv(rgbSpace: RGBWorkingSpace) -> LCHuv {
+    return self.toXYZ(rgbSpace).toLUV(rgbSpace.referenceWhite).toLCHuv()
+  }
 }
 
-struct XYZ {
-  var x:CGFloat = 0.0
-  var y:CGFloat = 0.0
-  var z:CGFloat = 0.0
+public struct XYZ {
+  public var x:CGFloat = 0.0
+  public var y:CGFloat = 0.0
+  public var z:CGFloat = 0.0
   
-  func toRGB(rgbSpace: RGBWorkingSpace) -> RGB {
+  public init() {}
+  
+  public init(x: CGFloat, y: CGFloat, z: CGFloat) {
+    self.x = x
+    self.y = y
+    self.z = z
+  }
+  
+  public func toHLAB() -> HLAB {
+    var hlab:HLAB = HLAB()
+    
+    hlab.l = 10.0 * sqrt(self.y)
+    hlab.a = 17.5 * (((1.02 * self.x) - self.y) / sqrt(self.y))
+    hlab.b = 7.0 * ((self.y - (0.847 * self.z)) / sqrt(self.y))
+    
+    return hlab
+  }
+  
+  public func toLAB(refWhite: ReferenceWhite) -> LAB {
+    var lab:LAB = LAB()
+    
+    let matrix:ReferenceWhiteMatrix = Matrices.ReferenceWhiteMatrices[refWhite]!
+    
+    var X:CGFloat = self.x / (matrix.Xw * 100.0)
+    var Y:CGFloat = self.y / (matrix.Yw * 100.0)
+    var Z:CGFloat = self.z / (matrix.Zw * 100.0)
+    
+    X = (X > ɛ) ? X ** (1.0 / 3.0) : (κ * X) + (16.0 / 116.0)
+    Y = (Y > ɛ) ? Y ** (1.0 / 3.0) : (κ * Y) + (16.0 / 116.0)
+    Z = (Z > ɛ) ? Z ** (1.0 / 3.0) : (κ * Z) + (16.0 / 116.0)
+    
+    lab.l = (116.0 * Y) - 16.0
+    lab.a = 500.0 * (X - Y)
+    lab.b = 200.0 * (Y - Z)
+    
+    return lab
+  }
+  
+  public func toLUV(refWhite: ReferenceWhite) -> LUV {
+    var luv:LUV = LUV()
+    
+    let matrix:ReferenceWhiteMatrix = Matrices.ReferenceWhiteMatrices[refWhite]!
+    
+    luv.u = (4.0 * self.x) / (self.x + (15.0 * self.y) + (3.0 * self.z))
+    luv.v = (9.0 * self.y) / (self.x + (15.0 * self.y) + (3.0 * self.z))
+    
+    luv.l = self.y / 100.0
+    luv.l = (ɛ < luv.l) ? luv.l ** (1.0 / 3.0) : (κ * luv.l) + (16.0 / 116.0)
+    
+    var refU:CGFloat = (4.0 * (matrix.Xw * 100.0)) /
+      ((matrix.Xw * 100.0) +
+        (15.0 * (matrix.Yw * 100.0)) +
+        (3.0 * (matrix.Zw * 100.0)))
+    var refV:CGFloat = (9.0 * (matrix.Yw * 100.0)) /
+      ((matrix.Xw * 100.0) +
+        (15.0 * (matrix.Yw * 100.0)) +
+        (3.0 * (matrix.Zw * 100.0)))
+    
+    luv.l = (116.0 * luv.l) - 16.0
+    luv.u = 13.0 * luv.l * (luv.u - refU)
+    luv.v = 13.0 * luv.l * (luv.v - refV)
+    
+    return luv
+  }
+  
+  public func toRGB(rgbSpace: RGBWorkingSpace) -> RGB {
     var rgb:RGB = RGB()
     
     /*
-     * We want all these impliclty unwrapped optionals to crash immediately because it means
-     * that we have messed up our matrices somehow.
-     */
+    * We want all these impliclty unwrapped optionals to crash immediately because it means
+    * that we have messed up our matrices somehow.
+    */
     let workingMatrix:[RGBWorkingSpaceMatrix] = Matrices.WorkingMatrices[rgbSpace]!
     let matrix = workingMatrix.last!
     let gamma:CGFloat = Gamma.RGB[rgbSpace]!
@@ -245,7 +415,7 @@ struct XYZ {
     rgb.r = apply.xr
     rgb.g = apply.yg
     rgb.b = apply.zb
-
+    
     let sR:CGFloat = 0 != signbit(rgb.r) ? -1.0 : 1.0
     let sG:CGFloat = 0 != signbit(rgb.g) ? -1.0 : 1.0
     let sB:CGFloat = 0 != signbit(rgb.b) ? -1.0 : 1.0
@@ -287,34 +457,22 @@ struct XYZ {
     return rgb.sanitize()
   }
   
-  func toLAB(refWhite: ReferenceWhite) -> LAB {
-    var lab:LAB = LAB()
-    
-    let matrix:ReferenceWhiteMatrix = Matrices.ReferenceWhiteMatrices[refWhite]!
-    
-    var X:CGFloat = self.x / (matrix.Xw * 100.0)
-    var Y:CGFloat = self.y / (matrix.Yw * 100.0)
-    var Z:CGFloat = self.z / (matrix.Zw * 100.0)
-    
-    X = (X > ɛ) ? X ** (1.0 / 3.0) : (κ * X) + (16.0 / 116.0)
-    Y = (Y > ɛ) ? Y ** (1.0 / 3.0) : (κ * Y) + (16.0 / 116.0)
-    Z = (Z > ɛ) ? Z ** (1.0 / 3.0) : (κ * Z) + (16.0 / 116.0)
-    
-    lab.l = (116.0 * Y) - 16.0
-    lab.a = 500.0 * (X - Y)
-    lab.b = 200.0 * (Y - Z)
-    
-    return lab
-  }
-  
 }
 
-struct RYB {
-  var r:CGFloat = 0.0
-  var y:CGFloat = 0.0
-  var b:CGFloat = 0.0
+public struct RYB {
+  public var r:CGFloat = 0.0
+  public var y:CGFloat = 0.0
+  public var b:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(r: CGFloat, y: CGFloat, b: CGFloat) {
+    self.r = r
+    self.y = y
+    self.b = b
+  }
+  
+  public func toRGB() -> RGB {
     var rgb:RGB = RGB()
     
     func cubicInterpolation(t: CGFloat, a: CGFloat, b: CGFloat) -> CGFloat {
@@ -349,12 +507,20 @@ struct RYB {
   }
 }
 
-struct HSL {
-  var h:CGFloat = 0.0
-  var s:CGFloat = 0.0
-  var l:CGFloat = 0.0
+public struct HSL {
+  public var h:CGFloat = 0.0
+  public var s:CGFloat = 0.0
+  public var l:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(h: CGFloat, s: CGFloat, l: CGFloat) {
+    self.h = h
+    self.s = s
+    self.l = l
+  }
+  
+  public func toRGB() -> RGB {
     var rgb:RGB = RGB(r: 1.0, g: 1.0, b: 1.0)
     
     func hue2rgb(v1: CGFloat, v2: CGFloat, H: CGFloat) -> CGFloat {
@@ -391,12 +557,20 @@ struct HSL {
   }
 }
 
-struct HSV {
-  var h:CGFloat = 0.0
-  var s:CGFloat = 0.0
-  var v:CGFloat = 0.0
+public struct HSV {
+  public var h:CGFloat = 0.0
+  public var s:CGFloat = 0.0
+  public var v:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(h: CGFloat, s: CGFloat, v: CGFloat) {
+    self.h = h
+    self.s = s
+    self.v = v
+  }
+  
+  public func toRGB() -> RGB {
     var rgb:RGB = RGB()
     
     let h:CGFloat = (self.h * CGFloat(M_2PI)).degrees
@@ -437,32 +611,56 @@ struct HSV {
   }
 }
 
-struct LCHab {
-  var l:CGFloat = 0.0
-  var c:CGFloat = 0.0
-  var h:CGFloat = 0.0
+public struct LCHab {
+  public var l:CGFloat = 0.0
+  public var c:CGFloat = 0.0
+  public var h:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(l: CGFloat, c: CGFloat, h: CGFloat) {
+    self.l = l
+    self.c = c
+    self.h = h
+  }
+  
+  public func toRGB() -> RGB {
     return RGB()
   }
 }
 
-struct LCHuv {
-  var l:CGFloat = 0.0
-  var c:CGFloat = 0.0
-  var h:CGFloat = 0.0
+public struct LCHuv {
+  public var l:CGFloat = 0.0
+  public var c:CGFloat = 0.0
+  public var h:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(l: CGFloat, c: CGFloat, h: CGFloat) {
+    self.l = l
+    self.c = c
+    self.h = h
+  }
+  
+  public func toRGB() -> RGB {
     return RGB()
   }
 }
 
-struct HSI {
-  var h:CGFloat = 0.0
-  var s:CGFloat = 0.0
-  var i:CGFloat = 0.0
+public struct HSI {
+  public var h:CGFloat = 0.0
+  public var s:CGFloat = 0.0
+  public var i:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(h: CGFloat, s: CGFloat, i: CGFloat) {
+    self.h = h
+    self.s = s
+    self.i = i
+  }
+  
+  public func toRGB() -> RGB {
     var rgb:RGB = RGB()
     
     if 0.0 <= self.h && (M_2PI / 3.0) >= self.h {
@@ -485,12 +683,20 @@ struct HSI {
   }
 }
 
-struct HLAB {
-  var l:CGFloat = 0.0
-  var a:CGFloat = 0.0
-  var b:CGFloat = 0.0
+public struct HLAB {
+  public var l:CGFloat = 0.0
+  public var a:CGFloat = 0.0
+  public var b:CGFloat = 0.0
   
-  func toXYZ() -> XYZ {
+  public init() {}
+  
+  public init(l: CGFloat, a: CGFloat, b: CGFloat) {
+    self.l = l
+    self.a = a
+    self.b = b
+  }
+  
+  public func toXYZ() -> XYZ {
     var xyz:XYZ = XYZ()
     
     xyz.y = self.l / 10.0
@@ -505,12 +711,20 @@ struct HLAB {
   }
 }
 
-struct LAB {
-  var l:CGFloat = 0.0
-  var a:CGFloat = 0.0
-  var b:CGFloat = 0.0
+public struct LAB {
+  public var l:CGFloat = 0.0
+  public var a:CGFloat = 0.0
+  public var b:CGFloat = 0.0
   
-  func toXYZ(refWhite: ReferenceWhite) -> XYZ {
+  public init() {}
+  
+  public init(l: CGFloat, a: CGFloat, b: CGFloat) {
+    self.l = l
+    self.a = a
+    self.b = b
+  }
+  
+  public func toXYZ(refWhite: ReferenceWhite) -> XYZ {
     var xyz:XYZ = XYZ()
     
     let matrix:ReferenceWhiteMatrix = Matrices.ReferenceWhiteMatrices[refWhite]!
@@ -530,30 +744,93 @@ struct LAB {
     return xyz
   }
   
-  func toRGB(rgbSpace: RGBWorkingSpace) -> RGB {
+  public func toLCHab() -> LCHab {
+    var lch:LCHab = LCHab()
+    
+    lch.l = self.l
+    lch.c = sqrt((self.a ** 2.0) + (self.b ** 2.0))
+    lch.h = atan2(self.b, self.a).degrees
+    
+    while 0.0 > lch.h {
+      lch.h += M_2PI.degrees
+    }
+    while M_2PI.degrees < lch.h {
+      lch.h -= M_2PI.degrees
+    }
+    
+    lch.h /= M_2PI.degrees
+    
+    return lch
+  }
+  
+  public func toRGB(rgbSpace: RGBWorkingSpace) -> RGB {
     return self.toXYZ(rgbSpace.referenceWhite).toRGB(rgbSpace)
   }
 }
 
-struct LUV {
-  var l:CGFloat = 0.0
-  var u:CGFloat = 0.0
-  var v:CGFloat = 0.0
-}
-
-struct XYY {
-  var x:CGFloat = 0.0
-  var y:CGFloat = 0.0
-  var Y:CGFloat = 0.0
-}
-
-struct CMYK {
-  var c:CGFloat = 0.0
-  var m:CGFloat = 0.0
-  var y:CGFloat = 0.0
-  var k:CGFloat = 0.0
+public struct LUV {
+  public var l:CGFloat = 0.0
+  public var u:CGFloat = 0.0
+  public var v:CGFloat = 0.0
   
-  func toRGB() -> RGB {
+  public init() {}
+  
+  public init(l: CGFloat, u: CGFloat, v: CGFloat) {
+    self.l = l
+    self.u = u
+    self.v = v
+  }
+  
+  public func toLCHuv() -> LCHuv {
+    var lch:LCHuv = LCHuv()
+    
+    lch.l = self.l
+    lch.c = sqrt((self.u ** 2.0) + (self.v ** 2.0))
+    lch.h = atan2(self.v, self.u).degrees
+    
+    while 0.0 > lch.h {
+      lch.h += M_2PI.degrees
+    }
+    while M_2PI.degrees < lch.h {
+      lch.h -= M_2PI.degrees
+    }
+    
+    lch.h /= M_2PI.degrees
+    
+    return lch
+  }
+}
+
+public struct XYY {
+  public var x:CGFloat = 0.0
+  public var y:CGFloat = 0.0
+  public var Y:CGFloat = 0.0
+  
+  public init() {}
+  
+  public init(x: CGFloat, y: CGFloat, Y: CGFloat) {
+    self.x = x
+    self.y = y
+    self.Y = Y
+  }
+}
+
+public struct CMYK {
+  public var c:CGFloat = 0.0
+  public var m:CGFloat = 0.0
+  public var y:CGFloat = 0.0
+  public var k:CGFloat = 0.0
+  
+  public init() {}
+  
+  public init(c: CGFloat, m: CGFloat, y: CGFloat, k: CGFloat) {
+    self.c = c
+    self.m = m
+    self.y = y
+    self.k = k
+  }
+  
+  public func toRGB() -> RGB {
     var rgb:RGB = RGB()
     
     rgb.r = (1.0 - self.c) * (1.0 - self.k)
