@@ -405,87 +405,52 @@ static colour_val_t rgb_workspace_options[] = {
 
     [testColor getLStar:&x aStar:&y bStar:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, LAB_TEST[i].a, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(y, LAB_TEST[i].b, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(z, LAB_TEST[i].c, 0.001, @"Failed test:
-    %lu", i);
+    XCTAssertEqualWithAccuracy(x, LAB_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, LAB_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, LAB_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getLStar:&x uStar:&y vStar:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, LUV_TEST[i].a, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(y, LUV_TEST[i].b, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(z, LUV_TEST[i].c, 0.001, @"Failed test:
-    %lu", i);
+    XCTAssertEqualWithAccuracy(x, LUV_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, LUV_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, LUV_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getLStar:&x cStar:&y hStarAB:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, LCH_AB_TEST[i].a, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(y, LCH_AB_TEST[i].b, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(z, LCH_AB_TEST[i].c, 0.001, @"Failed test:
-    %lu",
-                               i);
+    XCTAssertEqualWithAccuracy(x, LCH_AB_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, LCH_AB_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, LCH_AB_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getLStar:&x cStar:&y hStarUV:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, LCH_UV_TEST[i].a, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(y, LCH_UV_TEST[i].b, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(z, LCH_UV_TEST[i].c, 0.001, @"Failed test:
-    %lu",
-                               i);
+    XCTAssertEqualWithAccuracy(x, LCH_UV_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, LCH_UV_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, LCH_UV_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getCyan:&x magenta:&y yellow:&z black:&k alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, CMYK_TEST[i].a, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(y, CMYK_TEST[i].b, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(z, CMYK_TEST[i].c, 0.001, @"Failed test:
-    %lu",
-                               i);
-    XCTAssertEqualWithAccuracy(k, CMYK_TEST[i].d, 0.001, @"Failed test:
-    %lu",
-                               i);
+    XCTAssertEqualWithAccuracy(x, CMYK_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, CMYK_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, CMYK_TEST[i].c, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(k, CMYK_TEST[i].d, 0.001, @"Failed test: %lu", i);
 
     [testColor getX:&x Y:&y Z:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, XYZ_TEST[i].a, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(y, XYZ_TEST[i].b, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(z, XYZ_TEST[i].c, 0.001, @"Failed test:
-    %lu", i);
+    XCTAssertEqualWithAccuracy(x, XYZ_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, XYZ_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, XYZ_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getHue:&x saturation:&y lightness:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, HSL_TEST[i].a, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(y, HSL_TEST[i].b, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(z, HSL_TEST[i].c, 0.001, @"Failed test:
-    %lu", i);
+    XCTAssertEqualWithAccuracy(x, HSL_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, HSL_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, HSL_TEST[i].c, 0.001, @"Failed test: %lu", i);
 
     [testColor getHue:&x saturation:&y intensity:&z alpha:&a];
 
-    XCTAssertEqualWithAccuracy(x, HSI_TEST[i].a, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(y, HSI_TEST[i].b, 0.001, @"Failed test:
-    %lu", i);
-    XCTAssertEqualWithAccuracy(z, HSI_TEST[i].c, 0.001, @"Failed test:
-    %lu", i);
+    XCTAssertEqualWithAccuracy(x, HSI_TEST[i].a, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(y, HSI_TEST[i].b, 0.001, @"Failed test: %lu", i);
+    XCTAssertEqualWithAccuracy(z, HSI_TEST[i].c, 0.001, @"Failed test: %lu", i);
   }
 }
 
