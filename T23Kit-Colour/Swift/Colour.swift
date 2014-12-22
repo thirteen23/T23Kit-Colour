@@ -10,6 +10,303 @@ import UIKit
 import Foundation
 import Darwin
 
+// MARK: - UIColor Extensions
+
+extension UIColor {
+  
+  convenience init(red: CGFloat, yellow: CGFloat, blue: CGFloat, alpha: CGFloat) {
+    
+    let ryb:RYB = RYB(r: red, y: yellow, b: blue)
+    let rgb:RGB = ryb.toRGB()
+    
+    self.init(red: rgb.r, green: rgb.g, blue: rgb.b, alpha: alpha)
+  }
+  
+  var hue:CGFloat {
+    get {
+      return self.getHSB().h
+    }
+  }
+  
+  var saturation:CGFloat {
+    get {
+      return self.getHSB().s
+    }
+  }
+  
+  var brightness:CGFloat {
+    get {
+      return self.getHSB().b
+    }
+  }
+  
+  var red:CGFloat {
+    get {
+      return self.getRGB().r
+    }
+  }
+  
+  var green:CGFloat {
+    get {
+      return self.getRGB().g
+    }
+  }
+  
+  var blue:CGFloat {
+    get {
+      return self.getRGB().b
+    }
+  }
+  
+  func getHSB() -> HSB {
+    var h:CGFloat = 0.0
+    var s:CGFloat = 0.0
+    var b:CGFloat = 0.0
+    var a:CGFloat = 0.0
+    
+    self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+    return HSB(h: h, s: s, b: b)
+  }
+  
+  func getRGB() -> RGB {
+    var r:CGFloat = 0.0
+    var g:CGFloat = 0.0
+    var b:CGFloat = 0.0
+    var a:CGFloat = 0.0
+    
+    self.getRed(&r, green: &g, blue: &b, alpha: &a)
+    return RGB(r: r, g: g, b: b)
+  }
+  
+  func getCMYK() -> CMYK {
+    return self.getRGB().toCMYK()
+  }
+  
+  func getHSI() -> HSI {
+    return self.getRGB().toHSI()
+  }
+  
+  func getHSL() -> HSL {
+    return self.getRGB().toHSL()
+  }
+  
+  func getHLAB() -> HLAB {
+    return self.getRGB().toHLAB(.sRGBD65)
+  }
+  
+  func getLAB() -> LAB {
+    return self.getRGB().toLAB(.sRGBD65)
+  }
+  
+  func getLCHab() -> LCHab {
+    return self.getRGB().toLCHab(.sRGBD65)
+  }
+  
+  func getLCHuv() -> LCHuv {
+    return self.getRGB().toLCHuv(.sRGBD65)
+  }
+  
+  func getTriadic() -> [UIColor] {
+    let hsb:HSB = self.getHSB()
+    let inflect:CGFloat = 120.0
+    
+    let HUE:CGFloat = (hsb.h * M_2PI)
+    let HUEM:CGFloat = (0.0 > HUE - inflect.radians)
+                        ? M_2PI + (HUE - inflect.radians)
+                        : HUE - inflect.radians
+    
+    let HUEP:CGFloat = (M_2PI < HUE + inflect.radians)
+                        ? (HUE + inflect.radians) - M_2PI
+                        : HUE + inflect.radians
+    
+    let plus120:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let minus120:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    
+    return [self, plus120, minus120]
+  }
+  
+  func getSplitCompliments() -> [UIColor] {
+    let hsb:HSB = self.getHSB()
+    let inflect:CGFloat = 150.0
+    
+    let HUE:CGFloat = (hsb.h * M_2PI)
+    let HUEM:CGFloat = (0.0 > HUE - inflect.radians)
+                        ? M_2PI + (HUE - inflect.radians)
+                        : HUE - inflect.radians
+    
+    let HUEP:CGFloat = (M_2PI < HUE + inflect.radians)
+                        ? (HUE + inflect.radians) - M_2PI
+                        : HUE + inflect.radians
+    
+    let plus150:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let minus150:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    
+    return [self, plus150, minus150]
+  }
+  
+  func getAnalogous() -> [UIColor] {
+    let hsb:HSB = self.getHSB()
+    let inflect:CGFloat = 30.0
+    
+    let HUE:CGFloat = (hsb.h * M_2PI)
+    let HUEM:CGFloat = (0.0 > HUE - inflect.radians)
+                        ? M_2PI + (HUE - inflect.radians)
+                        : HUE - inflect.radians
+    
+    let HUEP:CGFloat = (M_2PI < HUE + inflect.radians)
+                        ? (HUE + inflect.radians) - M_2PI
+                        : HUE + inflect.radians
+    
+    let plus30:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let minus30:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    
+    return [self, plus30, minus30]
+  }
+  
+  func getCompliment() -> UIColor {
+    let hsb:HSB = self.getHSB()
+    
+    var HUE:CGFloat = (hsb.h * M_2PI)
+    HUE += CGFloat(M_PI)
+    HUE = (HUE > (M_2PI)) ? HUE - M_2PI : HUE
+    
+    let H:CGFloat = (HUE / M_2PI)
+    
+    return UIColor(hue: H, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+  }
+  
+  func getDistanceBetweenUIColor(compare: UIColor, options: ColourDistanceOptions) -> CGFloat {
+    let cmpLAB = compare.getLAB()
+    let selfLAB = self.getLAB()
+    var delta:CGFloat = 100.0
+    
+    switch options {
+    case .CMC198411:
+      delta = cmc1984(selfLAB, cmpLAB, 1.0, 1.0)
+    case .CMC198421:
+      delta = cmc1984(selfLAB, cmpLAB, 2.0, 1.0)
+    case .CIE94G:
+      delta = cie94(selfLAB, cmpLAB, .graphics)
+    case .CIE94T:
+      delta = cie94(selfLAB, cmpLAB, .textiles)
+    case .CIEDE2000:
+      delta = ciede2000(selfLAB, cmpLAB, 1.0, 1.0, 1.0)
+    default:
+      delta = cie76(selfLAB, cmpLAB)
+    }
+    
+    return delta
+  }
+  
+  func hexString() -> String {
+    let rgb = self.getRGB()
+    var R:UInt8 = UInt8(255.0 * rgb.r)
+    var G:UInt8 = UInt8(255.0 * rgb.g)
+    var B:UInt8 = UInt8(255.0 * rgb.b)
+    
+    return NSString(format: "%02x%02x%02x", R, G, B)
+  }
+}
+
+// MARK: - Operators
+
+infix operator ** { associativity left precedence 160 }
+func ** (left: Double, right: Double) -> Double {
+  return pow(left, right)
+}
+
+func ** (left: CGFloat, right: CGFloat) -> CGFloat {
+  return pow(left, right)
+}
+
+func ** (left: Float, right: Float) -> Float {
+  return powf(left, right)
+}
+
+infix operator **= { associativity right precedence 90 }
+func **= (inout left: Double, right: Double) {
+  left = left ** right
+}
+
+func **= (inout left: CGFloat, right: CGFloat) {
+  left = left ** right
+}
+
+func **= (inout left: Float, right: Float) {
+  left = left ** right
+}
+
+infix operator -** { associativity left precedence 160 }
+func -** (left: Double, right: Double) -> Double {
+  return (0.0 <= left) ? pow(left, right) : -1.0 * pow(-1.0 * left, right)
+}
+
+func -** (left: CGFloat, right: CGFloat) -> CGFloat {
+  return (0.0 <= left) ? pow(left, right) : -1.0 * pow(-1.0 * left, right)
+}
+
+func -** (left: Float, right: Float) -> Float {
+  return (0.0 <= left) ? powf(left, right) : -1.0 * powf(-1.0 * left, right)
+}
+
+infix operator -**= { associativity right precedence 90 }
+func -**= (inout left: Double, right: Double) {
+  left = left -** right
+}
+
+func -**= (inout left: CGFloat, right: CGFloat) {
+  left = left -** right
+}
+
+func -**= (inout left: Float, right: Float) {
+  left = left -** right
+}
+
+
+// MARK: - Floating Point Extensions
+
+extension CGFloat {
+  var radians:CGFloat {
+    get {
+      return (CGFloat(M_PI) / 180.0) * self
+    }
+  }
+  
+  var degrees:CGFloat {
+    get {
+      return (180.0 / CGFloat(M_PI)) * self
+    }
+  }
+}
+
+extension Double {
+  var radians:Double {
+    get {
+      return (M_PI / 180.0) * self
+    }
+  }
+  
+  var degrees:Double {
+    get {
+      return (180.0 / M_PI) * self
+    }
+  }
+}
+
+extension Float {
+  var radians:Float {
+    get {
+      return (Float(M_PI) / 180.0) * self
+    }
+  }
+  
+  var degrees:Float {
+    get {
+      return (180.0 / Float(M_PI)) * self
+    }
+  }
+}
+
 // MARK: - Constants
 let M_2PI:CGFloat = CGFloat(M_PI) * 2.0
 let ɛ:CGFloat = 0.008856
@@ -17,9 +314,13 @@ let κ:CGFloat = 7.787
 
 // MARK: - Enums
 
-public enum CIE94 {
-  case graphics
-  case textiles
+public enum ColourDistanceOptions: String {
+  case CIE76 = "CIE76"
+  case CMC198411 = "CMC198411"
+  case CMC198421 = "CMC198421"
+  case CIE94G = "CIE94G"
+  case CIE94T = "CIE94T"
+  case CIEDE2000 = "CIEDE2000"
 }
 
 public enum RGBWorkingSpace: String {
@@ -120,6 +421,11 @@ public enum ReferenceWhite: String {
   case F2 = "F2"
   case F7 = "F7"
   case F11 = "F11"
+}
+
+public enum CIE94 {
+  case graphics
+  case textiles
 }
 
 // MARK: - Structures
@@ -507,6 +813,56 @@ public struct RYB {
   }
 }
 
+public struct HSB {
+  public var h:CGFloat = 0.0
+  public var s:CGFloat = 0.0
+  public var b:CGFloat = 0.0
+  
+  public init() {}
+  
+  public init(h: CGFloat, s: CGFloat, b: CGFloat) {
+    self.h = h
+    self.s = s
+    self.b = b
+  }
+}
+
+public struct HSI {
+  public var h:CGFloat = 0.0
+  public var s:CGFloat = 0.0
+  public var i:CGFloat = 0.0
+  
+  public init() {}
+  
+  public init(h: CGFloat, s: CGFloat, i: CGFloat) {
+    self.h = h
+    self.s = s
+    self.i = i
+  }
+  
+  public func toRGB() -> RGB {
+    var rgb:RGB = RGB()
+    
+    if 0.0 <= self.h && (M_2PI / 3.0) >= self.h {
+      rgb.b = (1.0 / 3.0) * (1.0 - self.s)
+      rgb.r = (1.0 / 3.0) * ((self.s * cos(self.h)) / cos((M_2PI / 6.0) - self.h))
+      rgb.g = 1.0 - (rgb.b + rgb.r)
+    } else if (M_2PI / 3.0) < h && ((2.0 * M_2PI) / 3.0) >= self.h {
+      let hA:CGFloat = self.h - (M_2PI / 3.0)
+      rgb.r = (1.0 / 3.0) * (1.0 - self.s)
+      rgb.g = (1.0 / 3.0) * ((self.s * cos(hA)) / cos((M_2PI / 6.0) - hA))
+      rgb.b = 1.0 - (rgb.g + rgb.r)
+    } else {
+      let hA:CGFloat = self.h - (2.0 * M_2PI / 3.0)
+      rgb.g = (1.0 / 3.0) * (1.0 - self.s)
+      rgb.b = (1.0 / 3.0) * ((self.s * cos(hA)) / cos((M_2PI / 6.0) - hA))
+      rgb.r = 1.0 - ((rgb.g) + (rgb.b))
+    }
+    
+    return rgb.sanitize()
+  }
+}
+
 public struct HSL {
   public var h:CGFloat = 0.0
   public var s:CGFloat = 0.0
@@ -534,12 +890,12 @@ public struct HSL {
       }
       
       return (1.0 > (6.0 * vH))
-                ? (v1 + (v2 - v1) * 6.0 * vH)
-                : (1.0 > (2.0 * vH))
-                  ? (v2)
-                  : (2.0 > (3.0 * vH))
-                    ? (v1 + (v2 - v1) * ((2.0 / 3.0) - vH) * 6.0)
-                    : (v1)
+        ? (v1 + (v2 - v1) * 6.0 * vH)
+        : (1.0 > (2.0 * vH))
+        ? (v2)
+        : (2.0 > (3.0 * vH))
+        ? (v1 + (v2 - v1) * ((2.0 / 3.0) - vH) * 6.0)
+        : (v1)
     }
     
     if 0.0 != self.s {
@@ -611,6 +967,7 @@ public struct HSV {
   }
 }
 
+
 public struct LCHab {
   public var l:CGFloat = 0.0
   public var c:CGFloat = 0.0
@@ -644,42 +1001,6 @@ public struct LCHuv {
   
   public func toRGB() -> RGB {
     return RGB()
-  }
-}
-
-public struct HSI {
-  public var h:CGFloat = 0.0
-  public var s:CGFloat = 0.0
-  public var i:CGFloat = 0.0
-  
-  public init() {}
-  
-  public init(h: CGFloat, s: CGFloat, i: CGFloat) {
-    self.h = h
-    self.s = s
-    self.i = i
-  }
-  
-  public func toRGB() -> RGB {
-    var rgb:RGB = RGB()
-    
-    if 0.0 <= self.h && (M_2PI / 3.0) >= self.h {
-      rgb.b = (1.0 / 3.0) * (1.0 - self.s)
-      rgb.r = (1.0 / 3.0) * ((self.s * cos(self.h)) / cos((M_2PI / 6.0) - self.h))
-      rgb.g = 1.0 - (rgb.b + rgb.r)
-    } else if (M_2PI / 3.0) < h && ((2.0 * M_2PI) / 3.0) >= self.h {
-      let hA:CGFloat = self.h - (M_2PI / 3.0)
-      rgb.r = (1.0 / 3.0) * (1.0 - self.s)
-      rgb.g = (1.0 / 3.0) * ((self.s * cos(hA)) / cos((M_2PI / 6.0) - hA))
-      rgb.b = 1.0 - (rgb.g + rgb.r)
-    } else {
-      let hA:CGFloat = self.h - (2.0 * M_2PI / 3.0)
-      rgb.g = (1.0 / 3.0) * (1.0 - self.s)
-      rgb.b = (1.0 / 3.0) * ((self.s * cos(hA)) / cos((M_2PI / 6.0) - hA))
-      rgb.r = 1.0 - ((rgb.g) + (rgb.b))
-    }
-    
-    return rgb.sanitize()
   }
 }
 

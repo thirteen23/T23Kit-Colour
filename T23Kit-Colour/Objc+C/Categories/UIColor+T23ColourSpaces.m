@@ -13,7 +13,6 @@
                    yellow:(CGFloat)yellow
                      blue:(CGFloat)blue
                     alpha:(CGFloat)alpha {
-
   colour_t ryb = {0.0f}, rgb = {0.0f};
   ryb.RYB_R = red;
   ryb.RYB_Y = yellow;
@@ -31,7 +30,6 @@
                   yellow:(CGFloat)yellow
                     blue:(CGFloat)blue
                    alpha:(CGFloat)alpha {
-
   colour_t ryb = {0.0f}, rgb = {0.0f};
   ryb.RYB_R = red;
   ryb.RYB_Y = yellow;
@@ -47,7 +45,6 @@
                  aStar:(CGFloat *)greenToMagenta
                  bStar:(CGFloat *)yellowtoBlue
                  alpha:(CGFloat *)alpha {
-
   colour_t hlab = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
@@ -69,7 +66,6 @@
            aStar:(CGFloat *)greenToMagenta
            bStar:(CGFloat *)yellowtoBlue
            alpha:(CGFloat *)alpha {
-
   colour_t lab = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
@@ -91,7 +87,6 @@
            uStar:(CGFloat *)greenToMagenta
            vStar:(CGFloat *)yellowtoBlue
            alpha:(CGFloat *)alpha {
-
   colour_t luv = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
@@ -156,7 +151,6 @@
          yellow:(CGFloat *)yellow
           black:(CGFloat *)black
           alpha:(CGFloat *)alpha {
-
   colour_t cmyk = {0.0f}, rgb = {0.0f};
   CGFloat r, g, b, a;
 
@@ -242,7 +236,6 @@
         yellow:(CGFloat *)yellow
           blue:(CGFloat *)blue
          alpha:(CGFloat *)alpha {
-
   return YES;
 }
 
@@ -321,7 +314,6 @@
 
 - (CGFloat)getDistanceMetricBetweenUIColor:(UIColor *)compare
                                withOptions:(T23UIColourDistanceOptions)options {
-
   CGFloat distance = 0.0f;
   CGFloat r, g, b, a;
   colour_t rgb = {0.0f}, self_lab = {0.0f}, comp_lab = {0.0f};
@@ -341,36 +333,38 @@
   RGB_2_LAB(rgb.RGB, &comp_lab.LAB, colourspace_rgb_profile_srgb_d65);
 
   switch (options) {
-  case T23UIColourDistanceFormulaCEI76:
-    CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
-    break;
+    case T23UIColourDistanceFormulaCIE76:
+      CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
+      break;
 
-  case T23UIColourDistanceFormulaCMC1984_1_1:
-    CMC_1984(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, (colour_val_t *)&distance);
-    break;
-
-  case T23UIColourDistanceFormulaCMC1984_2_1:
-    CMC_1984(self_lab.LAB, comp_lab.LAB, 2.0f, 1.0f, (colour_val_t *)&distance);
-    break;
-
-  case T23UIColourDistanceFormulaCEI94_GRAPHICS:
-    CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_GRAPHICS,
-           (colour_val_t *)&distance);
-    break;
-
-  case T23UIColourDistanceFormulaCEI94_TEXTILES:
-    CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_TEXTILES,
-           (colour_val_t *)&distance);
-    break;
-
-  case T23UIColourDistanceFormulaCIEDE2000:
-    CIEDE_2000(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, 1.0f,
+    case T23UIColourDistanceFormulaCMC1984_1_1:
+      CMC_1984(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f,
                (colour_val_t *)&distance);
-    break;
+      break;
 
-  default:
-    CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
-    break;
+    case T23UIColourDistanceFormulaCMC1984_2_1:
+      CMC_1984(self_lab.LAB, comp_lab.LAB, 2.0f, 1.0f,
+               (colour_val_t *)&distance);
+      break;
+
+    case T23UIColourDistanceFormulaCIE94_GRAPHICS:
+      CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_GRAPHICS,
+             (colour_val_t *)&distance);
+      break;
+
+    case T23UIColourDistanceFormulaCIE94_TEXTILES:
+      CIE_94(self_lab.LAB, comp_lab.LAB, LIBCOLORSPACES_TEXTILES,
+             (colour_val_t *)&distance);
+      break;
+
+    case T23UIColourDistanceFormulaCIEDE2000:
+      CIEDE_2000(self_lab.LAB, comp_lab.LAB, 1.0f, 1.0f, 1.0f,
+                 (colour_val_t *)&distance);
+      break;
+
+    default:
+      CIE_76(self_lab.LAB, comp_lab.LAB, (colour_val_t *)&distance);
+      break;
   }
 
   return distance;

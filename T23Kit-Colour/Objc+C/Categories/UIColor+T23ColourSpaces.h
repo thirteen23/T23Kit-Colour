@@ -20,11 +20,11 @@
 
 /* Distance formula options */
 typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
-  T23UIColourDistanceFormulaCEI76 = 0, /* default */
+  T23UIColourDistanceFormulaCIE76 = 0, /* default */
   T23UIColourDistanceFormulaCMC1984_1_1,
   T23UIColourDistanceFormulaCMC1984_2_1,
-  T23UIColourDistanceFormulaCEI94_GRAPHICS,
-  T23UIColourDistanceFormulaCEI94_TEXTILES,
+  T23UIColourDistanceFormulaCIE94_GRAPHICS,
+  T23UIColourDistanceFormulaCIE94_TEXTILES,
   T23UIColourDistanceFormulaCIEDE2000
 };
 

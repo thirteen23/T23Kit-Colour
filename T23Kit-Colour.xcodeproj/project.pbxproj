@@ -22,7 +22,6 @@
 		4AEB12EE1A3F5554003AAB35 /* Colour-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AEB12ED1A3F5554003AAB35 /* Colour-Swift.h */; };
 		4AEB12FD1A3F5612003AAB35 /* Colour_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEB12FC1A3F5612003AAB35 /* Colour_SwiftTests.swift */; };
 		4AEB12FE1A3F5721003AAB35 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEB12F51A3F55AC003AAB35 /* Colour.swift */; };
-		4AEB12FF1A3F5721003AAB35 /* Colour+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEB12F61A3F55AC003AAB35 /* Colour+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +74,6 @@
 		4AEB12EF1A3F555F003AAB35 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "T23Kit-Colour/Swift/Info.plist"; sourceTree = SOURCE_ROOT; };
 		4AEB12F31A3F5583003AAB35 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "T23Kit-Colour/Swift/Tests/Info.plist"; sourceTree = SOURCE_ROOT; };
 		4AEB12F51A3F55AC003AAB35 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour.swift; path = "T23Kit-Colour/Swift/Colour.swift"; sourceTree = SOURCE_ROOT; };
-		4AEB12F61A3F55AC003AAB35 /* Colour+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Colour+Extensions.swift"; path = "T23Kit-Colour/Swift/Colour+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		4AEB12FC1A3F5612003AAB35 /* Colour_SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour_SwiftTests.swift; path = "T23Kit-Colour/Swift/Tests/Colour_SwiftTests.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -227,7 +225,6 @@
 			children = (
 				4AEB12ED1A3F5554003AAB35 /* Colour-Swift.h */,
 				4AEB12F51A3F55AC003AAB35 /* Colour.swift */,
-				4AEB12F61A3F55AC003AAB35 /* Colour+Extensions.swift */,
 				4AEB12D61A3F54DB003AAB35 /* Supporting Files */,
 			);
 			name = "Colour-Swift";
@@ -432,7 +429,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AEB12FE1A3F5721003AAB35 /* Colour.swift in Sources */,
-				4AEB12FF1A3F5721003AAB35 /* Colour+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,6 +735,7 @@
 				4AEB12E81A3F54DB003AAB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4AEB12EC1A3F54DB003AAB35 /* Build configuration list for PBXNativeTarget "ColourSwiftTests" */ = {
 			isa = XCConfigurationList;
@@ -747,6 +744,7 @@
 				4AEB12EA1A3F54DB003AAB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
