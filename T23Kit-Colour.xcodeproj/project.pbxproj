@@ -10,15 +10,14 @@
 		4A21EAF019227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
 		4A21EAFF19227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
 		4A21EB0419227DC100BF9603 /* libColour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEC19227DC100BF9603 /* libColour.a */; };
-		4A2D02151A3A362F000A4607 /* UIColor+T23ColourSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2D02141A3A362F000A4607 /* UIColor+T23ColourSpaces.m */; };
-		4A2D02161A3A362F000A4607 /* UIColor+T23ColourSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A2D02141A3A362F000A4607 /* UIColor+T23ColourSpaces.m */; };
-		4A2D021B1A3A3666000A4607 /* colourspaces.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A2D02191A3A3666000A4607 /* colourspaces.c */; };
-		4AE6582C1A3F51FF00C2B270 /* ColourTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AE6582B1A3F51FF00C2B270 /* ColourTests.m */; };
 		4AEB12DF1A3F54DB003AAB35 /* ColourSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AEB12D41A3F54DB003AAB35 /* ColourSwift.framework */; };
 		4AEB12EE1A3F5554003AAB35 /* Colour-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AEB12ED1A3F5554003AAB35 /* Colour-Swift.h */; };
 		4AEB12FD1A3F5612003AAB35 /* Colour_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEB12FC1A3F5612003AAB35 /* Colour_SwiftTests.swift */; };
 		4AEB12FE1A3F5721003AAB35 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEB12F51A3F55AC003AAB35 /* Colour.swift */; };
 		4AEE01071A48A76B00B55091 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AEE01061A48A76B00B55091 /* UIKit.framework */; };
+		4AEE010C1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE010B1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m */; };
+		4AEE010E1A5AEF4300B55091 /* ColourTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE010D1A5AEF4300B55091 /* ColourTests.m */; };
+		4AEE01151A5AF52900B55091 /* colourspaces.c in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE01131A5AF52900B55091 /* colourspaces.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,15 +53,6 @@
 		4A21EAEC19227DC100BF9603 /* libColour.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libColour.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A21EAEF19227DC100BF9603 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4A21EAFC19227DC100BF9603 /* ColourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColourTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4A2D02131A3A362F000A4607 /* UIColor+T23ColourSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+T23ColourSpaces.h"; path = "Objc+C/Categories/UIColor+T23ColourSpaces.h"; sourceTree = "<group>"; };
-		4A2D02141A3A362F000A4607 /* UIColor+T23ColourSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+T23ColourSpaces.m"; path = "Objc+C/Categories/UIColor+T23ColourSpaces.m"; sourceTree = "<group>"; };
-		4A2D02171A3A3657000A4607 /* T23Kit-Colour-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "T23Kit-Colour-Prefix.pch"; path = "Objc+C/SupportingFiles/T23Kit-Colour-Prefix.pch"; sourceTree = "<group>"; };
-		4A2D02181A3A3666000A4607 /* colourspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces_priv.h; path = "Objc+C/libcolourspaces/colourspaces_priv.h"; sourceTree = "<group>"; };
-		4A2D02191A3A3666000A4607 /* colourspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = colourspaces.c; path = "Objc+C/libcolourspaces/colourspaces.c"; sourceTree = "<group>"; };
-		4A2D021A1A3A3666000A4607 /* colourspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces.h; path = "Objc+C/libcolourspaces/colourspaces.h"; sourceTree = "<group>"; };
-		4A5B0A7E1A3A58A400B837F0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "T23Kit-Colour/Objc+C/ColourTests/en.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
-		4AE6582B1A3F51FF00C2B270 /* ColourTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColourTests.m; path = "T23Kit-Colour/Objc+C/ColourTests/ColourTests.m"; sourceTree = SOURCE_ROOT; };
-		4AE6582D1A3F520D00C2B270 /* ColourTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ColourTests-Info.plist"; path = "T23Kit-Colour/Objc+C/ColourTests/ColourTests-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4AEB12D41A3F54DB003AAB35 /* ColourSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ColourSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEB12DE1A3F54DB003AAB35 /* ColourSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColourSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AEB12ED1A3F5554003AAB35 /* Colour-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Colour-Swift.h"; path = "T23Kit-Colour/Swift/Colour-Swift.h"; sourceTree = SOURCE_ROOT; };
@@ -71,6 +61,14 @@
 		4AEB12F51A3F55AC003AAB35 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour.swift; path = "T23Kit-Colour/Swift/Colour.swift"; sourceTree = SOURCE_ROOT; };
 		4AEB12FC1A3F5612003AAB35 /* Colour_SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour_SwiftTests.swift; path = "T23Kit-Colour/Swift/Tests/Colour_SwiftTests.swift"; sourceTree = SOURCE_ROOT; };
 		4AEE01061A48A76B00B55091 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		4AEE010A1A5AEF3200B55091 /* UIColor+T23ColourSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+T23ColourSpaces.h"; path = "ObjC/Categories/UIColor+T23ColourSpaces.h"; sourceTree = "<group>"; };
+		4AEE010B1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+T23ColourSpaces.m"; path = "ObjC/Categories/UIColor+T23ColourSpaces.m"; sourceTree = "<group>"; };
+		4AEE010D1A5AEF4300B55091 /* ColourTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColourTests.m; path = "T23Kit-Colour/ObjC/ColourTests/ColourTests.m"; sourceTree = SOURCE_ROOT; };
+		4AEE010F1A5AEF4D00B55091 /* ColourTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ColourTests-Info.plist"; path = "T23Kit-Colour/ObjC/ColourTests/ColourTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4AEE01121A5AF52900B55091 /* colourspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces_priv.h; path = ObjC/libcolourspaces/colourspaces_priv.h; sourceTree = "<group>"; };
+		4AEE01131A5AF52900B55091 /* colourspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = colourspaces.c; path = ObjC/libcolourspaces/colourspaces.c; sourceTree = "<group>"; };
+		4AEE01141A5AF52900B55091 /* colourspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces.h; path = ObjC/libcolourspaces/colourspaces.h; sourceTree = "<group>"; };
+		4AEE01161A5AF53A00B55091 /* T23Kit-Colour-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "T23Kit-Colour-Prefix.pch"; path = "ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +140,7 @@
 		4A21EAF119227DC100BF9603 /* T23Kit-Colour */ = {
 			isa = PBXGroup;
 			children = (
-				4A2D021E1A3A37A3000A4607 /* Objc+C */,
+				4A2D021E1A3A37A3000A4607 /* ObjC */,
 				4A7F11DF1A3F381B003446AF /* Swift */,
 			);
 			path = "T23Kit-Colour";
@@ -151,7 +149,7 @@
 		4A21EAF219227DC100BF9603 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4A2D02171A3A3657000A4607 /* T23Kit-Colour-Prefix.pch */,
+				4AEE01161A5AF53A00B55091 /* T23Kit-Colour-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -159,7 +157,7 @@
 		4A21EB0519227DC100BF9603 /* ColourTests */ = {
 			isa = PBXGroup;
 			children = (
-				4AE6582B1A3F51FF00C2B270 /* ColourTests.m */,
+				4AEE010D1A5AEF4300B55091 /* ColourTests.m */,
 				4A21EB0619227DC100BF9603 /* Supporting Files */,
 			);
 			name = ColourTests;
@@ -169,8 +167,7 @@
 		4A21EB0619227DC100BF9603 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4AE6582D1A3F520D00C2B270 /* ColourTests-Info.plist */,
-				4A5B0A7D1A3A58A400B837F0 /* InfoPlist.strings */,
+				4AEE010F1A5AEF4D00B55091 /* ColourTests-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -178,8 +175,8 @@
 		4A21EB1519227E7F00BF9603 /* Categories  */ = {
 			isa = PBXGroup;
 			children = (
-				4A2D02131A3A362F000A4607 /* UIColor+T23ColourSpaces.h */,
-				4A2D02141A3A362F000A4607 /* UIColor+T23ColourSpaces.m */,
+				4AEE010A1A5AEF3200B55091 /* UIColor+T23ColourSpaces.h */,
+				4AEE010B1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m */,
 			);
 			name = "Categories ";
 			sourceTree = "<group>";
@@ -187,14 +184,14 @@
 		4A21EB1619227E8D00BF9603 /* libcolorspaces */ = {
 			isa = PBXGroup;
 			children = (
-				4A2D02181A3A3666000A4607 /* colourspaces_priv.h */,
-				4A2D02191A3A3666000A4607 /* colourspaces.c */,
-				4A2D021A1A3A3666000A4607 /* colourspaces.h */,
+				4AEE01121A5AF52900B55091 /* colourspaces_priv.h */,
+				4AEE01131A5AF52900B55091 /* colourspaces.c */,
+				4AEE01141A5AF52900B55091 /* colourspaces.h */,
 			);
 			name = libcolorspaces;
 			sourceTree = "<group>";
 		};
-		4A2D021E1A3A37A3000A4607 /* Objc+C */ = {
+		4A2D021E1A3A37A3000A4607 /* ObjC */ = {
 			isa = PBXGroup;
 			children = (
 				4A21EB1519227E7F00BF9603 /* Categories  */,
@@ -202,7 +199,7 @@
 				4A21EAF219227DC100BF9603 /* Supporting Files */,
 				4A21EB0519227DC100BF9603 /* ColourTests */,
 			);
-			name = "Objc+C";
+			name = ObjC;
 			sourceTree = "<group>";
 		};
 		4A7F11DF1A3F381B003446AF /* Swift */ = {
@@ -402,8 +399,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A2D021B1A3A3666000A4607 /* colourspaces.c in Sources */,
-				4A2D02151A3A362F000A4607 /* UIColor+T23ColourSpaces.m in Sources */,
+				4AEE010C1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m in Sources */,
+				4AEE01151A5AF52900B55091 /* colourspaces.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,8 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A2D02161A3A362F000A4607 /* UIColor+T23ColourSpaces.m in Sources */,
-				4AE6582C1A3F51FF00C2B270 /* ColourTests.m in Sources */,
+				4AEE010E1A5AEF4300B55091 /* ColourTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,17 +442,6 @@
 			targetProxy = 4AEB12E01A3F54DB003AAB35 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		4A5B0A7D1A3A58A400B837F0 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4A5B0A7E1A3A58A400B837F0 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4A21EB0D19227DC100BF9603 /* Debug */ = {
@@ -532,7 +517,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/T23Kit_Colour.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "T23Kit-Colour/Objc+C/SupportingFiles/T23Kit-Colour-Prefix.pch";
+				GCC_PREFIX_HEADER = "T23Kit-Colour/ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -544,7 +529,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/T23Kit_Colour.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "T23Kit-Colour/Objc+C/SupportingFiles/T23Kit-Colour-Prefix.pch";
+				GCC_PREFIX_HEADER = "T23Kit-Colour/ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -560,12 +545,12 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "T23Kit-Colour/Objc+C/SupportingFiles/T23Kit-Colour-Prefix.pch";
+				GCC_PREFIX_HEADER = "T23Kit-Colour/ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "T23Kit-Colour/Objc+C/ColourTests/ColourTests-Info.plist";
+				INFOPLIST_FILE = "T23Kit-Colour/ObjC/ColourTests/ColourTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -586,8 +571,8 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "T23Kit-Colour/Objc+C/SupportingFiles/T23Kit-Colour-Prefix.pch";
-				INFOPLIST_FILE = "T23Kit-Colour/Objc+C/ColourTests/ColourTests-Info.plist";
+				GCC_PREFIX_HEADER = "T23Kit-Colour/ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch";
+				INFOPLIST_FILE = "T23Kit-Colour/ObjC/ColourTests/ColourTests-Info.plist";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
