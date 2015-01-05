@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.author             = { "Michael Van Milligan" => "michael.vanmilligan@thirteen23.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/thirteen23/T23Kit-Colour.git", :tag => "0.0.6" }
-  s.source_files  = "T23Kit-Colour/Objc+C/{Categories,libcolourspaces}/*.{h,m,c}"
-  s.public_header_files = "T23Kit-Colour/Objc+C/{Categories,libcolourspaces}/*.h"
+  s.source_files  = "T23Kit-Colour/ObjC/{Categories,libcolourspaces}/*.{h,m,c}"
+  s.public_header_files = "T23Kit-Colour/ObjC/{Categories,libcolourspaces}/*.h"
   s.frameworks = "UIKit"
   s.requires_arc = false
 end
