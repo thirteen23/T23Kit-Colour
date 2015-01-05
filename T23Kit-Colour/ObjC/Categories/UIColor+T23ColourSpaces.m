@@ -26,6 +26,25 @@
                          alpha:alpha];
 }
 
++ (UIColor *)colorWithHexString:(NSString *)hexString
+                          alpha:(CGFloat)alpha {
+  CGFloat r = 0.0f, g = 0.0f, b = 0.0f;
+  unsigned int hexInt = 0;
+  
+  if (9 > hexString.length) {
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    scanner.charactersToBeSkipped = [NSCharacterSet characterSetWithCharactersInString:@"#"];
+    
+    if ([scanner scanHexInt:&hexInt]) {
+      r = (CGFloat)(((hexInt & 0xFF0000) >> 16) / 255.0);
+      g = (CGFloat)(((hexInt & 0xFF00) >> 8) / 255.0);
+      b = (CGFloat)(((hexInt & 0xFF) >> 0) / 255.0);
+    }
+  }
+  
+  return [UIColor colorWithRed:r green:g blue:b alpha:alpha];
+}
+
 - (UIColor *)initWithRed:(CGFloat)red
                   yellow:(CGFloat)yellow
                     blue:(CGFloat)blue
@@ -39,6 +58,25 @@
 
   return
       [self initWithRed:rgb.RGB_R green:rgb.RGB_G blue:rgb.RGB_B alpha:alpha];
+}
+
+- (UIColor *)initWithHexString:(NSString *)hexString
+                         alpha:(CGFloat)alpha {
+  CGFloat r = 0.0f, g = 0.0f, b = 0.0f;
+  unsigned int hexInt = 0;
+  
+  if (9 > hexString.length) {
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    scanner.charactersToBeSkipped = [NSCharacterSet characterSetWithCharactersInString:@"#"];
+    
+    if ([scanner scanHexInt:&hexInt]) {
+      r = (CGFloat)(((hexInt & 0xFF0000) >> 16) / 255.0);
+      g = (CGFloat)(((hexInt & 0xFF00) >> 8) / 255.0);
+      b = (CGFloat)(((hexInt & 0xFF) >> 0) / 255.0);
+    }
+  }
+  
+  return [self initWithRed:r green:g blue:b alpha:alpha];
 }
 
 - (BOOL)getHunterLStar:(CGFloat *)lightness

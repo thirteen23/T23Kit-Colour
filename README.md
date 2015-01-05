@@ -47,40 +47,83 @@ _______________
 ##API
 
 **`UIColor+T23ColourSpaces`**
-    
-    + (UIColor *)colorWithRed:yellow:blue:alpha:
-    - (UIColor *)initWithRed:yellow:blue:alpha:
-    - (BOOL)getX:Y:Z:alpha:
-    - (BOOL)getHunterLStar:aStar:bStar:alpha:
-    - (BOOL)getLStar:aStar:bStar:alpha:
-    - (BOOL)getLStar:uStar:vStar:alpha:
-    - (BOOL)getLStar:cStar:hStarAB:alpha:
-    - (BOOL)getLStar:cStar:hStarUV:alpha:
-    - (BOOL)getCyan:magenta:yellow:black:alpha:
-    - (BOOL)getHue:saturation:lightness:alpha:
-    - (BOOL)getHue:saturation:intensity:alpha:
-    - (NSArray *)getTriadic
-    - (NSArray *)getSplitComplements
-    - (NSArray *)getAnalogous
-    - (UIColor *)getComplement
-    - (CGFloat)getDistanceMetricBetweenUIColor:withOptions:
+
+	+ (UIColor *)colorWithRed:yellow:blue:alpha:
+	+ (UIColor *)colorWithHexString:alpha:
+	- (UIColor *)initWithRed:yellow:blue:alpha:
+	- (UIColor *)initWithHexString:alpha:
+	- (BOOL)getX:Y:Z:alpha:
+	- (BOOL)getHunterLStar:aStar:bStar:alpha:
+	- (BOOL)getLStar:aStar:bStar:alpha:
+	- (BOOL)getLStar:uStar:vStar:alpha:
+	- (BOOL)getLStar:cStar:hStarAB:alpha:
+	- (BOOL)getLStar:cStar:hStarUV:alpha:
+	- (BOOL)getCyan:magenta:yellow:black:alpha:
+	- (BOOL)getHue:saturation:lightness:alpha:
+	- (BOOL)getHue:saturation:intensity:alpha:
+	- (NSArray *)getTriadic
+	- (NSArray *)getSplitComplements
+	- (NSArray *)getAnalogous
+	- (UIColor *)getComplement
+	- (CGFloat)getDistanceMetricBetweenUIColor:withOptions:
+
+**`UIColor Swift Extension`**
+
+	- init(red: CGFloat, yellow: CGFloat, blue: CGFloat, alpha: CGFloat)
+	- init(hexString: String, alpha: CGFloat)
+	- var hue:CGFloat { get }
+	- var saturation:CGFloat { get }
+	- var brightness:CGFloat { get }
+	- var red:CGFloat { get }
+	- var green:CGFloat { get }
+	- var blue:CGFloat { get }
+	- var hexString:String { get }
+	- func getHSB() -> HSB
+	- func getRGB() -> RGB
+	- func getXYZ() -> XYZ
+	- func getHLAB() -> HLAB
+	- func getLAB() -> LAB
+	- func getLUV() -> LUV
+	- func getLCHab() -> LCHab
+	- func getLCHuv() -> LCHuv
+	- func getCMYK() -> CMYK
+	- func getHSI() -> HSI
+	- func getHSL() -> HSL
+	- func getTriadic() -> (thisColor: UIColor, right: UIColor, left: UIColor)
+	- func getSplitCompliments() -> (thisColor: UIColor, right: UIColor, left: UIColor)
+	- func getAnalogous() -> (thisColor: UIColor, right: UIColor, left: UIColor)
+	- func getCompliment() -> UIColor
+	- func getDistanceBetweenUIColor(compare: UIColor, options: ColourDistanceOptions) -> CGFloat
 
 ##Setup
 
-####Using [CocoaPods](http://cocoapods.org):
+###Objective-C:
+
+#####Using [CocoaPods](http://cocoapods.org):
 
 1.	Add the pod `T23Kit-Colour` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
-    `pod 'T23Kit-Colour'`
+`pod 'T23Kit-Colour'`
 
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
 3.	`#import "UIColor+T23ColourSpaces.h"` wherever you want to use the API.
 
-####Manually from GitHub
+#####Manually from GitHub
 
 1.	Download the source files in the [T23Kit-Colour Source directory](https://github.com/thirteen23/T23Kit-Colour/tree/master/T23Kit-Colour).
 2.	Add files to your Xcode project.
 3.	`#import "UIColor+T23ColourSpaces.h"` wherever you want to use the API.
+
+###Swift:
+
+#####Using [CocoaPods](http://cocoapods.org):
+
+CocoaPods aren't supported yet but will update as soon as it is.
+
+#####Manually from GitHub
+
+1.	Download the source files in the [T23Kit-Colour Source directory](https://github.com/thirteen23/T23Kit-Colour/tree/master/T23Kit-Colour).
+2.	Add `Colour.swift` to your Xcode project.
 
 ##Releases
 

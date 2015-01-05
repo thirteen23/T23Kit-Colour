@@ -14,14 +14,6 @@ import Darwin
 
 extension UIColor {
   
-  convenience init(red: CGFloat, yellow: CGFloat, blue: CGFloat, alpha: CGFloat) {
-    
-    let ryb:RYB = RYB(r: red, y: yellow, b: blue)
-    let rgb:RGB = ryb.toRGB()
-    
-    self.init(red: rgb.r, green: rgb.g, blue: rgb.b, alpha: alpha)
-  }
-  
   var hue:CGFloat {
     get {
       return self.getHSB().h
@@ -58,6 +50,67 @@ extension UIColor {
     }
   }
   
+  var hexString:String {
+    get {
+      let rgb = self.getRGB()
+      var R:UInt8 = UInt8(255.0 * rgb.r)
+      var G:UInt8 = UInt8(255.0 * rgb.g)
+      var B:UInt8 = UInt8(255.0 * rgb.b)
+      
+      return NSString(format: "%02x%02x%02x", R, G, B) as String
+    }
+  }
+  
+  /// 
+  /// Initialize a UIColor with RYB colour values
+  ///
+  /// UIColor returned is generated from RYB->RGB conversion. (Please
+  /// see http://vis.computer.org/vis2004/DVD/infovis/papers/gossett.pdf)
+  ///
+  /// :param: red Red value as percentage
+  /// :param: yellow Yellow value as percentage
+  /// :param: blue Blue value as percentage
+  /// :returns: A converted UIColor object
+  convenience init(red: CGFloat, yellow: CGFloat, blue: CGFloat, alpha: CGFloat) {
+    
+    let ryb:RYB = RYB(r: red, y: yellow, b: blue)
+    let rgb:RGB = ryb.toRGB()
+    
+    self.init(red: rgb.r, green: rgb.g, blue: rgb.b, alpha: alpha)
+  }
+  
+  ///
+  /// Initialize a UIColor with Hex colour values
+  ///
+  /// Proper value regex: ^(#{0,2}|0x{0,1})([a-f]|[A-F]|\d){1,6}
+  ///
+  /// :param: hexString String of hexidecimal value for colour
+  /// :returns: A UIColor object
+  convenience init(hexString: String, alpha: CGFloat) {
+    var r:CGFloat = 0.0
+    var g:CGFloat = 0.0
+    var b:CGFloat = 0.0
+    
+    if 9 > hexString.utf16Count {
+      let scanner:NSScanner = NSScanner(string: hexString)
+      scanner.charactersToBeSkipped = NSCharacterSet(charactersInString: "#")
+      
+      var hexInt:UInt32 = 0
+      if scanner.scanHexInt(&hexInt) {
+        r = CGFloat(((hexInt & 0xFF0000) >> 16)) / 255.0
+        g = CGFloat(((hexInt & 0xFF00) >> 8)) / 255.0
+        b = CGFloat(((hexInt & 0xFF) >> 0)) / 255.0
+      }
+    }
+    
+    self.init(red: r, green: g, blue: b, alpha: alpha)
+  }
+  
+  ///
+  /// Helper method to convert standard UIColor API to our HSB
+  /// struct
+  ///
+  /// :returns: A HSB structure
   func getHSB() -> HSB {
     var h:CGFloat = 0.0
     var s:CGFloat = 0.0
@@ -68,6 +121,11 @@ extension UIColor {
     return HSB(h: h, s: s, b: b)
   }
   
+  ///
+  /// Helper method to convert standard UIColor API to our RGB
+  /// struct
+  ///
+  /// :returns: A RGB structure
   func getRGB() -> RGB {
     var r:CGFloat = 0.0
     var g:CGFloat = 0.0
@@ -78,35 +136,118 @@ extension UIColor {
     return RGB(r: r, g: g, b: b)
   }
   
-  func getCMYK() -> CMYK {
-    return self.getRGB().toCMYK()
+  ///
+  /// Convert current colour to the XYZ colour space
+  ///
+  /// Values returned are nominal values and therefore aren't
+  /// normalized in any way, e.g., not a ratio or percentage.
+  ///
+  /// The conversions are from RGB space and uses the sRGB matrix for calculation,
+  /// i.e, sRGB matrices to XYZ and back with (Observer = 2°, Illuminant = D65)
+  /// using Bradford adaptation.
+  ///
+  /// :returns: A XYZ structure
+  func getXYZ() -> XYZ {
+    return self.getRGB().toXYZ(.sRGBD65)
   }
   
-  func getHSI() -> HSI {
-    return self.getRGB().toHSI()
-  }
-  
-  func getHSL() -> HSL {
-    return self.getRGB().toHSL()
-  }
-  
+  ///
+  /// Convert current colour to the Hunter 1948 L, a, b colour space
+  ///
+  /// Values returned are nominal values and therefore aren't normalized in any way,
+  /// e.g., not a ratio or percentage.
+  ///
+  /// :returns: A HLAB structure
   func getHLAB() -> HLAB {
     return self.getRGB().toHLAB(.sRGBD65)
   }
   
+  ///
+  /// Convert current colour to the CIELAB colour space
+  ///
+  /// Values returned are nominal values and therefore aren't normalized in any way,
+  /// e.g., not a ratio or percentage.
+  ///
+  /// :returns: A LAB structure
   func getLAB() -> LAB {
     return self.getRGB().toLAB(.sRGBD65)
   }
   
+  ///
+  /// Convert current colour to the CIELUV colour space
+  ///
+  /// Values returned are nominal values and therefore aren't normalized in any way,
+  /// e.g., not a ratio or percentage.
+  ///
+  /// :returns: A LUV structure
+  func getLUV() -> LUV {
+    return self.getRGB().toLUV(.sRGBD65)
+  }
+  
+  ///
+  /// Convert current colour to the CIELCH(ab) colour space
+  ///
+  /// Values returned are nominal values and therefore aren't normalized in any way,
+  /// e.g., not a ratio or percentage.
+  ///
+  /// :returns: A LCHab structure
   func getLCHab() -> LCHab {
     return self.getRGB().toLCHab(.sRGBD65)
   }
   
+  ///
+  /// Convert current colour to the CIELCH(uv) colour space
+  ///
+  /// Values returned are nominal values and therefore aren't normalized in any way,
+  /// e.g., not a ratio or percentage.
+  ///
+  /// :returns: A LCHuv structure
   func getLCHuv() -> LCHuv {
     return self.getRGB().toLCHuv(.sRGBD65)
   }
   
-  func getTriadic() -> [UIColor] {
+  ///
+  /// Convert current colour to the CMYK colour space
+  ///
+  /// Values returned are normalized percentage values 0.0f-1.0f
+  ///
+  /// :returns: A CMYK structure
+  func getCMYK() -> CMYK {
+    return self.getRGB().toCMYK()
+  }
+  
+  ///
+  /// Convert current colour to the HSL colour space
+  ///
+  /// Values returned are normalized percentage values 0.0f-1.0f. The Hue value is the
+  /// radian angle over 2π. Saturation and lightness are both just the normalized
+  /// percentage.
+  ///
+  /// :returns: A HSL structure
+  func getHSL() -> HSL {
+    return self.getRGB().toHSL()
+  }
+  
+  ///
+  /// Convert current colour to the HSI colour space
+  ///
+  /// Values returned are normalized percentage values 0.0f-1.0f. The Hue value is the
+  /// radian angle over 2π. Saturation and intensity are both just the normalized
+  /// percentage.
+  ///
+  /// :returns: A HSI structure
+  func getHSI() -> HSI {
+    return self.getRGB().toHSI()
+  }
+  
+  ///
+  /// Grab the triadic set from the HSV space
+  ///
+  /// Tuple contains 3 UIColors: The original colour and 2 others where the hue is
+  /// shifted ±120º while keeping S and V held constant
+  ///
+  /// :returns: A 3-tuple of triadic UIColors
+  func getTriadic() -> (thisColor: UIColor, right: UIColor, left: UIColor) {
     let hsb:HSB = self.getHSB()
     let inflect:CGFloat = 120.0
     
@@ -122,10 +263,17 @@ extension UIColor {
     let plus120:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     let minus120:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     
-    return [self, plus120, minus120]
+    return (self, plus120, minus120)
   }
   
-  func getSplitCompliments() -> [UIColor] {
+  ///
+  /// Grab the split complements from the HSV space
+  ///
+  /// Tuple contains 3 UIColors: The original colour and 2 others where the hue is
+  /// shifted ±150º while keeping S and V held constant
+  ///
+  /// :returns: A 3-tuple of split complement UIColors
+  func getSplitCompliments() -> (thisColor: UIColor, right: UIColor, left: UIColor) {
     let hsb:HSB = self.getHSB()
     let inflect:CGFloat = 150.0
     
@@ -141,10 +289,17 @@ extension UIColor {
     let plus150:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     let minus150:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     
-    return [self, plus150, minus150]
+    return (self, plus150, minus150)
   }
   
-  func getAnalogous() -> [UIColor] {
+  ///
+  /// Grab the analogous set from the HSV space
+  ///
+  /// Tuple contains 3 UIColors: The original colour and 2 others where the hue is
+  /// shifted ±30º while keeping S and V held constant
+  ///
+  /// :returns: A 3-tuple of analogous UIColors
+  func getAnalogous() -> (thisColor: UIColor, right: UIColor, left: UIColor) {
     let hsb:HSB = self.getHSB()
     let inflect:CGFloat = 30.0
     
@@ -160,9 +315,16 @@ extension UIColor {
     let plus30:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     let minus30:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
     
-    return [self, plus30, minus30]
+    return (self, plus30, minus30)
   }
   
+  ///
+  /// Grab the complement from the HSV space
+  ///
+  /// UIColor returned is the colour rotated H by 180º while keeping S and V held
+  /// constant
+  ///
+  /// :returns: A UIColor complement
   func getCompliment() -> UIColor {
     let hsb:HSB = self.getHSB()
     
@@ -175,6 +337,35 @@ extension UIColor {
     return UIColor(hue: H, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
   }
   
+  ///
+  /// Acquire colour distance measure between current UIColor object and the UIColor
+  /// compare parameter.
+  ///
+  /// Return values vary based on what distance metric used. However, all distance
+  /// values returned base closeness to 0.0f as closeness in colour range.
+  /// (See literature on the topic)
+  ///
+  /// Colour Distance Formulas:
+  ///
+  /// T23UIColourDistanceFormulaCEI76: This is the formula based on the CIE76
+  /// standard
+  ///
+  /// T23UIColourDistanceFormulaCMC1984_1_1: This is the formula based on the CMC
+  /// l:c (1984) standard where l=1 & c=1
+  ///
+  /// T23UIColourDistanceFormulaCMC1984_2_1: This is the formula based on the CMC
+  /// l:c (1984) standard where l=2 & c=1
+  ///
+  /// T23UIColourDistanceFormulaCEI94_GRAPHICS: This is the formula based on the
+  /// CIE94 standard using the graphics KL, K1 and K2 values of: {1, 0.045, 0.015}
+  ///
+  /// T23UIColourDistanceFormulaCEI94_TEXTILES: This is the formula based on the
+  /// CIE94 standard using the textiles KL, K1 and K2 values of {2, 0.048, 0.014}
+  ///
+  /// T23UIColourDistanceFormulaCIEDE2000: This is the formula based on the
+  /// CIEDE2000 standard
+  ///
+  /// :returns: A distance value as a CGFloat
   func getDistanceBetweenUIColor(compare: UIColor, options: ColourDistanceOptions) -> CGFloat {
     let cmpLAB = compare.getLAB()
     let selfLAB = self.getLAB()
@@ -196,15 +387,6 @@ extension UIColor {
     }
     
     return delta
-  }
-  
-  func hexString() -> String {
-    let rgb = self.getRGB()
-    var R:UInt8 = UInt8(255.0 * rgb.r)
-    var G:UInt8 = UInt8(255.0 * rgb.g)
-    var B:UInt8 = UInt8(255.0 * rgb.b)
-    
-    return NSString(format: "%02x%02x%02x", R, G, B)
   }
 }
 

@@ -41,6 +41,13 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
                     alpha:(CGFloat)alpha;
 
 /*!
+ *  @abstract Acquire an autoreleased UIColor from a Hex colour value
+ *  @discussion Proper value regex: ^(#{0,2}|0x{0,1})([a-f]|[A-F]|\d){1,6}
+ */
++ (UIColor *)colorWithHexString:(NSString *)hexString
+                          alpha:(CGFloat)alpha;
+
+/*!
  *  @abstract Initialize a UIColor with RYB colour values
  *  @discussion UIColor returned is generated from RYB->RGB conversion. (Please
  *  see http://vis.computer.org/vis2004/DVD/infovis/papers/gossett.pdf)
@@ -49,6 +56,13 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
                   yellow:(CGFloat)yellow
                     blue:(CGFloat)blue
                    alpha:(CGFloat)alpha;
+
+/*!
+ *  @abstract Initialize a UIColor from a Hex colour value
+ *  @discussion Proper value regex: ^(#{0,2}|0x{0,1})([a-f]|[A-F]|\d){1,6}
+ */
+- (UIColor *)initWithHexString:(NSString *)hexString
+                         alpha:(CGFloat)alpha;
 
 /*!
  *  @abstract Convert current colour to the XYZ colour space
@@ -148,7 +162,7 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
 
 /*!
  *  @abstract Grab the triadic set from the HSV space
- *  @discussionNSArray contains 3 UIColors: The original colour and 2 others
+ *  @discussion NSArray contains 3 UIColors: The original colour and 2 others
  *  where the hue is shifted ±120º while keeping S and V held constant
  */
 - (NSArray *)getTriadic;
@@ -177,7 +191,7 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
 /*!
  *  @abstract Acquire colour distance measure between current UIColor object and
  *  the UIColor compare parameter.
-
+ *
  *  @discussion Return values vary based on what distance metric used. However,
  *  all distance values returned base closeness to 0.0f as closeness in colour
  *  range. (See literature on the topic)
