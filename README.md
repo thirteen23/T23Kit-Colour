@@ -118,7 +118,7 @@ _______________
 
 #####Using [CocoaPods](http://cocoapods.org):
 
-CocoaPods aren't supported yet but will update as soon as it is.
+CocoaPods aren't supported yet but this project will update as soon as CocoaPods irons it all out.
 
 #####Manually from GitHub
 
