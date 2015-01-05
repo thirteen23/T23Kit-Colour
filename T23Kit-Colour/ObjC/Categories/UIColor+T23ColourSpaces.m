@@ -79,6 +79,36 @@
   return [self initWithRed:r green:g blue:b alpha:alpha];
 }
 
+- (NSString *)hexString {
+  CGFloat r = 0.0f, g = 0.0f, b = 0.0f, a = 0.0f;
+  
+  [self getRed:&r green:&g blue:&b alpha:&a];
+  
+  return [NSString stringWithFormat:@"%02x%02x%02x",
+          (UInt8)(r * 255), (UInt8)(g * 255), (UInt8)(b * 255)];
+}
+
+- (BOOL)getX:(CGFloat *)coneResponse
+           Y:(CGFloat *)luminance
+           Z:(CGFloat *)quasiBlue
+       alpha:(CGFloat *)alpha {
+  colour_t xyz = {0.0f}, rgb = {0.0f};
+  CGFloat r, g, b, a;
+  
+  [self getRed:&r green:&g blue:&b alpha:&a];
+  rgb.RGB_R = r;
+  rgb.RGB_G = g;
+  rgb.RGB_B = b;
+  
+  RGB_2_XYZ(rgb.RGB, &xyz.XYZ, colourspace_rgb_profile_srgb_d65);
+  *coneResponse = xyz.XYZ_X;
+  *luminance = xyz.XYZ_Y;
+  *quasiBlue = xyz.XYZ_Z;
+  *alpha = a;
+  
+  return YES;
+}
+
 - (BOOL)getHunterLStar:(CGFloat *)lightness
                  aStar:(CGFloat *)greenToMagenta
                  bStar:(CGFloat *)yellowtoBlue
@@ -202,27 +232,6 @@
   *magenta = cmyk.CMYK_M;
   *yellow = cmyk.CMYK_Y;
   *black = cmyk.CMYK_K;
-  *alpha = a;
-
-  return YES;
-}
-
-- (BOOL)getX:(CGFloat *)coneResponse
-           Y:(CGFloat *)luminance
-           Z:(CGFloat *)quasiBlue
-       alpha:(CGFloat *)alpha {
-  colour_t xyz = {0.0f}, rgb = {0.0f};
-  CGFloat r, g, b, a;
-
-  [self getRed:&r green:&g blue:&b alpha:&a];
-  rgb.RGB_R = r;
-  rgb.RGB_G = g;
-  rgb.RGB_B = b;
-
-  RGB_2_XYZ(rgb.RGB, &xyz.XYZ, colourspace_rgb_profile_srgb_d65);
-  *coneResponse = xyz.XYZ_X;
-  *luminance = xyz.XYZ_Y;
-  *quasiBlue = xyz.XYZ_Z;
   *alpha = a;
 
   return YES;

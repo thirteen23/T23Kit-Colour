@@ -65,6 +65,12 @@ typedef NS_ENUM(NSInteger, T23UIColourDistanceOptions) {
                          alpha:(CGFloat)alpha;
 
 /*!
+ *  @abstract Returns hex string value
+ *  @discussion NSString returned is of format: ^#([A-F]|\d){1,6}
+ */
+- (NSString *)hexString;
+
+/*!
  *  @abstract Convert current colour to the XYZ colour space
  *  @discussion Values returned are nominal values and therefore aren't
  *  normalized in any way, e.g., not a ratio or percentage.

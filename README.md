@@ -52,6 +52,7 @@ _______________
 	+ (UIColor *)colorWithHexString:alpha:
 	- (UIColor *)initWithRed:yellow:blue:alpha:
 	- (UIColor *)initWithHexString:alpha:
+	- (NSString *)hexString
 	- (BOOL)getX:Y:Z:alpha:
 	- (BOOL)getHunterLStar:aStar:bStar:alpha:
 	- (BOOL)getLStar:aStar:bStar:alpha:
