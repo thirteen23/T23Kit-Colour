@@ -50,6 +50,12 @@ extension UIColor {
     }
   }
   
+  var alpha:CGFloat {
+    get {
+      return CGColorGetAlpha(self.CGColor)
+    }
+  }
+  
   var hexString:String {
     get {
       let rgb = self.getRGB()
@@ -260,8 +266,8 @@ extension UIColor {
                         ? (HUE + inflect.radians) - M_2PI
                         : HUE + inflect.radians
     
-    let plus120:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
-    let minus120:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let plus120:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
+    let minus120:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
     
     return (self, plus120, minus120)
   }
@@ -286,8 +292,8 @@ extension UIColor {
                         ? (HUE + inflect.radians) - M_2PI
                         : HUE + inflect.radians
     
-    let plus150:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
-    let minus150:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let plus150:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
+    let minus150:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
     
     return (self, plus150, minus150)
   }
@@ -312,8 +318,8 @@ extension UIColor {
                         ? (HUE + inflect.radians) - M_2PI
                         : HUE + inflect.radians
     
-    let plus30:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
-    let minus30:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    let plus30:UIColor = UIColor(hue: HUEP, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
+    let minus30:UIColor = UIColor(hue: HUEM, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
     
     return (self, plus30, minus30)
   }
@@ -334,7 +340,7 @@ extension UIColor {
     
     let H:CGFloat = (HUE / M_2PI)
     
-    return UIColor(hue: H, saturation: hsb.s, brightness: hsb.b, alpha: 1.0)
+    return UIColor(hue: H, saturation: hsb.s, brightness: hsb.b, alpha: self.alpha)
   }
   
   ///
