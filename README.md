@@ -78,6 +78,7 @@ _______________
 	- var red:CGFloat { get }
 	- var green:CGFloat { get }
 	- var blue:CGFloat { get }
+	- var alpha:CGFloat { get }
 	- var hexString:String { get }
 	- func getHSB() -> HSB
 	- func getRGB() -> RGB
