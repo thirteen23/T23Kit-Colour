@@ -126,6 +126,10 @@ CocoaPods aren't supported yet but this project will update as soon as CocoaPods
 1.	Download the source files in the [T23Kit-Colour Source directory](https://github.com/thirteen23/T23Kit-Colour/tree/master/T23Kit-Colour).
 2.	Add `Colour.swift` to your Xcode project.
 
+##Example usage
+
+If you would like to see an example of this library in use check out our other toy project [ColorPalette](https://github.com/thirteen23/ColorPalette).
+
 ##Releases
 
 Releases are tagged in the git commit history using (mostly) [semantic versioning](http://semver.org). Check out the [releases and release notes](https://github.com/thirteen23/T23Kit-Colour/blob/master/RELEASE) for each version.
