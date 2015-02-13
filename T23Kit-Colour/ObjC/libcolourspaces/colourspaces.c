@@ -300,8 +300,11 @@ static colour_val_t rgb_model_gamma[colourspace_rgb_profile_max] = {
 
 #pragma mark - Prototypes
 
+#if CGFLOAT_IS_DOUBLE
 static inline colour_val_t neg_pow(colour_val_t a, colour_val_t p);
+#else
 static inline colour_val_t neg_powf(colour_val_t a, colour_val_t p);
+#endif
 
 static inline void sanitize_rgb(pixel_t *rgb);
 
@@ -319,13 +322,15 @@ static colour_val_t cubic_interpolation(colour_val_t t, colour_val_t a,
 
 #pragma mark - Utilities
 
+#if CGFLOAT_IS_DOUBLE
 static inline colour_val_t neg_pow(colour_val_t b, colour_val_t e) {
   return (0.0f <= b) ? pow(b, e) : -1.0f * pow(-1.0f * b, e);
 }
-
+#else
 static inline colour_val_t neg_powf(colour_val_t b, colour_val_t e) {
   return (0.0f <= b) ? powf(b, e) : -1.0f * powf(-1.0f * b, e);
 }
+#endif
 
 static inline void sanitize_rgb(pixel_t *rgb) {
   colour_val_t *r = &(rgb->a), *g = &(rgb->b), *b = &(rgb->c);
@@ -709,6 +714,7 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
   sanitize_rgb(rgb);
 }
 
+#if CGFLOAT_IS_DOUBLE
 void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
                       colourspace_option_flags flags) {
   colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
@@ -783,7 +789,7 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
-
+#else
 void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
                      colourspace_option_flags flags) {
   colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
@@ -858,6 +864,7 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
+#endif
 
 void ryb2rgb(pixel_t ryb, pixel_t *rgb, colourspace_option_flags flags) {
   colour_val_t x0, x1, x2, x3, y0, y1, *r = NULL, *g = NULL, *b = NULL;
@@ -1551,6 +1558,7 @@ void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz,
   xyY2xyz(xyY, xyz, flags);
 }
 
+#if CGFLOAT_IS_DOUBLE
 void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
                       colourspace_option_flags flags) {
   pixel_t p = {0.0f};
@@ -1627,7 +1635,7 @@ void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
                              rgb_working_matrices[rgb_model_idx].rgb2xyz[2],
                              xyz);
 }
-
+#else
 void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
                      colourspace_option_flags flags) {
   pixel_t p = {0.0f};
@@ -1704,6 +1712,7 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
                              rgb_working_matrices[rgb_model_idx].rgb2xyz[2],
                              xyz);
 }
+#endif
 
 void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz,
                        colourspace_option_flags flags) {
@@ -1995,6 +2004,7 @@ void _cie94_float_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
               (D_H_ab2 / (powf(K_H, 2.0f) * powf(S_H, 2.0f))));
 }
 
+#if CGFLOAT_IS_DOUBLE
 void _ciede2000_double_(pixel_t lab, pixel_t plab, colour_val_t kl,
                         colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
   colour_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
@@ -2104,7 +2114,7 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, colour_val_t kl,
 
   *dl = E_d_00;
 }
-
+#else
 void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
                        colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
   colour_val_t L_b_p, L_d_p, L_term, a_1_p, a_2_p, C_1_p, C_2_p, C_1_s, C_2_s,
@@ -2215,3 +2225,4 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
 
   *dl = E_d_00;
 }
+#endif
