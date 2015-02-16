@@ -413,11 +413,23 @@ void _xyY2xyz_double_(pixel_t xyY, pixel_t *xyz,
                       colourspace_option_flags flags) {
   xyY2xyz(xyY, xyz, flags);
 }
+
+void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz,
                      colourspace_option_flags flags) {
   xyY2xyz(xyY, xyz, flags);
 }
+
+void _xyY2xyz_double_(pixel_t xyY, pixel_t *xyz,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -497,6 +509,12 @@ void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
                              rgb_working_matrices[rgb_model_idx].rgb2xyz[2],
                              xyz);
 }
+
+void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
                      colourspace_option_flags flags) {
@@ -574,6 +592,12 @@ void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
                              rgb_working_matrices[rgb_model_idx].rgb2xyz[2],
                              xyz);
 }
+
+void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -589,6 +613,12 @@ void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz,
   *x = (var_X + *y) / 1.02f;
   *z = -1 * (var_Z - *y) / 0.847f;
 }
+
+void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz,
                       colourspace_option_flags flags) {
@@ -602,6 +632,12 @@ void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz,
   *x = (var_X + *y) / 1.02f;
   *z = -1 * (var_Z - *y) / 0.847f;
 }
+
+void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz,
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -627,6 +663,12 @@ void _lab2xyz_double_(pixel_t lab, pixel_t *xyz,
   xyz->b = y * (reference_white_matrix[reference_white_idx].b * 100.0f);
   xyz->c = z * (reference_white_matrix[reference_white_idx].c * 100.0f);
 }
+
+void _lab2xyz_float_(pixel_t lab, pixel_t *xyz,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lab2xyz_float_(pixel_t lab, pixel_t *xyz,
                      colourspace_option_flags flags) {
@@ -650,6 +692,12 @@ void _lab2xyz_float_(pixel_t lab, pixel_t *xyz,
   xyz->b = y * (reference_white_matrix[reference_white_idx].b * 100.0f);
   xyz->c = z * (reference_white_matrix[reference_white_idx].c * 100.0f);
 }
+
+void _lab2xyz_double_(pixel_t lab, pixel_t *xyz,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -685,6 +733,12 @@ void _luv2xyz_double_(pixel_t luv, pixel_t *xyz,
   *x = -1.0f * (9.0f * (*y) * var_U) / ((var_U - 4.0f) * var_V - var_U * var_V);
   *z = (9.0f * (*y) - (15.0f * var_V * (*y)) - (var_V * (*x))) / (3.0f * var_V);
 }
+
+void _luv2xyz_float_(pixel_t luv, pixel_t *xyz,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _luv2xyz_float_(pixel_t luv, pixel_t *xyz,
                      colourspace_option_flags flags) {
@@ -718,6 +772,12 @@ void _luv2xyz_float_(pixel_t luv, pixel_t *xyz,
   *x = -1.0f * (9.0f * (*y) * var_U) / ((var_U - 4.0f) * var_V - var_U * var_V);
   *z = (9.0f * (*y) - (15.0f * var_V * (*y)) - (var_V * (*x))) / (3.0f * var_V);
 }
+
+void _luv2xyz_double_(pixel_t luv, pixel_t *xyz,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - to Hunter LAB
@@ -735,6 +795,12 @@ void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab,
   *a = 17.5f * (((1.02f * xyz.a) - xyz.b) / sqrt(xyz.b));
   *b = 7.0f * ((xyz.b - (0.847f * xyz.c)) / sqrt(xyz.b));
 }
+
+void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab,
                       colourspace_option_flags flags) {
@@ -748,6 +814,12 @@ void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab,
   *a = 17.5f * (((1.02f * xyz.a) - xyz.b) / sqrtf(xyz.b));
   *b = 7.0f * ((xyz.b - (0.847f * xyz.c)) / sqrtf(xyz.b));
 }
+
+void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab,
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -758,6 +830,12 @@ void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab,
   _rgb2xyz_double_(rgb, &xyz, flags);
   _xyz2hlab_double_(xyz, hlab, flags);
 }
+
+void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
                       colourspace_option_flags flags) {
@@ -766,6 +844,12 @@ void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
   _rgb2xyz_float_(rgb, &xyz, flags);
   _xyz2hlab_float_(xyz, hlab, flags);
 }
+
+void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab,
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To LAB
@@ -793,6 +877,12 @@ void _xyz2lab_double_(pixel_t xyz, pixel_t *lab,
   lab->b = 500.0f * (x - y);
   lab->c = 200.0f * (y - z);
 }
+
+void _xyz2lab_float_(pixel_t xyz, pixel_t *lab,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _xyz2lab_float_(pixel_t xyz, pixel_t *lab,
                      colourspace_option_flags flags) {
@@ -816,6 +906,12 @@ void _xyz2lab_float_(pixel_t xyz, pixel_t *lab,
   lab->b = 500.0f * (x - y);
   lab->c = 200.0f * (y - z);
 }
+
+void _xyz2lab_double_(pixel_t xyz, pixel_t *lab,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -826,6 +922,12 @@ void _rgb2lab_double_(pixel_t rgb, pixel_t *lab,
   _rgb2xyz_double_(rgb, &xyz, flags);
   _xyz2lab_double_(xyz, lab, flags);
 }
+
+void _rgb2lab_float_(pixel_t rgb, pixel_t *lab,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2lab_float_(pixel_t rgb, pixel_t *lab,
                      colourspace_option_flags flags) {
@@ -834,6 +936,12 @@ void _rgb2lab_float_(pixel_t rgb, pixel_t *lab,
   _rgb2xyz_float_(rgb, &xyz, flags);
   _xyz2lab_float_(xyz, lab, flags);
 }
+
+void _rgb2lab_double_(pixel_t rgb, pixel_t *lab,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -853,6 +961,12 @@ void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab,
   *a = c * cos(h);
   *b = c * sin(h);
 }
+
+void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
                         colourspace_option_flags flags) {
@@ -870,6 +984,12 @@ void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
   *a = c * cosf(h);
   *b = c * sinf(h);
 }
+
+void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -882,6 +1002,12 @@ void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab,
   _luv2xyz_double_(luv, &xyz, flags);
   _xyz2lab_double_(xyz, lab, flags);
 }
+
+void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
                         colourspace_option_flags flags) {
@@ -891,6 +1017,12 @@ void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
   _luv2xyz_float_(luv, &xyz, flags);
   _xyz2lab_float_(xyz, lab, flags);
 }
+
+void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To LUV
@@ -930,6 +1062,12 @@ void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
   *u = 13.0f * (*l) * (var_U - ref_U);
   *v = 13.0f * (*l) * (var_V - ref_V);
 }
+
+void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
                      colourspace_option_flags flags) {
@@ -965,6 +1103,12 @@ void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
   *u = 13.0f * (*l) * (var_U - ref_U);
   *v = 13.0f * (*l) * (var_V - ref_V);
 }
+
+void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -975,6 +1119,12 @@ void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
   _rgb2xyz_double_(rgb, &xyz, flags);
   _xyz2luv_double_(xyz, luv, flags);
 }
+
+void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
                      colourspace_option_flags flags) {
@@ -983,6 +1133,12 @@ void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
   _rgb2xyz_float_(rgb, &xyz, flags);
   _xyz2luv_float_(xyz, luv, flags);
 }
+
+void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -994,6 +1150,11 @@ void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
   _lab2xyz_double_(lab, &xyz, flags);
   _xyz2luv_double_(xyz, luv, flags);
 }
+void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
                         colourspace_option_flags flags) {
@@ -1003,6 +1164,12 @@ void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
   _lab2xyz_float_(lab, &xyz, flags);
   _xyz2luv_float_(xyz, luv, flags);
 }
+
+void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1022,6 +1189,12 @@ void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
   *u = c * cos(h);
   *v = c * sin(h);
 }
+
+void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
                         colourspace_option_flags flags) {
@@ -1039,6 +1212,12 @@ void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
   *u = c * cosf(h);
   *v = c * sinf(h);
 }
+
+void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To LCH(AB)
@@ -1060,6 +1239,12 @@ void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
   
   lch_ab->c /= RAD_TO_DEG(M_2PI);
 }
+
+void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
                         colourspace_option_flags flags) {
@@ -1077,6 +1262,12 @@ void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
   
   lch_ab->c /= RAD_TO_DEG(M_2PI);
 }
+
+void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1087,6 +1278,12 @@ void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab,
   _rgb2lab_double_(rgb, &lab, flags);
   _lab2lch_ab_double_(lab, lch_ab, flags);
 }
+
+void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
                         colourspace_option_flags flags) {
@@ -1095,6 +1292,12 @@ void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
   _rgb2lab_float_(rgb, &lab, flags);
   _lab2lch_ab_float_(lab, lch_ab, flags);
 }
+
+void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1106,6 +1309,12 @@ void _luv2lch_ab_double_(pixel_t luv, pixel_t *lch_ab,
   _xyz2lab_double_(xyz, &lab, flags);
   _lab2lch_ab_double_(lab, lch_ab, flags);
 }
+
+void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
                         colourspace_option_flags flags) {
@@ -1115,6 +1324,12 @@ void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
   _xyz2lab_float_(xyz, &lab, flags);
   _lab2lch_ab_float_(lab, lch_ab, flags);
 }
+
+void _luv2lch_ab_double_(pixel_t luv, pixel_t *lch_ab,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To LCH(UV)
@@ -1136,6 +1351,12 @@ void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
   
   lch_uv->c /= RAD_TO_DEG(M_2PI);
 }
+
+void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
                         colourspace_option_flags flags) {
@@ -1153,6 +1374,12 @@ void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
   
   lch_uv->c /= RAD_TO_DEG(M_2PI);
 }
+
+void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1164,6 +1391,12 @@ void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
   _xyz2luv_double_(xyz, &luv, flags);
   _luv2lch_uv_double_(luv, lch_uv, flags);
 }
+
+void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
                         colourspace_option_flags flags) {
@@ -1173,6 +1406,12 @@ void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
   _xyz2luv_float_(xyz, &luv, flags);
   _luv2lch_uv_float_(luv, lch_uv, flags);
 }
+
+void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1183,6 +1422,12 @@ void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
   _rgb2lab_double_(rgb, &lab, flags);
   _lab2lch_uv_double_(lab, lch_uv, flags);
 }
+
+void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
                         colourspace_option_flags flags) {
@@ -1191,6 +1436,12 @@ void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
   _rgb2lab_float_(rgb, &lab, flags);
   _lab2lch_uv_float_(lab, lch_uv, flags);
 }
+
+void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To RGB
@@ -1270,6 +1521,12 @@ void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
   
   sanitize_rgb(rgb);
 }
+
+void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
                      colourspace_option_flags flags) {
@@ -1345,6 +1602,12 @@ void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
   
   sanitize_rgb(rgb);
 }
+
+void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 void hsl2rgb(pixel_t hsl, pixel_t *rgb, colourspace_option_flags flags) {
@@ -1375,11 +1638,23 @@ void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb,
                       colourspace_option_flags flags) {
   hsl2rgb(hsl, rgb, flags);
 }
+
+void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb,
                      colourspace_option_flags flags) {
   hsl2rgb(hsl, rgb, flags);
 }
+
+void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1443,6 +1718,12 @@ void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb,
   }
   sanitize_rgb(rgb);
 }
+
+void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
                      colourspace_option_flags flags) {
@@ -1504,6 +1785,12 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
   }
   sanitize_rgb(rgb);
 }
+
+void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1514,6 +1801,12 @@ void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
   _lab2xyz_double_(lab, &xyz, flags);
   _xyz2rgb_double_(xyz, rgb, flags);
 }
+
+void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
                      colourspace_option_flags flags) {
@@ -1522,6 +1815,12 @@ void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
   _lab2xyz_float_(lab, &xyz, flags);
   _xyz2rgb_float_(xyz, rgb, flags);
 }
+
+void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1532,6 +1831,12 @@ void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
   _lch_ab2lab_double_(lch_ab, &lab, flags);
   _lab2rgb_double_(lab, rgb, flags);
 }
+
+void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
                         colourspace_option_flags flags) {
@@ -1540,6 +1845,12 @@ void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
   _lch_ab2lab_float_(lch_ab, &lab, flags);
   _lab2rgb_float_(lab, rgb, flags);
 }
+
+void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1550,6 +1861,12 @@ void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb,
   _lch_uv2lab_double_(lch_uv, &lab, flags);
   _lab2rgb_double_(lab, rgb, flags);
 }
+
+void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
+                        colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
                         colourspace_option_flags flags) {
@@ -1558,6 +1875,12 @@ void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
   _lch_uv2lab_float_(lch_uv, &lab, flags);
   _lab2rgb_float_(lab, rgb, flags);
 }
+
+void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb,
+                         colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1595,6 +1918,12 @@ void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
+
+void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
                      colourspace_option_flags flags) {
@@ -1630,14 +1959,25 @@ void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
+
+void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
 void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb,
-                       colourspace_option_flags flags) {}
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _hlab2rgb_float_(pixel_t hlab, pixel_t *rgb,
-                      colourspace_option_flags flags) {}
+                      colourspace_option_flags flags) {
+  assert(0);
+}
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1660,6 +2000,12 @@ void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
+
+void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
                       colourspace_option_flags flags) {
@@ -1680,6 +2026,12 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
 
   sanitize_rgb(rgb);
 }
+
+void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb,
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 void ryb2rgb(pixel_t ryb, pixel_t *rgb, colourspace_option_flags flags) {
@@ -1722,11 +2074,23 @@ void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb,
                       colourspace_option_flags flags) {
   ryb2rgb(ryb, rgb, flags);
 }
+
+void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb,
                      colourspace_option_flags flags) {
   ryb2rgb(ryb, rgb, flags);
 }
+
+void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To CMYK
@@ -1752,11 +2116,23 @@ void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk,
                        colourspace_option_flags flags) {
   rgb2cmyk(rgb, cmyk, flags);
 }
+
+void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk,
                       colourspace_option_flags flags) {
   rgb2cmyk(rgb, cmyk, flags);
 }
+
+void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk,
+                       colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To HSV
@@ -1809,11 +2185,23 @@ void _rgb2hsv_double_(pixel_t rgb, pixel_t *hsv,
                       colourspace_option_flags flags) {
   rgb2hsv(rgb, hsv, flags);
 }
+
+void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv,
                      colourspace_option_flags flags) {
   rgb2hsv(rgb, hsv, flags);
 }
+
+void _rgb2hsv_double_(pixel_t rgb, pixel_t *hsv,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To HSL
@@ -1857,11 +2245,23 @@ void _rgb2hsl_double_(pixel_t rgb, pixel_t *hsl,
                       colourspace_option_flags flags) {
   rgb2hsl(rgb, hsl, flags);
 }
+
+void _rgb2hsl_float_(pixel_t rgb, pixel_t *hsl,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2hsl_float_(pixel_t rgb, pixel_t *hsl,
                      colourspace_option_flags flags) {
   rgb2hsl(rgb, hsl, flags);
 }
+
+void _rgb2hsl_double_(pixel_t rgb, pixel_t *hsl,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - To HSI
@@ -1897,6 +2297,12 @@ void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi,
     *s = 1.0f - (min / (*i));
   }
 }
+
+void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
+                     colourspace_option_flags flags) {
+  assert(0);
+}
+
 #else
 void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
                      colourspace_option_flags flags) {
@@ -1928,6 +2334,12 @@ void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
     *s = 1.0f - (min / (*i));
   }
 }
+
+void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi,
+                      colourspace_option_flags flags) {
+  assert(0);
+}
+
 #endif
 
 #pragma mark - Distance Formulas
@@ -1937,11 +2349,21 @@ void _cie76_double_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
   *dl = sqrt(pow(plab.a - lab.a, 2.0f) + pow(plab.b - lab.b, 2.0f) +
              pow(plab.c - lab.c, 2.0f));
 }
+
+void _cie76_float_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
+  assert(0);
+}
+
 #else
 void _cie76_float_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
   *dl = sqrtf(powf(plab.a - lab.a, 2.0f) + powf(plab.b - lab.b, 2.0f) +
               powf(plab.c - lab.c, 2.0f));
 }
+
+void _cie76_double_(pixel_t lab, pixel_t plab, colour_val_t *dl) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -1987,6 +2409,12 @@ void _cmc1984_double_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
   *dl = sqrt(pow((L_d / (l * S_L)), 2.0f) + pow((C_d / (c * S_C)), 2.0f) +
              (H_d_ab2 / pow(S_H, 2.0f)));
 }
+
+void _cmc1984_float_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
+                     colour_val_t *dl) {
+  assert(0);
+}
+
 #else
 void _cmc1984_float_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
                      colour_val_t *dl) {
@@ -2030,6 +2458,12 @@ void _cmc1984_float_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
   *dl = sqrtf(powf((L_d / (l * S_L)), 2.0f) + powf((C_d / (c * S_C)), 2.0f) +
               (H_d_ab2 / powf(S_H, 2.0f)));
 }
+
+void _cmc1984_double_(pixel_t lab, pixel_t plab, colour_val_t l, colour_val_t c,
+                      colour_val_t *dl) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -2059,6 +2493,11 @@ void _cie94_double_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
   *dl = sqrt(pow(L_d / (K_L * S_L), 2.0f) + pow(C_d / (K_C * S_C), 2.0f) +
              (D_H_ab2 / (pow(K_H, 2.0f) * pow(S_H, 2.0f))));
 }
+
+void _cie94_float_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
+  assert(0);
+}
+
 #else
 void _cie94_float_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
   colour_val_t D_H_ab2, S_L, S_C, S_H, L_d, C_1, C_2, C_d, K_1, K_2, K_L, K_C,
@@ -2086,6 +2525,11 @@ void _cie94_float_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
   *dl = sqrtf(powf(L_d / (K_L * S_L), 2.0f) + powf(C_d / (K_C * S_C), 2.0f) +
               (D_H_ab2 / (powf(K_H, 2.0f) * powf(S_H, 2.0f))));
 }
+
+void _cie94_double_(pixel_t lab, pixel_t plab, int media, colour_val_t *dl) {
+  assert(0);
+}
+
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -2198,6 +2642,12 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab, colour_val_t kl,
 
   *dl = E_d_00;
 }
+
+void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
+                       colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
+  assert(0);
+}
+
 #else
 void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
                        colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
@@ -2309,4 +2759,10 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab, colour_val_t kl,
 
   *dl = E_d_00;
 }
+
+void _ciede2000_double_(pixel_t lab, pixel_t plab, colour_val_t kl,
+                        colour_val_t kc, colour_val_t kh, colour_val_t *dl) {
+  assert(0);
+}
+
 #endif
