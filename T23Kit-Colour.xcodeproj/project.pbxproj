@@ -65,7 +65,6 @@
 		4AEE010B1A5AEF3200B55091 /* UIColor+T23ColourSpaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+T23ColourSpaces.m"; path = "ObjC/Categories/UIColor+T23ColourSpaces.m"; sourceTree = "<group>"; };
 		4AEE010D1A5AEF4300B55091 /* ColourTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ColourTests.m; path = "T23Kit-Colour/ObjC/ColourTests/ColourTests.m"; sourceTree = SOURCE_ROOT; };
 		4AEE010F1A5AEF4D00B55091 /* ColourTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ColourTests-Info.plist"; path = "T23Kit-Colour/ObjC/ColourTests/ColourTests-Info.plist"; sourceTree = SOURCE_ROOT; };
-		4AEE01121A5AF52900B55091 /* colourspaces_priv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces_priv.h; path = ObjC/libcolourspaces/colourspaces_priv.h; sourceTree = "<group>"; };
 		4AEE01131A5AF52900B55091 /* colourspaces.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = colourspaces.c; path = ObjC/libcolourspaces/colourspaces.c; sourceTree = "<group>"; };
 		4AEE01141A5AF52900B55091 /* colourspaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = colourspaces.h; path = ObjC/libcolourspaces/colourspaces.h; sourceTree = "<group>"; };
 		4AEE01161A5AF53A00B55091 /* T23Kit-Colour-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "T23Kit-Colour-Prefix.pch"; path = "ObjC/SupportingFiles/T23Kit-Colour-Prefix.pch"; sourceTree = "<group>"; };
@@ -184,7 +183,6 @@
 		4A21EB1619227E8D00BF9603 /* libcolorspaces */ = {
 			isa = PBXGroup;
 			children = (
-				4AEE01121A5AF52900B55091 /* colourspaces_priv.h */,
 				4AEE01131A5AF52900B55091 /* colourspaces.c */,
 				4AEE01141A5AF52900B55091 /* colourspaces.h */,
 			);
