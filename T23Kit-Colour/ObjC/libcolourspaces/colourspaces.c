@@ -1119,6 +1119,42 @@ void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
 #pragma mark - To LCH(UV)
 
 #ifdef CGFLOAT_IS_DOUBLE
+void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
+                         colourspace_option_flags flags) {
+  lch_uv->a = luv.a;
+  
+  lch_uv->b = sqrt(pow(luv.b, 2.0f) + pow(luv.c, 2.0f));
+  lch_uv->c = RAD_TO_DEG(atan2(luv.c, luv.b));
+  
+  while (lch_uv->c < 0.0f) {
+    lch_uv->c += RAD_TO_DEG(M_2PI);
+  }
+  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
+    lch_uv->c -= RAD_TO_DEG(M_2PI);
+  }
+  
+  lch_uv->c /= RAD_TO_DEG(M_2PI);
+}
+#else
+void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
+                        colourspace_option_flags flags) {
+  lch_uv->a = luv.a;
+  
+  lch_uv->b = sqrtf(powf(luv.b, 2.0f) + powf(luv.c, 2.0f));
+  lch_uv->c = RAD_TO_DEG(atan2f(luv.c, luv.b));
+  
+  while (lch_uv->c < 0.0f) {
+    lch_uv->c += RAD_TO_DEG(M_2PI);
+  }
+  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
+    lch_uv->c -= RAD_TO_DEG(M_2PI);
+  }
+  
+  lch_uv->c /= RAD_TO_DEG(M_2PI);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
 void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
                          colourspace_option_flags flags) {
   pixel_t luv = {0.0f}, xyz = {0.0f};
@@ -1153,42 +1189,6 @@ void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
   
   _rgb2lab_float_(rgb, &lab, flags);
   _lab2lch_uv_float_(lab, lch_uv, flags);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
-                         colourspace_option_flags flags) {
-  lch_uv->a = luv.a;
-  
-  lch_uv->b = sqrt(pow(luv.b, 2.0f) + pow(luv.c, 2.0f));
-  lch_uv->c = RAD_TO_DEG(atan2(luv.c, luv.b));
-  
-  while (lch_uv->c < 0.0f) {
-    lch_uv->c += RAD_TO_DEG(M_2PI);
-  }
-  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
-    lch_uv->c -= RAD_TO_DEG(M_2PI);
-  }
-  
-  lch_uv->c /= RAD_TO_DEG(M_2PI);
-}
-#else
-void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
-                        colourspace_option_flags flags) {
-  lch_uv->a = luv.a;
-  
-  lch_uv->b = sqrtf(powf(luv.b, 2.0f) + powf(luv.c, 2.0f));
-  lch_uv->c = RAD_TO_DEG(atan2f(luv.c, luv.b));
-  
-  while (lch_uv->c < 0.0f) {
-    lch_uv->c += RAD_TO_DEG(M_2PI);
-  }
-  while (lch_uv->c > RAD_TO_DEG(M_2PI)) {
-    lch_uv->c -= RAD_TO_DEG(M_2PI);
-  }
-  
-  lch_uv->c /= RAD_TO_DEG(M_2PI);
 }
 #endif
 
