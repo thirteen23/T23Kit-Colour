@@ -892,6 +892,154 @@ void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
 }
 #endif
 
+#pragma mark - To LUV
+
+#ifdef CGFLOAT_IS_DOUBLE
+void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
+                      colourspace_option_flags flags) {
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
+  
+  uint16_t reference_white_idx =
+  (COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_max) <
+   COLOURSPACE_OPTION_REFERENCE_WHITE(flags))
+  ? COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_D65)
+  : COLOURSPACE_OPTION_REFERENCE_WHITE(flags);
+  
+  l = &(luv->a);
+  u = &(luv->b);
+  v = &(luv->c);
+  
+  var_U = (4.0f * xyz.a) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
+  var_V = (9.0f * xyz.b) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
+  
+  var_Y = (xyz.b / 100.0f);
+  var_Y = (epsilon < var_Y) ? pow(var_Y, (1.0f / 3.0f))
+  : (kappa * var_Y) + (16.0f / 116.0f);
+  
+  ref_U = (4.0f * (reference_white_matrix[reference_white_idx].a * 100.0f)) /
+  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
+   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
+   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
+  ref_V = (9.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) /
+  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
+   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
+   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
+  
+  *l = (116.0f * var_Y) - 16.0f;
+  *u = 13.0f * (*l) * (var_U - ref_U);
+  *v = 13.0f * (*l) * (var_V - ref_V);
+}
+#else
+void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
+                     colourspace_option_flags flags) {
+  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
+  
+  uint16_t reference_white_idx =
+  (COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_max) <
+   COLOURSPACE_OPTION_REFERENCE_WHITE(flags))
+  ? COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_D65)
+  : COLOURSPACE_OPTION_REFERENCE_WHITE(flags);
+  
+  l = &(luv->a);
+  u = &(luv->b);
+  v = &(luv->c);
+  
+  var_U = (4.0f * xyz.a) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
+  var_V = (9.0f * xyz.b) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
+  
+  var_Y = (xyz.b / 100.0f);
+  var_Y = (epsilon < var_Y) ? powf(var_Y, (1.0f / 3.0f))
+  : (kappa * var_Y) + (16.0f / 116.0f);
+  
+  ref_U = (4.0f * (reference_white_matrix[reference_white_idx].a * 100.0f)) /
+  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
+   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
+   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
+  ref_V = (9.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) /
+  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
+   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
+   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
+  
+  *l = (116.0f * var_Y) - 16.0f;
+  *u = 13.0f * (*l) * (var_U - ref_U);
+  *v = 13.0f * (*l) * (var_V - ref_V);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
+void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
+                      colourspace_option_flags flags) {
+  pixel_t xyz = {0.0f};
+  
+  _rgb2xyz_double_(rgb, &xyz, flags);
+  _xyz2luv_double_(xyz, luv, flags);
+}
+#else
+void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
+                     colourspace_option_flags flags) {
+  pixel_t xyz = {0.0f};
+  
+  _rgb2xyz_float_(rgb, &xyz, flags);
+  _xyz2luv_float_(xyz, luv, flags);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
+void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
+                         colourspace_option_flags flags) {
+  pixel_t lab = {0.0f}, xyz = {0.0f};
+  
+  _lch_ab2lab_double_(lch_ab, &lab, flags);
+  _lab2xyz_double_(lab, &xyz, flags);
+  _xyz2luv_double_(xyz, luv, flags);
+}
+#else
+void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
+                        colourspace_option_flags flags) {
+  pixel_t lab = {0.0f}, xyz = {0.0f};
+  
+  _lch_ab2lab_float_(lch_ab, &lab, flags);
+  _lab2xyz_float_(lab, &xyz, flags);
+  _xyz2luv_float_(xyz, luv, flags);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
+void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
+                         colourspace_option_flags flags) {
+  colour_val_t l_, c, h, *l, *u, *v;
+  
+  l_ = lch_uv.a;
+  c = lch_uv.b;
+  h = (lch_uv.c * M_2PI);
+  
+  l = &(luv->a);
+  u = &(luv->b);
+  v = &(luv->c);
+  
+  *l = l_;
+  *u = c * cos(h);
+  *v = c * sin(h);
+}
+#else
+void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
+                        colourspace_option_flags flags) {
+  colour_val_t l_, c, h, *l, *u, *v;
+  
+  l_ = lch_uv.a;
+  c = lch_uv.b;
+  h = (lch_uv.c * M_2PI);
+  
+  l = &(luv->a);
+  u = &(luv->b);
+  v = &(luv->c);
+  
+  *l = l_;
+  *u = c * cosf(h);
+  *v = c * sinf(h);
+}
+#endif
+
 #pragma mark - To LCH(AB)
 
 #ifdef CGFLOAT_IS_DOUBLE
@@ -971,6 +1119,26 @@ void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
 #pragma mark - To LCH(UV)
 
 #ifdef CGFLOAT_IS_DOUBLE
+void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
+                         colourspace_option_flags flags) {
+  pixel_t luv = {0.0f}, xyz = {0.0f};
+  
+  _lab2xyz_double_(lab, &xyz, flags);
+  _xyz2luv_double_(xyz, &luv, flags);
+  _luv2lch_uv_double_(luv, lch_uv, flags);
+}
+#else
+void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
+                        colourspace_option_flags flags) {
+  pixel_t luv = {0.0f}, xyz = {0.0f};
+  
+  _lab2xyz_float_(lab, &xyz, flags);
+  _xyz2luv_float_(xyz, &luv, flags);
+  _luv2lch_uv_float_(luv, lch_uv, flags);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
 void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
                          colourspace_option_flags flags) {
   pixel_t lab = {0.0f};
@@ -1024,175 +1192,159 @@ void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
 }
 #endif
 
-#ifdef CGFLOAT_IS_DOUBLE
-void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
-                         colourspace_option_flags flags) {
-  pixel_t luv = {0.0f}, xyz = {0.0f};
-  
-  _lab2xyz_double_(lab, &xyz, flags);
-  _xyz2luv_double_(xyz, &luv, flags);
-  _luv2lch_uv_double_(luv, lch_uv, flags);
-}
-#else
-void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
-                        colourspace_option_flags flags) {
-  pixel_t luv = {0.0f}, xyz = {0.0f};
-  
-  _lab2xyz_float_(lab, &xyz, flags);
-  _xyz2luv_float_(xyz, &luv, flags);
-  _luv2lch_uv_float_(luv, lch_uv, flags);
-}
-#endif
-
-#pragma mark - To LUV
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
-                      colourspace_option_flags flags) {
-  pixel_t xyz = {0.0f};
-  
-  _rgb2xyz_double_(rgb, &xyz, flags);
-  _xyz2luv_double_(xyz, luv, flags);
-}
-#else
-void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
-                     colourspace_option_flags flags) {
-  pixel_t xyz = {0.0f};
-  
-  _rgb2xyz_float_(rgb, &xyz, flags);
-  _xyz2luv_float_(xyz, luv, flags);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
-                      colourspace_option_flags flags) {
-  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
-  
-  uint16_t reference_white_idx =
-  (COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_max) <
-   COLOURSPACE_OPTION_REFERENCE_WHITE(flags))
-  ? COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_D65)
-  : COLOURSPACE_OPTION_REFERENCE_WHITE(flags);
-  
-  l = &(luv->a);
-  u = &(luv->b);
-  v = &(luv->c);
-  
-  var_U = (4.0f * xyz.a) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
-  var_V = (9.0f * xyz.b) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
-  
-  var_Y = (xyz.b / 100.0f);
-  var_Y = (epsilon < var_Y) ? pow(var_Y, (1.0f / 3.0f))
-  : (kappa * var_Y) + (16.0f / 116.0f);
-  
-  ref_U = (4.0f * (reference_white_matrix[reference_white_idx].a * 100.0f)) /
-  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
-   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
-   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
-  ref_V = (9.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) /
-  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
-   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
-   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
-  
-  *l = (116.0f * var_Y) - 16.0f;
-  *u = 13.0f * (*l) * (var_U - ref_U);
-  *v = 13.0f * (*l) * (var_V - ref_V);
-}
-#else
-void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
-                     colourspace_option_flags flags) {
-  colour_val_t var_Y, var_U, ref_U, var_V, ref_V, *l, *u, *v;
-  
-  uint16_t reference_white_idx =
-  (COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_max) <
-   COLOURSPACE_OPTION_REFERENCE_WHITE(flags))
-  ? COLOURSPACE_OPTION_REFERENCE_WHITE(colourspace_reference_white_D65)
-  : COLOURSPACE_OPTION_REFERENCE_WHITE(flags);
-  
-  l = &(luv->a);
-  u = &(luv->b);
-  v = &(luv->c);
-  
-  var_U = (4.0f * xyz.a) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
-  var_V = (9.0f * xyz.b) / (xyz.a + (15.0f * xyz.b) + (3.0f * xyz.c));
-  
-  var_Y = (xyz.b / 100.0f);
-  var_Y = (epsilon < var_Y) ? powf(var_Y, (1.0f / 3.0f))
-  : (kappa * var_Y) + (16.0f / 116.0f);
-  
-  ref_U = (4.0f * (reference_white_matrix[reference_white_idx].a * 100.0f)) /
-  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
-   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
-   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
-  ref_V = (9.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) /
-  ((reference_white_matrix[reference_white_idx].a * 100.0f) +
-   (15.0f * (reference_white_matrix[reference_white_idx].b * 100.0f)) +
-   (3.0f * (reference_white_matrix[reference_white_idx].c * 100.0f)));
-  
-  *l = (116.0f * var_Y) - 16.0f;
-  *u = 13.0f * (*l) * (var_U - ref_U);
-  *v = 13.0f * (*l) * (var_V - ref_V);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
-                         colourspace_option_flags flags) {
-  pixel_t lab = {0.0f}, xyz = {0.0f};
-  
-  _lch_ab2lab_double_(lch_ab, &lab, flags);
-  _lab2xyz_double_(lab, &xyz, flags);
-  _xyz2luv_double_(xyz, luv, flags);
-}
-#else
-void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
-                        colourspace_option_flags flags) {
-  pixel_t lab = {0.0f}, xyz = {0.0f};
-  
-  _lch_ab2lab_float_(lch_ab, &lab, flags);
-  _lab2xyz_float_(lab, &xyz, flags);
-  _xyz2luv_float_(xyz, luv, flags);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
-                         colourspace_option_flags flags) {
-  colour_val_t l_, c, h, *l, *u, *v;
-  
-  l_ = lch_uv.a;
-  c = lch_uv.b;
-  h = (lch_uv.c * M_2PI);
-  
-  l = &(luv->a);
-  u = &(luv->b);
-  v = &(luv->c);
-  
-  *l = l_;
-  *u = c * cos(h);
-  *v = c * sin(h);
-}
-#else
-void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
-                        colourspace_option_flags flags) {
-  colour_val_t l_, c, h, *l, *u, *v;
-  
-  l_ = lch_uv.a;
-  c = lch_uv.b;
-  h = (lch_uv.c * M_2PI);
-  
-  l = &(luv->a);
-  u = &(luv->b);
-  v = &(luv->c);
-  
-  *l = l_;
-  *u = c * cosf(h);
-  *v = c * sinf(h);
-}
-#endif
-
 #pragma mark - To RGB
+
+#ifdef CGFLOAT_IS_DOUBLE
+void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
+  pixel_t var_xyz = {0.0f};
+  
+  uint16_t rgb_model_idx =
+  (COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max) <
+   COLOURSPACE_OPTION_RGB_PROFILE(flags))
+  ? COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_srgb_d65)
+  : COLOURSPACE_OPTION_RGB_PROFILE(flags);
+  
+  var_xyz.a = xyz.a / 100.0f;
+  var_xyz.b = xyz.b / 100.0f;
+  var_xyz.c = xyz.c / 100.0f;
+  
+  apply_working_space_matrix(
+                             var_xyz, rgb_working_matrices[rgb_model_idx].xyz2rgb[0],
+                             rgb_working_matrices[rgb_model_idx].xyz2rgb[1],
+                             rgb_working_matrices[rgb_model_idx].xyz2rgb[2], rgb);
+  
+  r = &(rgb->a);
+  g = &(rgb->b);
+  b = &(rgb->c);
+  
+  R = rgb->a;
+  G = rgb->b;
+  B = rgb->c;
+  
+  s_r = signbit(R) ? -1.0f : 1.0f;
+  s_g = signbit(G) ? -1.0f : 1.0f;
+  s_b = signbit(B) ? -1.0f : 1.0f;
+  
+  if (0.0f < rgb_model_gamma[rgb_model_idx]) {
+    R = neg_pow(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    G = neg_pow(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    B = neg_pow(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    
+  } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
+    R = (fabs(R) <= 0.0031308f)
+    ? 12.92f * fabs(R)
+    : 1.055f * neg_pow(fabs(R), (1.0f / 2.4f)) - 0.055f;
+    G = (fabs(G) <= 0.0031308f)
+    ? 12.92f * fabs(G)
+    : 1.055f * neg_pow(fabs(G), (1.0f / 2.4f)) - 0.055f;
+    B = (fabs(B) <= 0.0031308f)
+    ? 12.92f * fabs(B)
+    : 1.055f * neg_pow(fabs(B), (1.0f / 2.4f)) - 0.055f;
+    
+    R *= s_r;
+    G *= s_g;
+    B *= s_b;
+    
+  } else {
+    R = (fabs(R) <= (216.0f / 24389.0f))
+    ? (fabs(R) * 24389.0f / 2700.0f)
+    : (1.16f * neg_pow(fabs(R), 1.0f / 3.0f) - 0.16f);
+    G = (fabs(G) <= (216.0f / 24389.0f))
+    ? (fabs(G) * 24389.0f / 2700.0f)
+    : (1.16f * neg_pow(fabs(G), 1.0f / 3.0f) - 0.16f);
+    B = (fabs(B) <= (216.0f / 24389.0f))
+    ? (fabs(B) * 24389.0f / 2700.0f)
+    : (1.16f * neg_pow(fabs(B), 1.0f / 3.0f) - 0.16f);
+    
+    R *= s_r;
+    G *= s_g;
+    B *= s_b;
+  }
+  
+  *r = R;
+  *g = G;
+  *b = B;
+  
+  sanitize_rgb(rgb);
+}
+#else
+void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
+  pixel_t var_xyz = {0.0f};
+  
+  uint16_t rgb_model_idx =
+  (COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max) <
+   COLOURSPACE_OPTION_RGB_PROFILE(flags))
+  ? COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_srgb_d65)
+  : COLOURSPACE_OPTION_RGB_PROFILE(flags);
+  
+  var_xyz.a = xyz.a / 100.0f;
+  var_xyz.b = xyz.b / 100.0f;
+  var_xyz.c = xyz.c / 100.0f;
+  
+  apply_working_space_matrix(
+                             var_xyz, rgb_working_matrices[rgb_model_idx].xyz2rgb[0],
+                             rgb_working_matrices[rgb_model_idx].xyz2rgb[1],
+                             rgb_working_matrices[rgb_model_idx].xyz2rgb[2], rgb);
+  
+  r = &(rgb->a);
+  g = &(rgb->b);
+  b = &(rgb->c);
+  
+  R = rgb->a;
+  G = rgb->b;
+  B = rgb->c;
+  
+  s_r = signbit(R) ? -1.0f : 1.0f;
+  s_g = signbit(G) ? -1.0f : 1.0f;
+  s_b = signbit(B) ? -1.0f : 1.0f;
+  
+  if (0.0f < rgb_model_gamma[rgb_model_idx]) {
+    R = neg_powf(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    G = neg_powf(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    B = neg_powf(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
+    
+  } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
+    R = (fabsf(R) <= 0.0031308f)
+    ? 12.92f * fabsf(R)
+    : 1.055f * neg_powf(fabsf(R), (1.0f / 2.4f)) - 0.055f;
+    G = (fabsf(G) <= 0.0031308f)
+    ? 12.92f * fabsf(G)
+    : 1.055f * neg_powf(fabsf(G), (1.0f / 2.4f)) - 0.055f;
+    B = (fabsf(B) <= 0.0031308f)
+    ? 12.92f * fabsf(B)
+    : 1.055f * neg_powf(fabsf(B), (1.0f / 2.4f)) - 0.055f;
+    
+    R *= s_r;
+    G *= s_g;
+    B *= s_b;
+    
+  } else {
+    R = (fabsf(R) <= (216.0f / 24389.0f))
+    ? (fabsf(R) * 24389.0f / 2700.0f)
+    : (1.16f * neg_powf(fabsf(R), 1.0f / 3.0f) - 0.16f);
+    G = (fabsf(G) <= (216.0f / 24389.0f))
+    ? (fabsf(G) * 24389.0f / 2700.0f)
+    : (1.16f * neg_powf(fabsf(G), 1.0f / 3.0f) - 0.16f);
+    B = (fabsf(B) <= (216.0f / 24389.0f))
+    ? (fabsf(B) * 24389.0f / 2700.0f)
+    : (1.16f * neg_powf(fabsf(B), 1.0f / 3.0f) - 0.16f);
+    
+    R *= s_r;
+    G *= s_g;
+    B *= s_b;
+  }
+  
+  *r = R;
+  *g = G;
+  *b = B;
+  
+  sanitize_rgb(rgb);
+}
+#endif
 
 void hsl2rgb(pixel_t hsl, pixel_t *rgb, colourspace_option_flags flags) {
   colour_val_t var_1, var_2, *r, *g, *b;
@@ -1354,6 +1506,24 @@ void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
+void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
+                      colourspace_option_flags flags) {
+  pixel_t xyz = {0.0f};
+  
+  _lab2xyz_double_(lab, &xyz, flags);
+  _xyz2rgb_double_(xyz, rgb, flags);
+}
+#else
+void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
+                     colourspace_option_flags flags) {
+  pixel_t xyz = {0.0f};
+  
+  _lab2xyz_float_(lab, &xyz, flags);
+  _xyz2rgb_float_(xyz, rgb, flags);
+}
+#endif
+
+#ifdef CGFLOAT_IS_DOUBLE
 void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
                          colourspace_option_flags flags) {
   pixel_t lab = {0.0f};
@@ -1462,24 +1632,6 @@ void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
 #endif
 
 #ifdef CGFLOAT_IS_DOUBLE
-void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
-                      colourspace_option_flags flags) {
-  pixel_t xyz = {0.0f};
-
-  _lab2xyz_double_(lab, &xyz, flags);
-  _xyz2rgb_double_(xyz, rgb, flags);
-}
-#else
-void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
-                     colourspace_option_flags flags) {
-  pixel_t xyz = {0.0f};
-
-  _lab2xyz_float_(lab, &xyz, flags);
-  _xyz2rgb_float_(xyz, rgb, flags);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
 void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb,
                        colourspace_option_flags flags) {}
 #else
@@ -1524,158 +1676,6 @@ void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
   *r = (1.0f - c) * (1.0f - k);
   *g = (1.0f - m) * (1.0f - k);
   *b = (1.0f - y) * (1.0f - k);
-
-  sanitize_rgb(rgb);
-}
-#endif
-
-#ifdef CGFLOAT_IS_DOUBLE
-void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
-                      colourspace_option_flags flags) {
-  colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
-  pixel_t var_xyz = {0.0f};
-
-  uint16_t rgb_model_idx =
-      (COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max) <
-       COLOURSPACE_OPTION_RGB_PROFILE(flags))
-          ? COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_srgb_d65)
-          : COLOURSPACE_OPTION_RGB_PROFILE(flags);
-
-  var_xyz.a = xyz.a / 100.0f;
-  var_xyz.b = xyz.b / 100.0f;
-  var_xyz.c = xyz.c / 100.0f;
-
-  apply_working_space_matrix(
-      var_xyz, rgb_working_matrices[rgb_model_idx].xyz2rgb[0],
-      rgb_working_matrices[rgb_model_idx].xyz2rgb[1],
-      rgb_working_matrices[rgb_model_idx].xyz2rgb[2], rgb);
-
-  r = &(rgb->a);
-  g = &(rgb->b);
-  b = &(rgb->c);
-
-  R = rgb->a;
-  G = rgb->b;
-  B = rgb->c;
-
-  s_r = signbit(R) ? -1.0f : 1.0f;
-  s_g = signbit(G) ? -1.0f : 1.0f;
-  s_b = signbit(B) ? -1.0f : 1.0f;
-
-  if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-    R = neg_pow(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
-    G = neg_pow(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
-    B = neg_pow(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
-
-  } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-    R = (fabs(R) <= 0.0031308f)
-            ? 12.92f * fabs(R)
-            : 1.055f * neg_pow(fabs(R), (1.0f / 2.4f)) - 0.055f;
-    G = (fabs(G) <= 0.0031308f)
-            ? 12.92f * fabs(G)
-            : 1.055f * neg_pow(fabs(G), (1.0f / 2.4f)) - 0.055f;
-    B = (fabs(B) <= 0.0031308f)
-            ? 12.92f * fabs(B)
-            : 1.055f * neg_pow(fabs(B), (1.0f / 2.4f)) - 0.055f;
-
-    R *= s_r;
-    G *= s_g;
-    B *= s_b;
-
-  } else {
-    R = (fabs(R) <= (216.0f / 24389.0f))
-            ? (fabs(R) * 24389.0f / 2700.0f)
-            : (1.16f * neg_pow(fabs(R), 1.0f / 3.0f) - 0.16f);
-    G = (fabs(G) <= (216.0f / 24389.0f))
-            ? (fabs(G) * 24389.0f / 2700.0f)
-            : (1.16f * neg_pow(fabs(G), 1.0f / 3.0f) - 0.16f);
-    B = (fabs(B) <= (216.0f / 24389.0f))
-            ? (fabs(B) * 24389.0f / 2700.0f)
-            : (1.16f * neg_pow(fabs(B), 1.0f / 3.0f) - 0.16f);
-
-    R *= s_r;
-    G *= s_g;
-    B *= s_b;
-  }
-
-  *r = R;
-  *g = G;
-  *b = B;
-
-  sanitize_rgb(rgb);
-}
-#else
-void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
-                     colourspace_option_flags flags) {
-  colour_val_t *r, *g, *b, R, G, B, s_r = 0.0f, s_g = 0.0f, s_b = 0.0f;
-  pixel_t var_xyz = {0.0f};
-
-  uint16_t rgb_model_idx =
-      (COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max) <
-       COLOURSPACE_OPTION_RGB_PROFILE(flags))
-          ? COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_srgb_d65)
-          : COLOURSPACE_OPTION_RGB_PROFILE(flags);
-
-  var_xyz.a = xyz.a / 100.0f;
-  var_xyz.b = xyz.b / 100.0f;
-  var_xyz.c = xyz.c / 100.0f;
-
-  apply_working_space_matrix(
-      var_xyz, rgb_working_matrices[rgb_model_idx].xyz2rgb[0],
-      rgb_working_matrices[rgb_model_idx].xyz2rgb[1],
-      rgb_working_matrices[rgb_model_idx].xyz2rgb[2], rgb);
-
-  r = &(rgb->a);
-  g = &(rgb->b);
-  b = &(rgb->c);
-
-  R = rgb->a;
-  G = rgb->b;
-  B = rgb->c;
-
-  s_r = signbit(R) ? -1.0f : 1.0f;
-  s_g = signbit(G) ? -1.0f : 1.0f;
-  s_b = signbit(B) ? -1.0f : 1.0f;
-
-  if (0.0f < rgb_model_gamma[rgb_model_idx]) {
-    R = neg_powf(R, 1.0f / rgb_model_gamma[rgb_model_idx]);
-    G = neg_powf(G, 1.0f / rgb_model_gamma[rgb_model_idx]);
-    B = neg_powf(B, 1.0f / rgb_model_gamma[rgb_model_idx]);
-
-  } else if (0.0f > rgb_model_gamma[rgb_model_idx]) {
-    R = (fabsf(R) <= 0.0031308f)
-            ? 12.92f * fabsf(R)
-            : 1.055f * neg_powf(fabsf(R), (1.0f / 2.4f)) - 0.055f;
-    G = (fabsf(G) <= 0.0031308f)
-            ? 12.92f * fabsf(G)
-            : 1.055f * neg_powf(fabsf(G), (1.0f / 2.4f)) - 0.055f;
-    B = (fabsf(B) <= 0.0031308f)
-            ? 12.92f * fabsf(B)
-            : 1.055f * neg_powf(fabsf(B), (1.0f / 2.4f)) - 0.055f;
-
-    R *= s_r;
-    G *= s_g;
-    B *= s_b;
-
-  } else {
-    R = (fabsf(R) <= (216.0f / 24389.0f))
-            ? (fabsf(R) * 24389.0f / 2700.0f)
-            : (1.16f * neg_powf(fabsf(R), 1.0f / 3.0f) - 0.16f);
-    G = (fabsf(G) <= (216.0f / 24389.0f))
-            ? (fabsf(G) * 24389.0f / 2700.0f)
-            : (1.16f * neg_powf(fabsf(G), 1.0f / 3.0f) - 0.16f);
-    B = (fabsf(B) <= (216.0f / 24389.0f))
-            ? (fabsf(B) * 24389.0f / 2700.0f)
-            : (1.16f * neg_powf(fabsf(B), 1.0f / 3.0f) - 0.16f);
-
-    R *= s_r;
-    G *= s_g;
-    B *= s_b;
-  }
-
-  *r = R;
-  *g = G;
-  *b = B;
 
   sanitize_rgb(rgb);
 }
