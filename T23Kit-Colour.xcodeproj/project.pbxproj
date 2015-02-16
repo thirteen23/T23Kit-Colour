@@ -183,8 +183,8 @@
 		4A21EB1619227E8D00BF9603 /* libcolorspaces */ = {
 			isa = PBXGroup;
 			children = (
-				4AEE01131A5AF52900B55091 /* colourspaces.c */,
 				4AEE01141A5AF52900B55091 /* colourspaces.h */,
+				4AEE01131A5AF52900B55091 /* colourspaces.c */,
 			);
 			name = libcolorspaces;
 			sourceTree = "<group>";
