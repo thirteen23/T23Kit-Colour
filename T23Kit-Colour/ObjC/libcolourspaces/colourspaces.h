@@ -87,7 +87,7 @@ extern "C" {
     colourspace_rgb_profile_max = (24 | colourspace_reference_white_max),
   } colourspace_rgb_profile;
   
-#if CGFLOAT_IS_DOUBLE
+//#if CGFLOAT_IS_DOUBLE
   
 void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb,
                                            colourspace_option_flags flags);
@@ -213,7 +213,7 @@ void _ciede2000_double_(pixel_t lab, pixel_t plab,
                                              colour_val_t kh,
                                              colour_val_t *dl);
 
-#else
+//#else
 
 void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb,
                                           colourspace_option_flags flags);
@@ -339,7 +339,7 @@ void _ciede2000_float_(pixel_t lab, pixel_t plab,
                                             colour_val_t kh,
                                             colour_val_t *dl);
   
-#endif /* CGFLOAT_IS_DOUBLE */
+//#endif /* CGFLOAT_IS_DOUBLE */
 
 typedef struct colour_t {
   union {
