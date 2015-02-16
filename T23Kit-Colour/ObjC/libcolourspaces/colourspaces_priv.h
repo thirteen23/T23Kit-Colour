@@ -80,211 +80,259 @@ typedef enum colourspace_rgb_profile {
   colourspace_rgb_profile_max = (24 | colourspace_reference_white_max),
 } colourspace_rgb_profile;
 
+#if CGFLOAT_IS_DOUBLE
+  
 LIBCOLOURSPACES_EXTERN void _hsl2rgb_double_(pixel_t hsl, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb,
-                                            colourspace_option_flags flags);
+                                               colourspace_option_flags flags);
 
 LIBCOLOURSPACES_EXTERN void _hsv2rgb_double_(pixel_t hsv, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2rgb_double_(pixel_t lch_ab, pixel_t *rgb,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_uv2rgb_double_(pixel_t lch_uv, pixel_t *rgb,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _hsi2rgb_double_(pixel_t hsi, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _hlab2rgb_float_(pixel_t hlab, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2hsv_double_(pixel_t rgb, pixel_t *hsv,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2hsl_double_(pixel_t rgb, pixel_t *hsl,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2hsl_float_(pixel_t rgb, pixel_t *hsl,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2lab_double_(pixel_t rgb, pixel_t *lab,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2lab_float_(pixel_t rgb, pixel_t *lab,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _xyz2lab_double_(pixel_t xyz, pixel_t *lab,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _xyz2lab_float_(pixel_t xyz, pixel_t *lab,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
+  
+  LIBCOLOURSPACES_EXTERN void _lab2rgb_double_(pixel_t lab, pixel_t *rgb,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab,
+  
+  LIBCOLOURSPACES_EXTERN void _hlab2rgb_double_(pixel_t hlab, pixel_t *rgb,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
-                                               colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
+  
+  LIBCOLOURSPACES_EXTERN void _cmyk2rgb_double_(pixel_t cmyk, pixel_t *rgb,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2rgb_double_(pixel_t xyz, pixel_t *rgb,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
+  
+  LIBCOLOURSPACES_EXTERN void _ryb2rgb_double_(pixel_t ryb, pixel_t *rgb,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2cmyk_double_(pixel_t rgb, pixel_t *cmyk,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsv_double_(pixel_t rgb, pixel_t *hsv,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab,
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsl_double_(pixel_t rgb, pixel_t *hsl,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsi_double_(pixel_t rgb, pixel_t *hsi,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hlab_double_(pixel_t rgb, pixel_t *hlab,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
-                                               colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2hlab_double_(pixel_t xyz, pixel_t *hlab,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lab_double_(pixel_t rgb, pixel_t *lab,
                                                colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2lab_double_(pixel_t xyz, pixel_t *lab,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2lab_double_(pixel_t lch_ab, pixel_t *lab,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2luv_double_(pixel_t rgb, pixel_t *luv,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2luv_double_(pixel_t xyz, pixel_t *luv,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2luv_double_(pixel_t lch_ab, pixel_t *luv,
+                                                  colourspace_option_flags flags);
 
-LIBCOLOURSPACES_EXTERN void _luv2lch_ab_double_(pixel_t luv, pixel_t *lch_ab,
+  LIBCOLOURSPACES_EXTERN void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lch_ab_double_(pixel_t rgb, pixel_t *lch_ab,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2lch_ab_double_(pixel_t lab, pixel_t *lch_ab,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _luv2lch_ab_double_(pixel_t luv, pixel_t *lch_ab,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
+                                                  colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyY2xyz_double_(pixel_t xyY, pixel_t *xyz,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz,
                                                 colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
+  
+  LIBCOLOURSPACES_EXTERN void _lab2xyz_double_(pixel_t lab, pixel_t *xyz,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2lch_uv_double_(pixel_t rgb, pixel_t *lch_uv,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
+  
+  LIBCOLOURSPACES_EXTERN void _luv2xyz_double_(pixel_t luv, pixel_t *xyz,
                                                colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _luv2lch_uv_double_(pixel_t luv, pixel_t *lch_uv,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
-                                               colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lab2lch_uv_double_(pixel_t lab, pixel_t *lch_uv,
-                                                colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
-                                               colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _xyY2xyz_double_(pixel_t xyY, pixel_t *xyz,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _rgb2xyz_double_(pixel_t rgb, pixel_t *xyz,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _hlab2xyz_double_(pixel_t hlab, pixel_t *xyz,
-                                              colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz,
-                                             colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _lab2xyz_double_(pixel_t lab, pixel_t *xyz,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _lab2xyz_float_(pixel_t lab, pixel_t *xyz,
-                                            colourspace_option_flags flags);
-
-LIBCOLOURSPACES_EXTERN void _luv2xyz_double_(pixel_t luv, pixel_t *xyz,
-                                             colourspace_option_flags flags);
-LIBCOLOURSPACES_EXTERN void _luv2xyz_float_(pixel_t luv, pixel_t *xyz,
-                                            colourspace_option_flags flags);
-
-/* Helpers */
-LIBCOLOURSPACES_EXTERN void _print_pixel_double_(pixel_t p);
-LIBCOLOURSPACES_EXTERN void _print_pixel_float_(pixel_t p);
-
-/* Distance Metrics */
-LIBCOLOURSPACES_EXTERN void _cie76_double_(pixel_t lab, pixel_t plab,
-                                           colour_val_t *dl);
-LIBCOLOURSPACES_EXTERN void _cie76_float_(pixel_t lab, pixel_t plab,
-                                          colour_val_t *dl);
-
-LIBCOLOURSPACES_EXTERN void _cmc1984_double_(pixel_t lab, pixel_t plab,
-                                             colour_val_t l, colour_val_t c,
+  
+  /* Helpers */
+  LIBCOLOURSPACES_EXTERN void _print_pixel_double_(pixel_t p);
+  
+  /* Distance Metrics */
+  LIBCOLOURSPACES_EXTERN void _cie76_double_(pixel_t lab, pixel_t plab,
                                              colour_val_t *dl);
-LIBCOLOURSPACES_EXTERN void _cmc1984_float_(pixel_t lab, pixel_t plab,
-                                            colour_val_t l, colour_val_t c,
-                                            colour_val_t *dl);
-
-LIBCOLOURSPACES_EXTERN void _cie94_double_(pixel_t lab, pixel_t plab, int media,
-                                           colour_val_t *dl);
-LIBCOLOURSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab, int media,
-                                          colour_val_t *dl);
-
-LIBCOLOURSPACES_EXTERN void _ciede2000_double_(pixel_t lab, pixel_t plab,
-                                               colour_val_t kl, colour_val_t kc,
-                                               colour_val_t kh,
+  
+  LIBCOLOURSPACES_EXTERN void _cmc1984_double_(pixel_t lab, pixel_t plab,
+                                               colour_val_t l, colour_val_t c,
                                                colour_val_t *dl);
-LIBCOLOURSPACES_EXTERN void _ciede2000_float_(pixel_t lab, pixel_t plab,
-                                              colour_val_t kl, colour_val_t kc,
-                                              colour_val_t kh,
+  
+  LIBCOLOURSPACES_EXTERN void _cie94_double_(pixel_t lab, pixel_t plab, int media,
+                                             colour_val_t *dl);
+  
+  LIBCOLOURSPACES_EXTERN void _ciede2000_double_(pixel_t lab, pixel_t plab,
+                                                 colour_val_t kl, colour_val_t kc,
+                                                 colour_val_t kh,
+                                                 colour_val_t *dl);
+  
+#else
+
+LIBCOLOURSPACES_EXTERN void _hsl2rgb_float_(pixel_t hsl, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+LIBCOLOURSPACES_EXTERN void _hsv2rgb_float_(pixel_t hsv, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2rgb_float_(pixel_t lch_ab, pixel_t *rgb,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_uv2rgb_float_(pixel_t lch_uv, pixel_t *rgb,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _hsi2rgb_float_(pixel_t hsi, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2rgb_float_(pixel_t lab, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _hlab2rgb_float_(pixel_t hlab, pixel_t *rgb,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _cmyk2rgb_float_(pixel_t cmyk, pixel_t *rgb,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2rgb_float_(pixel_t xyz, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _ryb2rgb_float_(pixel_t ryb, pixel_t *rgb,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2cmyk_float_(pixel_t rgb, pixel_t *cmyk,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsv_float_(pixel_t rgb, pixel_t *hsv,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsl_float_(pixel_t rgb, pixel_t *hsl,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hsi_float_(pixel_t rgb, pixel_t *hsi,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2hlab_float_(pixel_t rgb, pixel_t *hlab,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2hlab_float_(pixel_t xyz, pixel_t *hlab,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lab_float_(pixel_t rgb, pixel_t *lab,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2lab_float_(pixel_t xyz, pixel_t *lab,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_uv2lab_float_(pixel_t lch_uv, pixel_t *lab,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2luv_float_(pixel_t rgb, pixel_t *luv,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyz2luv_float_(pixel_t xyz, pixel_t *luv,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_ab2luv_float_(pixel_t lch_ab, pixel_t *luv,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lch_uv2luv_float_(pixel_t lch_uv, pixel_t *luv,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lch_ab_float_(pixel_t rgb, pixel_t *lch_ab,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2lch_ab_float_(pixel_t lab, pixel_t *lch_ab,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _luv2lch_ab_float_(pixel_t luv, pixel_t *lch_ab,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2lch_uv_float_(pixel_t rgb, pixel_t *lch_uv,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _luv2lch_uv_float_(pixel_t luv, pixel_t *lch_uv,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2lch_uv_float_(pixel_t lab, pixel_t *lch_uv,
+                                                 colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _xyY2xyz_float_(pixel_t xyY, pixel_t *xyz,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _rgb2xyz_float_(pixel_t rgb, pixel_t *xyz,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _hlab2xyz_float_(pixel_t hlab, pixel_t *xyz,
+                                               colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _lab2xyz_float_(pixel_t lab, pixel_t *xyz,
+                                              colourspace_option_flags flags);
+  
+  LIBCOLOURSPACES_EXTERN void _luv2xyz_float_(pixel_t luv, pixel_t *xyz,
+                                              colourspace_option_flags flags);
+  
+  /* Helpers */
+  LIBCOLOURSPACES_EXTERN void _print_pixel_float_(pixel_t p);
+  
+  /* Distance Metrics */
+  LIBCOLOURSPACES_EXTERN void _cie76_float_(pixel_t lab, pixel_t plab,
+                                             colour_val_t *dl);
+  
+  LIBCOLOURSPACES_EXTERN void _cmc1984_float_(pixel_t lab, pixel_t plab,
+                                              colour_val_t l, colour_val_t c,
                                               colour_val_t *dl);
+  
+  LIBCOLOURSPACES_EXTERN void _cie94_float_(pixel_t lab, pixel_t plab, int media,
+                                            colour_val_t *dl);
+  
+  LIBCOLOURSPACES_EXTERN void _ciede2000_float_(pixel_t lab, pixel_t plab,
+                                                colour_val_t kl, colour_val_t kc,
+                                                colour_val_t kh,
+                                                colour_val_t *dl);
+
+#endif /* CGFLOAT_IS_DOUBLE */
 
 #endif /* LIBCOLOURSPACES_PRIV_H */
 
