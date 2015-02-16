@@ -874,9 +874,6 @@ void _lch_ab2lab_float_(pixel_t lch_ab, pixel_t *lab,
 
 #ifdef CGFLOAT_IS_DOUBLE
 
-void _lch_uv2luv_double_(pixel_t lch_uv, pixel_t *luv,
-                         colourspace_option_flags flags);
-
 void _lch_uv2lab_double_(pixel_t lch_uv, pixel_t *lab,
                          colourspace_option_flags flags) {
   pixel_t luv = {0.0f}, xyz = {0.0f};
