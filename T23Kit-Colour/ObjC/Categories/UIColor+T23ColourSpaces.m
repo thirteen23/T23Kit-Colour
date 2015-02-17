@@ -20,9 +20,9 @@
 
   RYB_2_RGB(ryb.RYB, &rgb.RGB, 0x0);
 
-  return [UIColor colorWithRed:rgb.RGB_R
-                         green:rgb.RGB_G
-                          blue:rgb.RGB_B
+  return [UIColor colorWithRed:(CGFloat)rgb.RGB_R
+                         green:(CGFloat)rgb.RGB_G
+                          blue:(CGFloat)rgb.RGB_B
                          alpha:alpha];
 }
 
@@ -57,7 +57,9 @@
   RYB_2_RGB(ryb.RYB, &rgb.RGB, 0x0);
 
   return
-      [self initWithRed:rgb.RGB_R green:rgb.RGB_G blue:rgb.RGB_B alpha:alpha];
+      [self initWithRed:(CGFloat)rgb.RGB_R
+                  green:(CGFloat)rgb.RGB_G
+                   blue:(CGFloat)rgb.RGB_B alpha:alpha];
 }
 
 - (UIColor *)initWithHexString:(NSString *)hexString
@@ -101,9 +103,9 @@
   rgb.RGB_B = b;
   
   RGB_2_XYZ(rgb.RGB, &xyz.XYZ, colourspace_rgb_profile_srgb_d65);
-  *coneResponse = xyz.XYZ_X;
-  *luminance = xyz.XYZ_Y;
-  *quasiBlue = xyz.XYZ_Z;
+  *coneResponse = (CGFloat)xyz.XYZ_X;
+  *luminance =    (CGFloat)xyz.XYZ_Y;
+  *quasiBlue =    (CGFloat)xyz.XYZ_Z;
   *alpha = a;
   
   return YES;
@@ -122,9 +124,9 @@
   rgb.RGB_B = b;
 
   RGB_2_HLAB(rgb.RGB, &hlab.LAB, colourspace_rgb_profile_srgb_d65);
-  *lightness = hlab.LAB_L;
-  *greenToMagenta = hlab.LAB_A;
-  *yellowtoBlue = hlab.LAB_B;
+  *lightness =      (CGFloat)hlab.LAB_L;
+  *greenToMagenta = (CGFloat)hlab.LAB_A;
+  *yellowtoBlue =   (CGFloat)hlab.LAB_B;
   *alpha = a;
 
   return YES;
@@ -143,9 +145,9 @@
   rgb.RGB_B = b;
 
   RGB_2_LAB(rgb.RGB, &lab.LAB, colourspace_rgb_profile_srgb_d65);
-  *lightness = lab.LAB_L;
-  *greenToMagenta = lab.LAB_A;
-  *yellowtoBlue = lab.LAB_B;
+  *lightness =      (CGFloat)lab.LAB_L;
+  *greenToMagenta = (CGFloat)lab.LAB_A;
+  *yellowtoBlue =   (CGFloat)lab.LAB_B;
   *alpha = a;
 
   return YES;
@@ -164,9 +166,9 @@
   rgb.RGB_B = b;
 
   RGB_2_LUV(rgb.RGB, &luv.LUV, colourspace_rgb_profile_srgb_d65);
-  *lightness = luv.LUV_L;
-  *greenToMagenta = luv.LUV_U;
-  *yellowtoBlue = luv.LUV_V;
+  *lightness =      (CGFloat)luv.LUV_L;
+  *greenToMagenta = (CGFloat)luv.LUV_U;
+  *yellowtoBlue =   (CGFloat)luv.LUV_V;
   *alpha = a;
 
   return YES;
@@ -185,9 +187,9 @@
   rgb.RGB_B = b;
 
   RGB_2_LCH_AB(rgb.RGB, &lch_ab.LCH_AB, colourspace_rgb_profile_srgb_d65);
-  *lightness = lch_ab.LCH_AB_L;
-  *chroma = lch_ab.LCH_AB_C;
-  *hue = lch_ab.LCH_AB_H;
+  *lightness =  (CGFloat)lch_ab.LCH_AB_L;
+  *chroma =     (CGFloat)lch_ab.LCH_AB_C;
+  *hue =        (CGFloat)lch_ab.LCH_AB_H;
   *alpha = a;
 
   return YES;
@@ -206,9 +208,9 @@
   rgb.RGB_B = b;
 
   RGB_2_LCH_UV(rgb.RGB, &lch_uv.LCH_UV, colourspace_rgb_profile_srgb_d65);
-  *lightness = lch_uv.LCH_UV_L;
-  *chroma = lch_uv.LCH_UV_C;
-  *hue = lch_uv.LCH_UV_H;
+  *lightness =  (CGFloat)lch_uv.LCH_UV_L;
+  *chroma =     (CGFloat)lch_uv.LCH_UV_C;
+  *hue =        (CGFloat)lch_uv.LCH_UV_H;
   *alpha = a;
 
   return YES;
@@ -228,10 +230,10 @@
   rgb.RGB_B = b;
 
   RGB_2_CMYK(rgb.RGB, &cmyk.CMYK, 0x0);
-  *cyan = cmyk.CMYK_C;
-  *magenta = cmyk.CMYK_M;
-  *yellow = cmyk.CMYK_Y;
-  *black = cmyk.CMYK_K;
+  *cyan =     (CGFloat)cmyk.CMYK_C;
+  *magenta =  (CGFloat)cmyk.CMYK_M;
+  *yellow =   (CGFloat)cmyk.CMYK_Y;
+  *black =    (CGFloat)cmyk.CMYK_K;
   *alpha = a;
 
   return YES;
@@ -250,9 +252,9 @@
   rgb.RGB_B = b;
 
   RGB_2_HSL(rgb.RGB, &hsl.HSL, 0x0);
-  *hue = hsl.HSL_H;
-  *saturation = hsl.HSL_S;
-  *lightness = hsl.HSL_L;
+  *hue =        (CGFloat)hsl.HSL_H;
+  *saturation = (CGFloat)hsl.HSL_S;
+  *lightness =  (CGFloat)hsl.HSL_L;
   *alpha = a;
 
   return YES;
@@ -271,9 +273,9 @@
   rgb.RGB_B = b;
 
   RGB_2_HSI(rgb.RGB, &hsi.HSL, 0x0);
-  *hue = hsi.HSI_H;
-  *saturation = hsi.HSI_S;
-  *intensity = hsi.HSI_I;
+  *hue =        (CGFloat)hsi.HSI_H;
+  *saturation = (CGFloat)hsi.HSI_S;
+  *intensity =  (CGFloat)hsi.HSI_I;
   *alpha = a;
 
   return YES;

@@ -477,7 +477,7 @@ static colour_val_t rgb_workspace_options[] = {
 }
 
 - (void)testLibColorspaces {
-  CGFloat distance = 0.0f;
+  colour_val_t distance = 0.0f;
 
   pixel_t *lab_1 = NULL, *lab_2 = NULL;
   size_t test_length = sizeof(ciede2000D) / sizeof(ciede2000D[0]);
