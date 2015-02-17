@@ -9,7 +9,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <tgmath.h>
+#include <math.h>
 #include "colourspaces.h"
 
 typedef struct rgb_working_matrix {

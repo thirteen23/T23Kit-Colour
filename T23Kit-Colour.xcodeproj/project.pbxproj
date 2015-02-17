@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A21EAF019227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
+		4A0354141A93F94D00622091 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AEE01061A48A76B00B55091 /* UIKit.framework */; };
 		4A21EAFF19227DC100BF9603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEF19227DC100BF9603 /* Foundation.framework */; };
 		4A21EB0419227DC100BF9603 /* libColour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A21EAEC19227DC100BF9603 /* libColour.a */; };
 		4AEB12DF1A3F54DB003AAB35 /* ColourSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AEB12D41A3F54DB003AAB35 /* ColourSwift.framework */; };
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A21EAF019227DC100BF9603 /* Foundation.framework in Frameworks */,
+				4A0354141A93F94D00622091 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
