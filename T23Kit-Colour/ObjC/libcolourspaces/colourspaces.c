@@ -26,7 +26,7 @@ typedef struct rgb_working_matrix {
  *  easily massage it for anything else.
  *
  */
-static rgb_working_matrix rgb_working_matrices[colourspace_rgb_profile_max] = {
+static rgb_working_matrix rgb_working_matrices[COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max)] = {
     /* 0 */
     { /* Adobe RGB (1998) D65 */
      {/* rgb2xyz */
@@ -294,7 +294,7 @@ static pixel_t reference_white_matrix[11] = {
     /* F11 (ASTM E308-01) */
     {1.00962f, 1.0f, 0.64350f}};
 
-static colour_val_t rgb_model_gamma[colourspace_rgb_profile_max] = {
+static colour_val_t rgb_model_gamma[COLOURSPACE_OPTION_RGB_PROFILE(colourspace_rgb_profile_max)] = {
     2.2f, 1.8f, 2.2f,  2.2f, 2.2f, 2.2f, 1.8f, 2.2f, 0.0f, 2.2f, 2.2f, 2.2f,
     1.8f, 2.2f, -2.2f, 2.2f, 2.2f, 1.8f, 2.2f, 2.2f, 2.2f, 2.2f, 2.2f, -2.2f};
 
